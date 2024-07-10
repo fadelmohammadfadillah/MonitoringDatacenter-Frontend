@@ -1,23 +1,29 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import LoginPage from '@/pages/LoginPage.vue'
-import DashboardAdminPage from '@/pages/DashboardAdminPage.vue'
+import { createRouter, createWebHistory } from "vue-router";
+import LoginPage from "@/pages/LoginPage.vue";
+import DashboardAdminPage from "@/pages/DashboardAdminPage.vue";
+import UserManagementPage from "@/pages/UserManagementPage.vue"; // Import halaman UserManagementPage
 
-const routes =[
+const routes = [
   {
-    path: '/',
+    path: "/",
     component: LoginPage,
-    name: 'login-page',
+    name: "login-page",
   },
   {
-    path: '/admin-dashboard',
+    path: "/admin-dashboard",
     component: DashboardAdminPage,
-    name: 'DashboardOperatorPage',
-  }
-]
+    name: "DashboardOperatorPage",
+  },
+  {
+    path: "/user-management",
+    component: UserManagementPage,
+    name: "UserManagementPage",
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;

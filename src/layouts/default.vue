@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <v-app>
     <v-main>
       <router-view />
@@ -7,5 +7,5 @@
 </template>
 
 <script setup>
-  //
-</script>
+//
+</script> -->
