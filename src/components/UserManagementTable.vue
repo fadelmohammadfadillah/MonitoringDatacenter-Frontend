@@ -1,13 +1,12 @@
 <template>
-  <div class="user-management">
+  <div class="user-management mx-4">
     <v-container>
       <v-row>
         <v-col>
-          <v-toolbar flat color="D3D3D3">
-            <v-toolbar-title class="text-h6"
-              >Manajemen Pengguna</v-toolbar-title
-            >
-            <v-spacer></v-spacer>
+          <v-toolbar flat color="white" class="pt-5">
+            <v-toolbar-title class="text-h5 font-weight-bold">
+              Manajemen Pengguna
+            </v-toolbar-title>
           </v-toolbar>
         </v-col>
       </v-row>
@@ -16,7 +15,7 @@
         <v-col cols="12" md="6">
           <v-text-field
             v-model="search"
-            placeholder="Placeholder"
+            placeholder="Cari Pengguna"
             clearable
             dense
             prepend-inner-icon="mdi-magnify"
@@ -25,34 +24,43 @@
         </v-col>
 
         <v-col cols="auto" class="d-flex justify-end">
-          <v-btn class="add-user-btn" outlined color="white">
-            <v-icon left>mdi-filter-variant</v-icon> Filter
+          <v-btn
+            class="text-white mx-4"
+            prepend-icon="mdi-filter-variant"
+            variant="outlined"
+            color="orange"
+          >
+            Filter
           </v-btn>
 
-          <v-btn class="add-user-btn" @click="addUser">
-            <v-icon left>mdi-plus</v-icon> Tambah Pengguna
+          <v-btn
+            prepend-icon="mdi-plus"
+            class="text-white"
+            color="orange"
+            @click="addUser"
+          >
+            Tambah Pengguna
           </v-btn>
         </v-col>
       </v-row>
 
       <v-row>
         <v-col>
-          <v-data-table
-            :headers="headers"
-            :items="filteredUsers"
-            :search="search"
-            :items-per-page="10"
-            class="elevation-1"
-          >
-            <template v-slot:header="{ props }">
+          <v-table>
+            <thead>
               <tr>
-                <th v-for="header in props.headers" :key="header.value">
-                  {{ header.text }}
-                </th>
+                <th class="text-left">No</th>
+                <th class="text-left">Nama</th>
+                <th class="text-left">Role</th>
+                <th class="text-left">Divisi</th>
+                <th class="text-left">Departemen</th>
+                <th class="text-left">Email</th>
+                <th class="text-left">Status</th>
+                <th class="text-left"> </th>
               </tr>
-            </template>
-            <template v-slot:item="{ item }">
-              <tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in paginatedUsers" :key="item.no">
                 <td>{{ item.no }}</td>
                 <td>{{ item.nama }}</td>
                 <td>{{ item.role }}</td>
@@ -69,11 +77,24 @@
                   </v-chip>
                 </td>
                 <td>
-                  <v-icon>mdi-dots-horizontal</v-icon>
+                  <v-btn
+                    class="text-white mx-1"
+                    prepend-icon="mdi-dots-horizontal"
+                    variant="outlined"
+                    color="orange"
+                  >
+                  </v-btn>
                 </td>
               </tr>
-            </template>
-          </v-data-table>
+            </tbody>
+          </v-table>
+
+          <v-pagination
+            v-model="currentPage"
+            :length="Math.ceil(filteredUsers.length / itemsPerPage)"
+            rounded="circle"
+            @input="changePage"
+          ></v-pagination>
         </v-col>
       </v-row>
     </v-container>
@@ -93,6 +114,7 @@ const headers = [
   { text: "Status", align: "start", value: "status" },
   { text: "Actions", align: "start", sortable: false },
 ];
+
 
 const users = [
   {
@@ -178,7 +200,7 @@ const users = [
   },
   {
     no: 10,
-    nama: "Maliki Kanan Kiri",
+    nama: "Jovankan Siginendra",
     role: "Operator",
     divisi: "Infrastructure",
     departemen: "Data Center Operation",
@@ -203,10 +225,60 @@ const users = [
     email: "Maliki@gmail.com",
     status: "Active",
   },
+
+  {
+    no: 13,
+    nama: "Maliki Kanan Kiri",
+    role: "Operator",
+    divisi: "Infrastructure",
+    departemen: "Data Center Operation",
+    email: "Maliki@gmail.com",
+    status: "Active",
+  },
+
+  {
+    no: 14,
+    nama: "Maliki Kanan Kiri",
+    role: "Operator",
+    divisi: "Infrastructure",
+    departemen: "Data Center Operation",
+    email: "Maliki@gmail.com",
+    status: "Active",
+  },
+
+
+  {
+    no: 15,
+    nama: "Maliki Kanan Kiri",
+    role: "Operator",
+    divisi: "Infrastructure",
+    departemen: "Data Center Operation",
+    email: "Maliki@gmail.com",
+    status: "Active",
+  },
+  {
+    no: 15,
+    nama: "Maliki Kanan Kiri",
+    role: "Operator",
+    divisi: "Infrastructure",
+    departemen: "Data Center Operation",
+    email: "Maliki@gmail.com",
+    status: "Active",
+  },
+
+  {
+    no: 16,
+    nama: "Maliki Kanan Kiri",
+    role: "Operator",
+    divisi: "Infrastructure",
+    departemen: "Data Center Operation",
+    email: "Maliki@gmail.com",
+    status: "Active",
+  },
 ];
 
 let search = ref("");
-let page = ref(1);
+let currentPage = ref(1);
 const itemsPerPage = 10;
 
 const filteredUsers = computed(() => {
@@ -215,31 +287,18 @@ const filteredUsers = computed(() => {
   );
 });
 
-const pageCount = computed(() => {
-  return Math.ceil(users.length / itemsPerPage);
+const paginatedUsers = computed(() => {
+  const startIndex = (currentPage.value - 1) * itemsPerPage;
+  return filteredUsers.value.slice(startIndex, startIndex + itemsPerPage);
 });
 
+const changePage = (page) => {
+  currentPage.value = page;
+};
+
 const addUser = () => {
-  // Your add user logic here
+  // Logika tambah pengguna di sini
 };
 </script>
 
-<style scoped>
-.user-management {
-  background-color: #f6f6f6;
-  padding: 16px;
-}
-.toolbar-actions {
-  background-color: #f6f6f6;
-  padding: 16px 0;
-}
-.filter-btn {
-  background-color: transparent;
-  color: #ff9800;
-  border: 1px solid #ff9800;
-}
-.add-user-btn {
-  background-color: #ff9800;
-  color: white;
-}
-</style>
+<style scoped></style>

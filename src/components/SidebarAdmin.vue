@@ -5,11 +5,11 @@
         src="../assets/Logo Collega.svg"
         alt="logo collega"
         min-height="9vh"
-        min-width="10vw"
-        class="pa-4"
+        min-width="9vw"
+        class="pt-1"
       ></v-img>
     </v-list-item>
-    <v-divider class="my-4"></v-divider>
+    <v-divider class="mx-1"></v-divider>
 
     <v-list>
       <!-- Pengguna Section -->
@@ -67,7 +67,7 @@ export default {
   data() {
     return {
       showProducts: false,
-      productsIcon: "mdi-menu-down",  
+      productsIcon: "mdi-menu-down",
     };
   },
   methods: {

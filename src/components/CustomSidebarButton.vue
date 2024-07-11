@@ -16,7 +16,7 @@
   </v-list-item>
 </template>
 <script>
-export default {
+export default {  
   props: {
     icon: {
       type: String,
