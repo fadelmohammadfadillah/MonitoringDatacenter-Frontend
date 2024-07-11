@@ -47,7 +47,7 @@
       <v-row>
         <v-col>
           <v-table>
-            <thead>
+            <thead class="bg-orange-lighten-5">
               <tr>
                 <th class="text-left">No</th>
                 <th class="text-left">Nama</th>
@@ -56,7 +56,7 @@
                 <th class="text-left">Departemen</th>
                 <th class="text-left">Email</th>
                 <th class="text-left">Status</th>
-                <th class="text-left"> </th>
+                <th class="text-left"></th>
               </tr>
             </thead>
             <tbody>
@@ -69,7 +69,7 @@
                 <td>{{ item.email }}</td>
                 <td>
                   <v-chip
-                    :color="item.status === 'Active' ? 'green' : 'red'"
+                    :color="getStatusColor(item.status)"
                     text-color="white"
                     small
                   >
@@ -80,7 +80,7 @@
                   <v-btn
                     class="text-white mx-1"
                     prepend-icon="mdi-dots-horizontal"
-                    variant="outlined"
+                    variant="plain"
                     color="orange"
                   >
                   </v-btn>
@@ -89,12 +89,28 @@
             </tbody>
           </v-table>
 
-          <v-pagination
-            v-model="currentPage"
-            :length="Math.ceil(filteredUsers.length / itemsPerPage)"
-            rounded="circle"
-            @input="changePage"
-          ></v-pagination>
+          <v-row class="d-flex justify-between align-center mt-4">
+            <v-col cols="auto">
+              <div class="left pa-2">
+                <span>Item per halaman:</span>
+                <v-select
+                  v-model="itemsPerPage"
+                  :items="perPageOptions"
+                  outlined
+                  dense
+                ></v-select>
+              </div>
+            </v-col>
+            <v-col cols="center" class="d-flex justify-end">
+              <v-pagination
+                v-model="currentPage"
+                :length="Math.ceil(filteredUsers.length / itemsPerPage)"
+                rounded="circle"
+                @input="changePage"
+                color="orange"
+              ></v-pagination>
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
     </v-container>
@@ -104,6 +120,7 @@
 <script setup>
 import { ref, computed } from "vue";
 
+// eslint-disable-next-line no-unused-vars
 const headers = [
   { text: "No", align: "start", value: "no" },
   { text: "Nama", align: "start", value: "nama" },
@@ -115,6 +132,8 @@ const headers = [
   { text: "Actions", align: "start", sortable: false },
 ];
 
+const itemsPerPage = ref(10); // Menggunakan ref untuk itemsPerPage
+const perPageOptions = [5, 10, 15, 20, 25]; // Options for items per page
 
 const users = [
   {
@@ -142,7 +161,7 @@ const users = [
     divisi: "Infrastructure",
     departemen: "Data Center Operation",
     email: "JordanAyee@gmail.com",
-    status: "Active",
+    status: "Pending",
   },
   {
     no: 4,
@@ -151,7 +170,7 @@ const users = [
     divisi: "Infrastructure",
     departemen: "Data Center Operation",
     email: "harunaAkito@gmail.com",
-    status: "Active",
+    status: "No Active",
   },
   {
     no: 5,
@@ -169,7 +188,7 @@ const users = [
     divisi: "Digital Enterprise",
     departemen: "Card & Digital Transaction",
     email: "yokirrurur@gmail.com",
-    status: "Active",
+    status: "No Active",
   },
   {
     no: 7,
@@ -178,7 +197,7 @@ const users = [
     divisi: "Digital Enterprise",
     departemen: "Card & Digital Transaction",
     email: "bagasGas@gmail.com",
-    status: "Active",
+    status: "Pending",
   },
   {
     no: 8,
@@ -246,7 +265,6 @@ const users = [
     status: "Active",
   },
 
-
   {
     no: 15,
     nama: "Maliki Kanan Kiri",
@@ -275,11 +293,11 @@ const users = [
     email: "Maliki@gmail.com",
     status: "Active",
   },
+
 ];
 
 let search = ref("");
 let currentPage = ref(1);
-const itemsPerPage = 10;
 
 const filteredUsers = computed(() => {
   return users.filter((user) =>
@@ -288,12 +306,22 @@ const filteredUsers = computed(() => {
 });
 
 const paginatedUsers = computed(() => {
-  const startIndex = (currentPage.value - 1) * itemsPerPage;
-  return filteredUsers.value.slice(startIndex, startIndex + itemsPerPage);
+  const startIndex = (currentPage.value - 1) * itemsPerPage.value;
+  return filteredUsers.value.slice(startIndex, startIndex + itemsPerPage.value);
 });
 
 const changePage = (page) => {
   currentPage.value = page;
+};
+
+const getStatusColor = (status) => {
+  if (status === "Active") {
+    return "green";
+  } else if (status === "No Active") {
+    return "red";
+  } else if (status === "Pending") {
+    return "orange";
+  }
 };
 
 const addUser = () => {

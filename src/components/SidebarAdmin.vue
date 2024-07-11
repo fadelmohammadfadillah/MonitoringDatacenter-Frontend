@@ -21,12 +21,17 @@
 
       <!-- Struktur Section -->
       <v-list-item subtitle="Struktur" class="pa-0 pl-2"></v-list-item>
-      <CustomSidebarButton icon="mdi-account-multiple" text="Divisi" />
+      <CustomSidebarButton
+        icon="mdi-account-multiple"
+        text="Manajemen Divisi"
+      />
 
       <!-- Switching Section -->
-      <v-list-item subtitle="Switching" class="pa-0 pl-2">
+      <v-list-item subtitle="Switching" class="pa-0 pl-2"></v-list-item>
+      <!-- Produk Section -->
+      <v-list-item subtitle="Produk" class="pa-0 pl-2">
         <template #subtitle>
-          <span>
+          <span class="pa-0 pl-2">
             Kategori Produk
             <v-icon @click="toggleProducts" class="ml-1">{{
               productsIcon
@@ -35,14 +40,12 @@
         </template>
       </v-list-item>
       <template v-if="showProducts">
-        <CustomSidebarButton icon="mdi-account-multiple" text="Produk" />
-        <CustomSidebarButton icon="mdi-account-multiple" text="Sub Produk" />
+        <CustomSidebarButton icon="mdi-file-tree" text="Produk" />
+        <CustomSidebarButton icon="mdi-file-tree" text="Sub Produk" />
       </template>
-
-      <!-- Other Sections -->
-      <CustomSidebarButton icon="mdi-account-multiple" text="Bank" />
-      <CustomSidebarButton icon="mdi-account-multiple" text="Profile TCP" />
-      <CustomSidebarButton icon="mdi-account-multiple" text="Module" />
+      <CustomSidebarButton icon="mdi-bank-outline" text="Bank" />
+      <CustomSidebarButton icon="mdi-dns-outline" text="Profile TCP" />
+      <CustomSidebarButton icon="mdi-view-module-outline" text="Module" />
 
       <!-- Operasi Section -->
       <v-list-item subtitle="Operasi" class="pa-0 pl-2"></v-list-item>
@@ -79,9 +82,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.text-h6 {
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-</style>
+<style scoped></style>
