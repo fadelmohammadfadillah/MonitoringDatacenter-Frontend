@@ -4,7 +4,7 @@
       <v-row>
         <v-col>
           <v-toolbar flat color="D3D3D3">
-            <v-toolbar-title class="text-h6"
+            <v-toolbar-title class="text-h6 font-weight-bold"
               >Manajemen Pengguna</v-toolbar-title
             >
             <v-spacer></v-spacer>
@@ -25,12 +25,12 @@
         </v-col>
 
         <v-col cols="auto" class="d-flex justify-end">
-          <v-btn class="add-user-btn" outlined color="white">
-            <v-icon left>mdi-filter-variant</v-icon> Filter
+          <v-btn class="text-white mx-4" prepend-icon="mdi-filter-variant" variant="outlined" color="orange">
+            Filter
           </v-btn>
 
-          <v-btn class="add-user-btn" @click="addUser">
-            <v-icon left>mdi-plus</v-icon> Tambah Pengguna
+          <v-btn prepend-icon="mdi-plus" class="text-white" color="orange" @click="addUser">
+            Tambah Pengguna
           </v-btn>
         </v-col>
       </v-row>
@@ -238,8 +238,8 @@ const addUser = () => {
   color: #ff9800;
   border: 1px solid #ff9800;
 }
-.add-user-btn {
+/* .add-user-btn {
   background-color: #ff9800;
   color: white;
-}
+} */
 </style>

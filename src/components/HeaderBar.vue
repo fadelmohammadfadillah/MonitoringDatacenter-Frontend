@@ -1,5 +1,6 @@
 <template>
   <v-app-bar app color="#fff">
+    <v-btn prepend-icon="mdi-page-layout-sidebar-left" @click.stop="drawerStore.useDrawer"></v-btn>
     <v-spacer></v-spacer>
     <div class="notification">
       <v-btn icon @click.stop="toggleNotifications">
@@ -20,6 +21,7 @@
 
 <script>
 import userProfile from "@/assets/userprofile.jpg";
+import {useDrawerStore} from "@/stores/drawerState";
 
 export default {
   props: {
@@ -32,8 +34,10 @@ export default {
       default: "Role",
     },
   },
-  data() {
+  setup() {
+    const drawerStore = useDrawerStore();
     return {
+      drawerStore,
       userProfile,
     };
   },

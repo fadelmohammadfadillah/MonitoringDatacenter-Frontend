@@ -7,7 +7,7 @@
       :color="isHovering ? 'orange' : 'black'"
       block
       :prepend-icon="icon"
-      href="/"
+      :href="routeLink"
       class="text-subtitle-2 font-weight-medium pl-4 py-5"
       rounded="lg"
       style="justify-content: start"
@@ -26,6 +26,10 @@ export default {
       type: String,
       default: "home",
     },
+    routeLink: {
+      type: String,
+      default: "/"
+    }
   },
   data() {
     return {

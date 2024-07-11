@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer app class="pa-4">
+  <v-navigation-drawer app class="pa-4" v-model="drawerStore">
     <v-list-item class="d-flex justify-center">
       <v-img
         src="../assets/Logo Collega.svg"
@@ -40,7 +40,7 @@
       </template>
 
       <!-- Other Sections -->
-      <CustomSidebarButton icon="mdi-account-multiple" text="Bank" />
+      <CustomSidebarButton icon="mdi-account-multiple" text="Bank" routeLink="/user-management"/>
       <CustomSidebarButton icon="mdi-account-multiple" text="Profile TCP" />
       <CustomSidebarButton icon="mdi-account-multiple" text="Module" />
 
@@ -59,13 +59,26 @@
 
 <script>
 import CustomSidebarButton from "@/components/CustomSidebarButton.vue";
+import {useDrawerStore} from "@/stores/drawerState"
+import { computed } from "vue";
+
 
 export default {
   components: {
     CustomSidebarButton,
   },
-  data() {
+  setup() {
+    const drawerStore = useDrawerStore()
+    const drawer = computed({
+      get(){
+        return drawerStore.drawer
+      },
+      set(value){
+        drawerStore.drawer = value
+      }
+    })
     return {
+      drawerStore: drawer,
       showProducts: false,
       productsIcon: "mdi-menu-down",  
     };
