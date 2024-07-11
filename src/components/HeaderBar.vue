@@ -1,19 +1,15 @@
 <template>
-  <v-app-bar app color="#fff">
-    <v-btn prepend-icon="mdi-page-layout-sidebar-left" @click.stop="drawerStore.useDrawer"></v-btn>
+  <v-app-bar app color="#fff" class="pa-3">
+    <v-btn icon="mdi-page-layout-sidebar-left" @click.stop="drawerStore.useDrawer"></v-btn>
     <v-spacer></v-spacer>
-    <div class="notification">
-      <v-btn icon @click.stop="toggleNotifications">
-        <v-icon>mdi-bell</v-icon>
-      </v-btn>
+    <v-btn prepend-icon="mdi-bell" @click.stop="toggleNotifications"> </v-btn>
+
+    <div class="mr-2">
+      <div class="font-weight-bold">{{ username }}</div>
+      <div class="font-italic text-h7">{{ role }}</div>
     </div>
 
-    <div class="user-info mr-2">
-      <div class="username">{{ username }}</div>
-      <div class="role">{{ role }}</div>
-    </div>
-
-    <v-avatar size="40">
+    <v-avatar size="50">
       <v-img :src="userProfile" alt="User Image"></v-img>
     </v-avatar>
   </v-app-bar>
@@ -49,20 +45,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.user-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-left: 10px;
-}
-
-.username {
-  font-weight: bold;
-}
-
-.role {
-  font-size: 12px;
-  color: gray;
-}
-</style>
+<style scoped></style>

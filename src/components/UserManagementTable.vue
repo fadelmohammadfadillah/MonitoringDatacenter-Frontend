@@ -1,13 +1,12 @@
 <template>
-  <div class="user-management">
+  <div class="user-management mx-4">
     <v-container>
       <v-row>
         <v-col>
-          <v-toolbar flat color="D3D3D3">
-            <v-toolbar-title class="text-h6 font-weight-bold"
-              >Manajemen Pengguna</v-toolbar-title
-            >
-            <v-spacer></v-spacer>
+          <v-toolbar flat color="white" class="pt-5">
+            <v-toolbar-title class="text-h5 font-weight-bold">
+              Manajemen Pengguna
+            </v-toolbar-title>
           </v-toolbar>
         </v-col>
       </v-row>
@@ -16,7 +15,7 @@
         <v-col cols="12" md="6">
           <v-text-field
             v-model="search"
-            placeholder="Placeholder"
+            placeholder="Cari Pengguna"
             clearable
             dense
             prepend-inner-icon="mdi-magnify"
@@ -25,11 +24,21 @@
         </v-col>
 
         <v-col cols="auto" class="d-flex justify-end">
-          <v-btn class="text-white mx-4" prepend-icon="mdi-filter-variant" variant="outlined" color="orange">
+          <v-btn
+            class="text-white mx-4"
+            prepend-icon="mdi-filter-variant"
+            variant="outlined"
+            color="orange"
+          >
             Filter
           </v-btn>
 
-          <v-btn prepend-icon="mdi-plus" class="text-white" color="orange" @click="addUser">
+          <v-btn
+            prepend-icon="mdi-plus"
+            class="text-white"
+            color="orange"
+            @click="addUser"
+          >
             Tambah Pengguna
           </v-btn>
         </v-col>
@@ -37,22 +46,21 @@
 
       <v-row>
         <v-col>
-          <v-data-table
-            :headers="headers"
-            :items="filteredUsers"
-            :search="search"
-            :items-per-page="10"
-            class="elevation-1"
-          >
-            <template v-slot:header="{ props }">
+          <v-table>
+            <thead class="bg-orange-lighten-5">
               <tr>
-                <th v-for="header in props.headers" :key="header.value">
-                  {{ header.text }}
-                </th>
+                <th class="text-left">No</th>
+                <th class="text-left">Nama</th>
+                <th class="text-left">Role</th>
+                <th class="text-left">Divisi</th>
+                <th class="text-left">Departemen</th>
+                <th class="text-left">Email</th>
+                <th class="text-left">Status</th>
+                <th class="text-left"></th>
               </tr>
-            </template>
-            <template v-slot:item="{ item }">
-              <tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in paginatedUsers" :key="item.no">
                 <td>{{ item.no }}</td>
                 <td>{{ item.nama }}</td>
                 <td>{{ item.role }}</td>
@@ -61,7 +69,7 @@
                 <td>{{ item.email }}</td>
                 <td>
                   <v-chip
-                    :color="item.status === 'Active' ? 'green' : 'red'"
+                    :color="getStatusColor(item.status)"
                     text-color="white"
                     small
                   >
@@ -69,11 +77,40 @@
                   </v-chip>
                 </td>
                 <td>
-                  <v-icon>mdi-dots-horizontal</v-icon>
+                  <v-btn
+                    class="text-white mx-1"
+                    prepend-icon="mdi-dots-horizontal"
+                    variant="plain"
+                    color="orange"
+                  >
+                  </v-btn>
                 </td>
               </tr>
-            </template>
-          </v-data-table>
+            </tbody>
+          </v-table>
+
+          <v-row class="d-flex justify-between align-center mt-4">
+            <v-col cols="auto">
+              <div class="left pa-2">
+                <span>Item per halaman:</span>
+                <v-select
+                  v-model="itemsPerPage"
+                  :items="perPageOptions"
+                  outlined
+                  dense
+                ></v-select>
+              </div>
+            </v-col>
+            <v-col cols="center" class="d-flex justify-end">
+              <v-pagination
+                v-model="currentPage"
+                :length="Math.ceil(filteredUsers.length / itemsPerPage)"
+                rounded="circle"
+                @input="changePage"
+                color="orange"
+              ></v-pagination>
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
     </v-container>
@@ -83,6 +120,7 @@
 <script setup>
 import { ref, computed } from "vue";
 
+// eslint-disable-next-line no-unused-vars
 const headers = [
   { text: "No", align: "start", value: "no" },
   { text: "Nama", align: "start", value: "nama" },
@@ -93,6 +131,9 @@ const headers = [
   { text: "Status", align: "start", value: "status" },
   { text: "Actions", align: "start", sortable: false },
 ];
+
+const itemsPerPage = ref(10); // Menggunakan ref untuk itemsPerPage
+const perPageOptions = [5, 10, 15, 20, 25]; // Options for items per page
 
 const users = [
   {
@@ -120,7 +161,7 @@ const users = [
     divisi: "Infrastructure",
     departemen: "Data Center Operation",
     email: "JordanAyee@gmail.com",
-    status: "Active",
+    status: "Pending",
   },
   {
     no: 4,
@@ -129,7 +170,7 @@ const users = [
     divisi: "Infrastructure",
     departemen: "Data Center Operation",
     email: "harunaAkito@gmail.com",
-    status: "Active",
+    status: "No Active",
   },
   {
     no: 5,
@@ -147,7 +188,7 @@ const users = [
     divisi: "Digital Enterprise",
     departemen: "Card & Digital Transaction",
     email: "yokirrurur@gmail.com",
-    status: "Active",
+    status: "No Active",
   },
   {
     no: 7,
@@ -156,7 +197,7 @@ const users = [
     divisi: "Digital Enterprise",
     departemen: "Card & Digital Transaction",
     email: "bagasGas@gmail.com",
-    status: "Active",
+    status: "Pending",
   },
   {
     no: 8,
@@ -178,7 +219,7 @@ const users = [
   },
   {
     no: 10,
-    nama: "Maliki Kanan Kiri",
+    nama: "Jovankan Siginendra",
     role: "Operator",
     divisi: "Infrastructure",
     departemen: "Data Center Operation",
@@ -203,11 +244,60 @@ const users = [
     email: "Maliki@gmail.com",
     status: "Active",
   },
+
+  {
+    no: 13,
+    nama: "Maliki Kanan Kiri",
+    role: "Operator",
+    divisi: "Infrastructure",
+    departemen: "Data Center Operation",
+    email: "Maliki@gmail.com",
+    status: "Active",
+  },
+
+  {
+    no: 14,
+    nama: "Maliki Kanan Kiri",
+    role: "Operator",
+    divisi: "Infrastructure",
+    departemen: "Data Center Operation",
+    email: "Maliki@gmail.com",
+    status: "Active",
+  },
+
+  {
+    no: 15,
+    nama: "Maliki Kanan Kiri",
+    role: "Operator",
+    divisi: "Infrastructure",
+    departemen: "Data Center Operation",
+    email: "Maliki@gmail.com",
+    status: "Active",
+  },
+  {
+    no: 15,
+    nama: "Maliki Kanan Kiri",
+    role: "Operator",
+    divisi: "Infrastructure",
+    departemen: "Data Center Operation",
+    email: "Maliki@gmail.com",
+    status: "Active",
+  },
+
+  {
+    no: 16,
+    nama: "Maliki Kanan Kiri",
+    role: "Operator",
+    divisi: "Infrastructure",
+    departemen: "Data Center Operation",
+    email: "Maliki@gmail.com",
+    status: "Active",
+  },
+
 ];
 
 let search = ref("");
-let page = ref(1);
-const itemsPerPage = 10;
+let currentPage = ref(1);
 
 const filteredUsers = computed(() => {
   return users.filter((user) =>
@@ -215,31 +305,28 @@ const filteredUsers = computed(() => {
   );
 });
 
-const pageCount = computed(() => {
-  return Math.ceil(users.length / itemsPerPage);
+const paginatedUsers = computed(() => {
+  const startIndex = (currentPage.value - 1) * itemsPerPage.value;
+  return filteredUsers.value.slice(startIndex, startIndex + itemsPerPage.value);
 });
 
+const changePage = (page) => {
+  currentPage.value = page;
+};
+
+const getStatusColor = (status) => {
+  if (status === "Active") {
+    return "green";
+  } else if (status === "No Active") {
+    return "red";
+  } else if (status === "Pending") {
+    return "orange";
+  }
+};
+
 const addUser = () => {
-  // Your add user logic here
+  // Logika tambah pengguna di sini
 };
 </script>
 
-<style scoped>
-.user-management {
-  background-color: #f6f6f6;
-  padding: 16px;
-}
-.toolbar-actions {
-  background-color: #f6f6f6;
-  padding: 16px 0;
-}
-.filter-btn {
-  background-color: transparent;
-  color: #ff9800;
-  border: 1px solid #ff9800;
-}
-/* .add-user-btn {
-  background-color: #ff9800;
-  color: white;
-} */
-</style>
+<style scoped></style>
