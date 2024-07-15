@@ -25,6 +25,12 @@
       <CustomSidebarButton
         icon="mdi-account-multiple"
         text="Manajemen Divisi"
+        route-link="/departement-management"
+      />
+      <CustomSidebarButton
+        icon="mdi-account-multiple"
+        text="Manajemen Departemen"
+        route-link="/divisi-management"
       />
 
       <!-- Switching Section -->
@@ -41,12 +47,28 @@
         </template>
       </v-list-item>
       <template v-if="showProducts">
-        <CustomSidebarButton icon="mdi-file-tree" text="Produk" />
-        <CustomSidebarButton icon="mdi-file-tree" text="Sub Produk" />
+        <CustomSidebarButton
+          icon="mdi-file-tree"
+          text="Produk"
+          route-link="/product-management"
+        />
+        <CustomSidebarButton
+          icon="mdi-file-tree"
+          text="Sub Produk"
+          route-link="/subproduct-management"
+        />
       </template>
-      <CustomSidebarButton icon="mdi-bank-outline" text="Bank" />
-      <CustomSidebarButton icon="mdi-dns-outline" text="Profile TCP" />
-      <CustomSidebarButton icon="mdi-view-module-outline" text="Module" />
+      <CustomSidebarButton
+        icon="mdi-bank-outline"
+        text="Bank"
+        route-link="/bank-management"
+      />
+      <!-- <CustomSidebarButton icon="mdi-dns-outline" text="Profile TCP" /> -->
+      <CustomSidebarButton
+        icon="mdi-view-module-outline"
+        text="Module"
+        route-link="/module-management"
+      />
 
       <!-- Operasi Section -->
       <v-list-item subtitle="Operasi" class="pa-0 pl-2"></v-list-item>
@@ -63,24 +85,23 @@
 
 <script>
 import CustomSidebarButton from "@/components/CustomSidebarButton.vue";
-import {useDrawerStore} from "@/stores/drawerState"
+import { useDrawerStore } from "@/stores/drawerState";
 import { computed } from "vue";
-
 
 export default {
   components: {
     CustomSidebarButton,
   },
   setup() {
-    const drawerStore = useDrawerStore()
+    const drawerStore = useDrawerStore();
     const drawer = computed({
-      get(){
-        return drawerStore.drawer
+      get() {
+        return drawerStore.drawer;
       },
-      set(value){
-        drawerStore.drawer = value
-      }
-    })
+      set(value) {
+        drawerStore.drawer = value;
+      },
+    });
     return {
       drawerStore: drawer,
       showProducts: false,

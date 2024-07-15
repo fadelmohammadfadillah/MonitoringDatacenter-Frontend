@@ -37,10 +37,15 @@
             prepend-icon="mdi-plus"
             class="text-white"
             color="orange"
-            @click="addUser"
+            @click="openAddUserForm"
           >
             Tambah Pengguna
           </v-btn>
+
+          <AddUserForm
+            ref="addUserForm"
+            @add-user="handleAddUser"
+          ></AddUserForm>
         </v-col>
       </v-row>
 
@@ -77,13 +82,27 @@
                   </v-chip>
                 </td>
                 <td>
-                  <v-btn
-                    class="text-white mx-1"
-                    prepend-icon="mdi-dots-horizontal"
-                    variant="plain"
-                    color="orange"
-                  >
-                  </v-btn>
+                  <v-menu bottom right>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        v-bind="attrs"
+                        v-on="on"
+                        class="text-white mx-1"
+                        prepend-icon="mdi-dots-horizontal"
+                        variant="plain"
+                        color="orange"
+                      >
+                      </v-btn>
+                    </template>
+                    <v-list>
+                      <v-list-item @click="editItem(item)">
+                        <v-list-item-title>Edit</v-list-item-title>
+                      </v-list-item>
+                      <v-list-item @click="deleteItem(item)">
+                        <v-list-item-title>Delete</v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
                 </td>
               </tr>
             </tbody>
@@ -119,34 +138,11 @@
 
 <script setup>
 import { ref, computed } from "vue";
+import AddUserForm from "@/components/AddUserForm.vue";
 
-// eslint-disable-next-line no-unused-vars
-const headers = [
-  { text: "No", align: "start", value: "no" },
-  { text: "Nama", align: "start", value: "nama" },
-  { text: "Role", align: "start", value: "role" },
-  { text: "Divisi", align: "start", value: "divisi" },
-  { text: "Departemen", align: "start", value: "departemen" },
-  { text: "Email", align: "start", value: "email" },
-  { text: "Status", align: "start", value: "status" },
-  { text: "Actions", align: "start", sortable: false },
-];
-
-const itemsPerPage = ref(10); // Menggunakan ref untuk itemsPerPage
-const perPageOptions = [5, 10, 15, 20, 25]; // Options for items per page
-
-const users = [
+const users = ref([
   {
     no: 1,
-    nama: "Fadel Mohammad",
-    role: "Product Owner",
-    divisi: "Digital Enterprise",
-    departemen: "Card & Digital Transaction",
-    email: "fadelCihuy@gmail.com",
-    status: "Active",
-  },
-  {
-    no: 2,
     nama: "Athalie Aurora",
     role: "Supervisor",
     divisi: "Digital Enterprise",
@@ -155,152 +151,44 @@ const users = [
     status: "Active",
   },
   {
+    no: 2,
+    nama: "Fadel Mohammad",
+    role: "Product Owner",
+    divisi: "Digital Enterprise",
+    departemen: "Card & Digital Transaction",
+    email: "fadelCihuy@gmail.com",
+    status: "Active",
+  },
+  {
     no: 3,
-    nama: "Jordan Amanendra",
+    nama: "Jovanka Siginendra",
     role: "Operator",
     divisi: "Infrastructure",
     departemen: "Data Center Operation",
-    email: "JordanAyee@gmail.com",
-    status: "Pending",
-  },
-  {
-    no: 4,
-    nama: "Haruna Sakurai",
-    role: "Operator",
-    divisi: "Infrastructure",
-    departemen: "Data Center Operation",
-    email: "harunaAkito@gmail.com",
-    status: "No Active",
-  },
-  {
-    no: 5,
-    nama: "Yoga Kanaeru",
-    role: "Supervisor",
-    divisi: "Digital Enterprise",
-    departemen: "Card & Digital Transaction",
-    email: "yokananan@gmail.com",
+    email: "JovanAyee@gmail.com",
     status: "Active",
   },
-  {
-    no: 6,
-    nama: "Yogi Kirishima",
-    role: "Product Owner",
-    divisi: "Digital Enterprise",
-    departemen: "Card & Digital Transaction",
-    email: "yokirrurur@gmail.com",
-    status: "No Active",
-  },
-  {
-    no: 7,
-    nama: "Bagas Atta",
-    role: "Product Owner",
-    divisi: "Digital Enterprise",
-    departemen: "Card & Digital Transaction",
-    email: "bagasGas@gmail.com",
-    status: "Pending",
-  },
-  {
-    no: 8,
-    nama: "Bagus Basyir",
-    role: "Product Owner",
-    divisi: "Digital Enterprise",
-    departemen: "Card & Digital Transaction",
-    email: "bagusGus@gmail.com",
-    status: "Active",
-  },
-  {
-    no: 9,
-    nama: "Surya Karya",
-    role: "Operator",
-    divisi: "Infrastructure",
-    departemen: "Data Center Operation",
-    email: "suraKar@gmail.com",
-    status: "Active",
-  },
-  {
-    no: 10,
-    nama: "Jovankan Siginendra",
-    role: "Operator",
-    divisi: "Infrastructure",
-    departemen: "Data Center Operation",
-    email: "Maliki@gmail.com",
-    status: "Active",
-  },
-  {
-    no: 11,
-    nama: "Maliki Kanan Kiri",
-    role: "Operator",
-    divisi: "Infrastructure",
-    departemen: "Data Center Operation",
-    email: "Maliki@gmail.com",
-    status: "Active",
-  },
-  {
-    no: 12,
-    nama: "Maliki Kanan Kiri",
-    role: "Operator",
-    divisi: "Infrastructure",
-    departemen: "Data Center Operation",
-    email: "Maliki@gmail.com",
-    status: "Active",
-  },
+]);
 
-  {
-    no: 13,
-    nama: "Maliki Kanan Kiri",
-    role: "Operator",
-    divisi: "Infrastructure",
-    departemen: "Data Center Operation",
-    email: "Maliki@gmail.com",
-    status: "Active",
-  },
+const search = ref("");
+const currentPage = ref(1);
+const itemsPerPage = ref(10); // Menggunakan ref untuk itemsPerPage
+const perPageOptions = [1, 5, 10, 15, 20, 25]; // Options for items per page
 
-  {
-    no: 14,
-    nama: "Maliki Kanan Kiri",
-    role: "Operator",
-    divisi: "Infrastructure",
-    departemen: "Data Center Operation",
-    email: "Maliki@gmail.com",
-    status: "Active",
-  },
+const addUserForm = ref(null);
 
-  {
-    no: 15,
-    nama: "Maliki Kanan Kiri",
-    role: "Operator",
-    divisi: "Infrastructure",
-    departemen: "Data Center Operation",
-    email: "Maliki@gmail.com",
-    status: "Active",
-  },
-  {
-    no: 15,
-    nama: "Maliki Kanan Kiri",
-    role: "Operator",
-    divisi: "Infrastructure",
-    departemen: "Data Center Operation",
-    email: "Maliki@gmail.com",
-    status: "Active",
-  },
+const openAddUserForm = () => {
+  addUserForm.value.openDialog();
+};
 
-  {
-    no: 16,
-    nama: "Maliki Kanan Kiri",
-    role: "Operator",
-    divisi: "Infrastructure",
-    departemen: "Data Center Operation",
-    email: "Maliki@gmail.com",
-    status: "Active",
-  },
-
-];
-
-let search = ref("");
-let currentPage = ref(1);
+const handleAddUser = (newUser) => {
+  users.value.push(newUser);
+  // Perbarui nomor urut
+  users.value.forEach((user, index) => (user.no = index + 1));
+};
 
 const filteredUsers = computed(() => {
-  return users.filter((user) =>
+  return users.value.filter((user) =>
     user.nama.toLowerCase().includes(search.value.toLowerCase())
   );
 });
@@ -322,10 +210,6 @@ const getStatusColor = (status) => {
   } else if (status === "Pending") {
     return "orange";
   }
-};
-
-const addUser = () => {
-  // Logika tambah pengguna di sini
 };
 </script>
 
