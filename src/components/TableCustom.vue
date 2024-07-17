@@ -1,13 +1,8 @@
 <template>
-  <div class="table-custom mx-4">
-    <v-container>
+    <v-container class="mx-2" style="max-height: 100vh;">
       <v-row>
-        <v-col>
-          <v-toolbar flat color="white" class="pt-5">
-            <v-toolbar-title class="text-h5 font-weight-bold">
-              {{ title }}
-            </v-toolbar-title>
-          </v-toolbar>
+        <v-col class="text-h4 font-weight-bold pt-8">
+          {{ title }}
         </v-col>
       </v-row>
 
@@ -60,7 +55,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in paginatedItems" :key="item.no">
+              <tr v-for="item in paginatedItems" :key="item[headers[0].value]">
                 <td v-for="header in headers" :key="header.value">
                   {{ item[header.value] }}
                 </td>
@@ -102,17 +97,19 @@
         </v-col>
       </v-row>
     </v-container>
-  </div>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 
 const props = defineProps({
   title: String,
   entity: String,
   headers: Array,
-  items: Array,
+  items: {
+    type: Array,
+    default: () => [],
+  },
   addEntity: Function,
 });
 
@@ -122,8 +119,15 @@ const itemsPerPage = ref(10);
 const perPageOptions = [1, 5, 10, 15, 20, 25];
 
 const filteredItems = computed(() => {
-  return props.items.filter((item) =>
-    item.nama.toLowerCase().includes(search.value.toLowerCase())
+  return props.items.filter((item) =>{
+    return props.headers.some((header) => {
+      const fieldValue = item[header.value]
+      if(fieldValue){
+        return fieldValue.toString().toLowerCase().includes(search.value.toLowerCase())
+      }
+    })
+    // return item.divisiName.toLowerCase().includes(search.value.toLowerCase())
+  }
   );
 });
 
@@ -131,6 +135,11 @@ const paginatedItems = computed(() => {
   const startIndex = (currentPage.value - 1) * itemsPerPage.value;
   return filteredItems.value.slice(startIndex, startIndex + itemsPerPage.value);
 });
+
+
+watch(props.items, () => {
+  currentPage.value = 1
+})
 
 const changePage = (page) => {
   currentPage.value = page;
