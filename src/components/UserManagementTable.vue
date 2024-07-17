@@ -1,13 +1,8 @@
 <template>
-  <div class="user-management mx-4">
-    <v-container>
+    <v-container class="mx-2">
       <v-row>
-        <v-col>
-          <v-toolbar flat color="white" class="pt-5">
-            <v-toolbar-title class="text-h5 font-weight-bold">
-              Manajemen Pengguna
-            </v-toolbar-title>
-          </v-toolbar>
+        <v-col class="text-h4 font-weight-bold pt-8">
+          Manajemen Pengguna
         </v-col>
       </v-row>
 
@@ -133,7 +128,6 @@
         </v-col>
       </v-row>
     </v-container>
-  </div>
 </template>
 
 <script setup>

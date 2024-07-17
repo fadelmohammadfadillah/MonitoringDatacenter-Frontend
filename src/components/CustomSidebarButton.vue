@@ -7,7 +7,7 @@
       :color="isHovering ? 'orange' : 'black'"
       block
       :prepend-icon="icon"
-      :href="routeLink"
+      @click="$router.push(routeLink)"
       class="text-subtitle-2 font-weight-medium pl-4 py-5"
       rounded="lg"
       style="justify-content: start"
@@ -28,7 +28,7 @@ export default {
     },
     routeLink: {
       type: String,
-      default: "/"
+      default: ""
     }
   },
   data() {

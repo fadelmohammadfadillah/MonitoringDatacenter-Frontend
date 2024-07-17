@@ -11,7 +11,7 @@
       <v-card-text>
         <v-form ref="form">
           <v-text-field
-            v-model="newUser.divisis"
+            v-model="newDiv.divisiName"
             label="Nama Divisi"
             placeholder="contoh: Digital Enterprise"
             required
@@ -30,12 +30,12 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, defineEmits } from "vue";
 // eslint-disable-next-line no-unused-vars
-
+const emit = defineEmits(['addNewDivisi'])
 const dialog = ref(false);
-const newUser = ref({
-  divisi: "",
+const newDiv = ref({
+  divisiName: "",
 });
 
 const openDialog = () => {
@@ -47,17 +47,17 @@ const closeDialog = () => {
 };
 
 const isFormValid = computed(() => {
-  return newUser.value.divisi;
+  return newDiv.value.divisiName;
 });
 
 const submitForm = () => {
   if (isFormValid.value) {
     // eslint-disable-next-line no-undef
-    emit("add-user", { ...newUser.value });
+    emit("addNewDiv", { ...newDiv.value });
 
     // Reset form
-    newUser.value = {
-      divisi: "",
+    newDiv.value = {
+      divisiName: "",
     };
     closeDialog();
   }

@@ -9,6 +9,7 @@
 </template>
 
 <script setup>
+import SidebarAdmin from "@/components/SidebarAdmin.vue";
 import HeaderBar from "@/components/HeaderBar.vue";
 
 const username = "Admin"; // User's username

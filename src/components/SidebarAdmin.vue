@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer app class="pa-4" v-model="drawerStore">
+  <v-navigation-drawer app class="pa-4" v-model="drawerStore" style="max-height: 100vh">
     <v-list-item class="d-flex justify-center">
       <v-img
         src="../assets/Logo Collega.svg"
@@ -25,12 +25,12 @@
       <CustomSidebarButton
         icon="mdi-account-multiple"
         text="Manajemen Divisi"
-        route-link="/departement-management"
+        route-link="/divisi-management"
       />
       <CustomSidebarButton
         icon="mdi-account-multiple"
         text="Manajemen Departemen"
-        route-link="/divisi-management"
+        route-link="/departement-management"
       />
 
       <!-- Switching Section -->
