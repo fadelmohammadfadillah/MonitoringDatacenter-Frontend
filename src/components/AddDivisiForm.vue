@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import { ref, computed, defineEmits } from "vue";
+import { ref, computed } from "vue";
 // eslint-disable-next-line no-unused-vars
 const emit = defineEmits(['addNewDivisi'])
 const dialog = ref(false);

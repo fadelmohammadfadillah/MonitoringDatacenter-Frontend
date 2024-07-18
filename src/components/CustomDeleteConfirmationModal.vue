@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import {ref, defineProps, defineEmits} from 'vue';
+import {ref} from 'vue';
 const emit = defineEmits(['deleteDivisi']);
 const props = defineProps({
     message: {

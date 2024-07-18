@@ -9,12 +9,12 @@
         >
             <div class="text-h4 font-weight-bold pb-4">Login</div>
             <div class="text-body-1 font-weight-regular pb-4">Selamat datang kembali 👋🏻. Silahkan login ke akun Anda.</div>
-            <!-- Email Field -->
-            <div class="text-caption font-weight-bold">Email</div>
+            <!-- Username Field -->
+            <div class="text-caption font-weight-bold">Username</div>
             <v-text-field
-                v-model="email"
-                :rules="emailRules"
-                placeholder="email@example.com"
+                v-model="credential.username"
+                placeholder="username123"
+                :rules="usernameRules"
                 required
                 rounded="lg"
                 variant="outlined"
@@ -27,7 +27,7 @@
                 Kata Sandi
             </div>
             <v-text-field
-                v-model="password"
+                v-model="credential.password"
                 :rules="passwordRules"
                 :append-inner-icon="visible ?  'mdi-eye': 'mdi-eye-off'"
                 :type="visible ? 'text' : 'password'"
@@ -73,72 +73,43 @@
       </v-form>
     </div>
   </template>
-<script>
-    import {defineComponent, ref} from 'vue'
-    export default defineComponent({
-        name:'LoginForm',
-        setup(){
-            const loading = ref(false)
-            const email = ref('')
-            const password = ref('')
-            const visible = ref(false)
-            const form = ref(null)
-            const timeout = ref(null)
+<script setup>
+import { ref, toRaw } from 'vue';
+import authService from '@/services/AuthService';
+import { useRouter } from 'vue-router';
+const loading = ref(false);
+const credential = ref({
+    username: "",
+    password: "",
+});
+const visible = ref(false);
+const form = ref(null);
+const timeout = ref(null);
+const router = useRouter();
 
-            const emailRules = [
-                v => !!v || 'Email is required',
-                v => /.+@.+\..+/.test(v) || 'Email must be valid'
-            ]
+const usernameRules = [
+  v => !!v || 'Username is required',
+];
 
-            const passwordRules = [
-                v => !!v || 'Password is required'
-            ]
+const passwordRules = [
+  v => !!v || 'Password is required',
+];
 
-            const checkApi = (email, password) => {
-                return new Promise(resolve =>{
-                    if(timeout.value !== null){
-                        clearTimeout(timeout.value)
-                    }
-                    // console.log(email, password)
-                    timeout.value = setTimeout(() => {
-                        if(email === "admin@mail.com" && password === "admin"){
-                            resolve(true)
-                        }else{
-                            resolve(false)
-                        }
-                    }, 1000)
-                })
-            }
+const submit = async (event) => {
+  const isValid = await form.value?.validate();
+  if (!isValid.valid) {
+    return;
+  }
 
-            const submit = async (event) =>{
-                const isValid = await form.value?.validate()
-                // console.log(isValid.valid)
-                if(!isValid.valid){
-                    return
-                }
-
-                loading.value = true
-                await new Promise(resolve=>setTimeout(resolve, 1000))
-                loading.value = false
-                const result = await checkApi(email.value, password.value)
-                // console.log('result=' + result)
-                if (result === true){
-                    alert(JSON.stringify({message: 'login berhasil!'}))
-                }else{
-                    alert(JSON.stringify({message: 'Email atau Password salah!'}))
-                }
-            }
-
-            return {
-                loading,
-                email,
-                password,
-                visible,
-                emailRules,
-                passwordRules,
-                submit,
-                form,
-            }
-        }
-    });
+  loading.value = true;
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  loading.value = false;
+  const result = await authService.login(toRaw(credential.value));
+  console.log(result);
+  if (result === true) {
+    router.push('/admin-dashboard');
+  } else {
+    alert(JSON.stringify({ message: 'Username atau Password salah!' }));
+  }
+};
 </script>

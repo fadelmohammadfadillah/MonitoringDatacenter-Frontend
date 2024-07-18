@@ -30,7 +30,7 @@
   </template>
   
   <script setup>
-  import { ref, computed, defineEmits } from "vue";
+  import { ref, computed } from "vue";
   
   const emit = defineEmits(['editDiv'])
   const dialog = ref(false);
