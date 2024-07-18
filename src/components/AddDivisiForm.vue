@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" max-width="500px">
+  <v-dialog v-model="dialog" max-width="450px">
     <v-card>
       <v-card-title class="text-h6 d-flex justify-space-between align-center">
         <span class="pl-5">Tambah Divisi</span>
