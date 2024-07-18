@@ -1,27 +1,42 @@
 <template>
-  <v-dialog v-model="dialog" max-width="600px">
+  <v-dialog v-model="dialog" max-width="500px">
     <v-card>
-      <v-card-title class="text-h6">
-        Tambah Divisi
-        <v-spacer></v-spacer>
+      <v-card-title class="text-h6 d-flex justify-space-between align-center">
+        <span class="pl-5">Tambah Divisi</span>
+        <v-divider vertical class="pl-16 ml-16"></v-divider>
 
-        <v-btn prepend-icon="mdi-close" @click="closeDialog"> Close </v-btn>
+        <v-btn
+          @click="closeDialog"
+          prepend-icon="mdi-close"
+          variant="plain"
+          class="pr-11"
+        >
+          close
+        </v-btn>
       </v-card-title>
-      <v-divider class="my-2"></v-divider>
+      <v-divider></v-divider>
       <v-card-text>
         <v-form ref="form">
           <v-text-field
+            class="pt-7"
             v-model="newDiv.divisiName"
             label="Nama Divisi"
             placeholder="contoh: Digital Enterprise"
+            variant="outlined"
             required
           ></v-text-field>
         </v-form>
       </v-card-text>
-
-      <v-card-actions>
-        <v-btn text @click="closeDialog" color="orange"> Batalkan </v-btn>
-        <v-btn text @click="submitForm" :disabled="!isFormValid">
+      <v-card-actions class="d-flex justify-center pb-6">
+        <v-btn outlined @click="closeDialog" class="cancel-button px-16">
+          Batalkan
+        </v-btn>
+        <v-btn
+          outlined
+          @click="submitForm"
+          :disabled="!isFormValid"
+          class="save-button px-16"
+        >
           Simpan
         </v-btn>
       </v-card-actions>
@@ -31,8 +46,7 @@
 
 <script setup>
 import { ref, computed } from "vue";
-// eslint-disable-next-line no-unused-vars
-const emit = defineEmits(['addNewDivisi'])
+const emit = defineEmits(["addNewDivisi"]);
 const dialog = ref(false);
 const newDiv = ref({
   divisiName: "",
@@ -47,13 +61,12 @@ const closeDialog = () => {
 };
 
 const isFormValid = computed(() => {
-  return newDiv.value.divisiName;
+  return newDiv.value.divisiName.trim() !== "";
 });
 
 const submitForm = () => {
   if (isFormValid.value) {
-    // eslint-disable-next-line no-undef
-    emit("addNewDiv", { ...newDiv.value });
+    emit("addNewDivisi", { ...newDiv.value });
 
     // Reset form
     newDiv.value = {
@@ -67,3 +80,14 @@ defineExpose({
   openDialog,
 });
 </script>
+
+<style scoped>
+.cancel-button {
+  border: 1px solid orange;
+  color: orange;
+}
+.save-button {
+  background-color: #e0e0e0;
+  color: gray;
+}
+</style>
