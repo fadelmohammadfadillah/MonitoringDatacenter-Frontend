@@ -4,6 +4,7 @@
       <v-card-title class="text-h6 d-flex justify-space-between align-center">
         <span class="pl-5">Edit Divisi</span>
         <v-divider vertical class="pl-16 ml-16"></v-divider>
+
         <v-btn
           @click="closeDialog"
           prepend-icon="mdi-close"
@@ -13,7 +14,7 @@
           Close
         </v-btn>
       </v-card-title>
-      <v-divider></v-divider>
+      <v-divider class="my-2"></v-divider>
       <v-card-text>
         <v-form ref="form">
           <v-text-field
@@ -25,6 +26,7 @@
           ></v-text-field>
         </v-form>
       </v-card-text>
+
       <v-card-actions class="d-flex justify-center pb-6">
         <v-btn outlined @click="closeDialog" class="cancel-button px-16">
           Batalkan
@@ -63,16 +65,16 @@ const closeDialog = () => {
 };
 
 const isFormValid = computed(() => {
-  return divData.value.divisiName.trim() !== "";
+  return divData.value.divisiName;
 });
 
 const submitForm = () => {
   if (isFormValid.value) {
+    // eslint-disable-next-line no-undef
     emit("editDiv", { ...divData.value });
 
     // Reset form
     divData.value = {
-      idDivisi: "",
       divisiName: "",
     };
     closeDialog();
@@ -88,11 +90,9 @@ defineExpose({
 .cancel-button {
   border: 1px solid orange;
   color: orange;
-  margin-right: 8px; /* Margin between buttons */
 }
 .save-button {
   background-color: #e0e0e0;
   color: gray;
-  margin-left: 8px; /* Margin between buttons */
 }
 </style>

@@ -11,14 +11,13 @@
           variant="plain"
           class="pr-11"
         >
-          close
+          Close
         </v-btn>
       </v-card-title>
-      <v-divider></v-divider>
+      <v-divider class="my-2"></v-divider>
       <v-card-text>
         <v-form ref="form">
           <v-text-field
-            class="pt-7"
             v-model="newDiv.divisiName"
             label="Nama Divisi"
             placeholder="contoh: Digital Enterprise"
@@ -27,6 +26,7 @@
           ></v-text-field>
         </v-form>
       </v-card-text>
+
       <v-card-actions class="d-flex justify-center pb-6">
         <v-btn outlined @click="closeDialog" class="cancel-button px-16">
           Batalkan
@@ -46,6 +46,7 @@
 
 <script setup>
 import { ref, computed } from "vue";
+// eslint-disable-next-line no-unused-vars
 const emit = defineEmits(["addNewDivisi"]);
 const dialog = ref(false);
 const newDiv = ref({
@@ -61,12 +62,13 @@ const closeDialog = () => {
 };
 
 const isFormValid = computed(() => {
-  return newDiv.value.divisiName.trim() !== "";
+  return newDiv.value.divisiName;
 });
 
 const submitForm = () => {
   if (isFormValid.value) {
-    emit("addNewDivisi", { ...newDiv.value });
+    // eslint-disable-next-line no-undef
+    emit("addNewDiv", { ...newDiv.value });
 
     // Reset form
     newDiv.value = {

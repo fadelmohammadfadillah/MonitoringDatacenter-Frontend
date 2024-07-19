@@ -47,16 +47,37 @@ import CustomSuccessModal from "@/components/CustomSuccessModal.vue";
 import CustomDeleteConfirmationModal from "@/components/CustomDeleteConfirmationModal.vue";
 
 const divisi = ref([
-  { idDivisi: 1, divisiName: "Divisi IT" },
-  { idDivisi: 2, divisiName: "Divisi HR" },
-  { idDivisi: 3, divisiName: "Divisi Keuangan" },
-  { idDivisi: 4, divisiName: "Divisi IT" },
-  { idDivisi: 5, divisiName: "Divisi HR" },
+  { idDivisi: 1, divisiName: "Divisi IT", status: "Active" },
+  { idDivisi: 2, divisiName: "Divisi HR", status: "No Active" },
+  { idDivisi: 3, divisiName: "Divisi Keuangan", status: "Pending" },
+  { idDivisi: 4, divisiName: "Divisi IT", status: "Active" },
+  { idDivisi: 5, divisiName: "Divisi HR", status: "No Active" },
+  { idDivisi: 6, divisiName: "Divisi Keuangan", status: "Pending" },
+  { idDivisi: 7, divisiName: "Divisi IT", status: "Active" },
+  { idDivisi: 8, divisiName: "Divisi HR", status: "No Active" },
+  { idDivisi: 9, divisiName: "Divisi Keuangan", status: "Pending" },
+  { idDivisi: 10, divisiName: "Divisi IT", status: "Active" },
+  { idDivisi: 11, divisiName: "Divisi HR", status: "No Active" },
+  { idDivisi: 12, divisiName: "Divisi Keuangan", status: "Pending" },
+  { idDivisi: 13, divisiName: "Divisi IT", status: "Active" },
+  { idDivisi: 14, divisiName: "Divisi HR", status: "No Active" },
+  { idDivisi: 15, divisiName: "Divisi Keuangan", status: "Pending" },
+  { idDivisi: 16, divisiName: "Divisi IT", status: "Active" },
+  { idDivisi: 17, divisiName: "Divisi HR", status: "No Active" },
+  { idDivisi: 18, divisiName: "Divisi Keuangan", status: "Pending" },
+  { idDivisi: 19, divisiName: "Divisi IT", status: "Active" },
+  { idDivisi: 20, divisiName: "Divisi HR", status: "No Active" },
+  { idDivisi: 21, divisiName: "Divisi Keuangan", status: "Pending" },
+  { idDivisi: 22, divisiName: "Divisi IT", status: "Active" },
+  { idDivisi: 23, divisiName: "Divisi HR", status: "No Active" },
+  { idDivisi: 24, divisiName: "Divisi Keuangan", status: "Pending" },
+  { idDivisi: 25, divisiName: "Divisi IT", status: "Active" },
 ]);
 
 const headers = [
   { title: "No", align: "start", key: "idDivisi" },
   { title: "Divisi", align: "start", key: "divisiName" },
+  // { title: "Status", align: "start", key: "status" },
 ];
 
 const addDivisiForm = ref(null);
