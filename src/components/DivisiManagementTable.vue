@@ -25,7 +25,7 @@
 
   <CustomDeleteConfirmationModal
     ref="deleteConfirmModal"
-    message="Yakin Ingin Menghapus ?"
+    message="Yakin Ingin Menghapus?"
     imgSrc="/src/assets/confirmation-modal-img.svg"
     @delete-divisi="handleDeleteDivisi"
   />
@@ -47,31 +47,37 @@ import CustomSuccessModal from "@/components/CustomSuccessModal.vue";
 import CustomDeleteConfirmationModal from "@/components/CustomDeleteConfirmationModal.vue";
 
 const divisi = ref([
-  { idDivisi: 1, divisiName: "Divisi IT", status: "Active" },
-  { idDivisi: 2, divisiName: "Divisi HR", status: "No Active" },
-  { idDivisi: 3, divisiName: "Divisi Keuangan", status: "Pending" },
-  { idDivisi: 4, divisiName: "Divisi IT", status: "Active" },
-  { idDivisi: 5, divisiName: "Divisi HR", status: "No Active" },
-  { idDivisi: 6, divisiName: "Divisi Keuangan", status: "Pending" },
-  { idDivisi: 7, divisiName: "Divisi IT", status: "Active" },
-  { idDivisi: 8, divisiName: "Divisi HR", status: "No Active" },
-  { idDivisi: 9, divisiName: "Divisi Keuangan", status: "Pending" },
-  { idDivisi: 10, divisiName: "Divisi IT", status: "Active" },
-  { idDivisi: 11, divisiName: "Divisi HR", status: "No Active" },
-  { idDivisi: 12, divisiName: "Divisi Keuangan", status: "Pending" },
-  { idDivisi: 13, divisiName: "Divisi IT", status: "Active" },
-  { idDivisi: 14, divisiName: "Divisi HR", status: "No Active" },
-  { idDivisi: 15, divisiName: "Divisi Keuangan", status: "Pending" },
-  { idDivisi: 16, divisiName: "Divisi IT", status: "Active" },
-  { idDivisi: 17, divisiName: "Divisi HR", status: "No Active" },
-  { idDivisi: 18, divisiName: "Divisi Keuangan", status: "Pending" },
-  { idDivisi: 19, divisiName: "Divisi IT", status: "Active" },
-  { idDivisi: 20, divisiName: "Divisi HR", status: "No Active" },
-  { idDivisi: 21, divisiName: "Divisi Keuangan", status: "Pending" },
-  { idDivisi: 22, divisiName: "Divisi IT", status: "Active" },
-  { idDivisi: 23, divisiName: "Divisi HR", status: "No Active" },
-  { idDivisi: 24, divisiName: "Divisi Keuangan", status: "Pending" },
-  { idDivisi: 25, divisiName: "Divisi IT", status: "Active" },
+  { idDivisi: 1, divisiName: "Business Development", status: "Active" },
+  {
+    idDivisi: 2,
+    divisiName: "Core Banking System Conventional",
+    status: "Active",
+  },
+  { idDivisi: 3, divisiName: "Core Banking System Syariah", status: "Active" },
+  { idDivisi: 4, divisiName: "Digital Enterprise", status: "Active" },
+  { idDivisi: 5, divisiName: "Surrounding Application", status: "Active" },
+  {
+    idDivisi: 6,
+    divisiName: "Regulatory & Financial Reporting",
+    status: "Active",
+  },
+  { idDivisi: 7, divisiName: "Quality Assurance", status: "Active" },
+  { idDivisi: 8, divisiName: "Region 1", status: "Active" },
+  { idDivisi: 9, divisiName: "Region 2", status: "Active" },
+  { idDivisi: 10, divisiName: "Region 3", status: "Active" },
+  { idDivisi: 11, divisiName: "IT Operation Management", status: "Active" },
+  { idDivisi: 12, divisiName: "Infrastructure", status: "Active" },
+  { idDivisi: 13, divisiName: "Business Support", status: "Active" },
+  {
+    idDivisi: 14,
+    divisiName: "Human Capital, Finance, Legal, & Corporate Secretary",
+    status: "Active",
+  },
+  {
+    idDivisi: 15,
+    divisiName: "Internal Audit & Risk Management",
+    status: "Active",
+  },
 ]);
 
 const headers = [
@@ -97,7 +103,6 @@ const openAddSuccessModal = () => {
 
 const handleAddNewDivisi = async (newDiv) => {
   try {
-    console.log(newDiv);
     await divisiService.createNewDiv(newDiv);
     fetchDataDivisi();
     openAddSuccessModal();
