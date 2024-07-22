@@ -18,7 +18,8 @@
       <v-card-text>
         <v-form ref="form">
           <v-select
-            v-model="divData.departementName"
+            v-model="productData.departementName"
+            :items="departements"
             label="Nama Departemen"
             placeholder="contoh: Digital Enterprise"
             variant="outlined"
@@ -26,7 +27,7 @@
           ></v-select>
 
           <v-text-field
-            v-model="divData.productName"
+            v-model="productData.productName"
             label="Nama Produk"
             placeholder="contoh: Mobile Banking"
             variant="outlined"
@@ -55,18 +56,20 @@
 <script setup>
 import { ref, computed } from "vue";
 
-const emit = defineEmits(["editDiv"]);
+const departements = ["Card & Digital Transaction", "Data Center Operation"];
+
+const emit = defineEmits(["editProduct"]);
 const dialog = ref(false);
-const divData = ref({
-  idDivisi: "",
+const productData = ref({
+  idProduct: "",
   departementName: "",
   productName: "",
 });
 
 const openDialog = (item) => {
-  divData.value.idDivisi = item.idDivisi;
-  divData.value.departementName = item.departementName;
-  divData.value.productName = item.productName;
+  productData.value.idProduct = item.idProduct;
+  productData.value.departementName = item.departementName;
+  productData.value.productName = item.productName;
   dialog.value = true;
 };
 
@@ -75,16 +78,16 @@ const closeDialog = () => {
 };
 
 const isFormValid = computed(() => {
-  return divData.value.departementName;
+  return productData.value.departementName;
 });
 
 const submitForm = () => {
   if (isFormValid.value) {
     // eslint-disable-next-line no-undef
-    emit("editDiv", { ...divData.value });
+    emit("editProduct", { ...productData.value });
 
     // Reset form
-    divData.value = {
+    productData.value = {
       departementName: "",
       productName: "",
     };
