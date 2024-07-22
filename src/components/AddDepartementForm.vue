@@ -24,7 +24,7 @@
             :items="dataDivisi"
             item-text="title"
             item-value="value"
-            v-model="dataForm"
+            v-model="selectValue"
           ></v-select>
           <v-text-field
             v-model="newDept.departmentName"
@@ -65,7 +65,7 @@ const newDept = ref({
 
 const dataDivisi = ref( [{}])
 
-const dataForm = ref(null);
+const selectValue = ref(null);
 
 const openDialog = (dataDiv) => {
   dataDivisi.value = dataDiv;
@@ -83,7 +83,7 @@ const isFormValid = computed(() => {
 const submitForm = () => {
   if (isFormValid.value) {
     // eslint-disable-next-line no-undef
-    newDept.value.idDivisi = dataForm.value;
+    newDept.value.idDivisi = selectValue.value;
     emit("addNewDepartment", { ...newDept.value });
 
     // Reset form

@@ -1,6 +1,6 @@
 import api from "./api";
 
-const divisiService = {
+const departmentService = {
   getAllDept() {
     return api.get("/super-admin/dept/get-all-dept");
   },
@@ -10,9 +10,9 @@ const divisiService = {
   updateDept(deptData) {
     return api.put(`/super-admin/dept/update/${deptData.idDepartment}`, deptData);
   },
-  deleteDept(idDept) {
-    return api.delete(`/super-admin/dept/delete/${idDept}`);
+  deleteDept(idDepartment) {
+    return api.delete(`/super-admin/dept/delete/${idDepartment}`);
   },
 };
 
-export default divisiService;
+export default departmentService;
