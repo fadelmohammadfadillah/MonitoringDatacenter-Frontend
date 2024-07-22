@@ -18,7 +18,7 @@
       <v-card-text>
         <v-form ref="form">
           <v-text-field
-            v-model="newDiv.bankName"
+            v-model="newBank.bankName"
             label="Nama Bank"
             placeholder="contoh: Bank DKI "
             variant="outlined"
@@ -47,9 +47,9 @@
 <script setup>
 import { ref, computed } from "vue";
 // eslint-disable-next-line no-unused-vars
-const emit = defineEmits(["addNewDivisi"]);
+const emit = defineEmits(["addNewBank"]);
 const dialog = ref(false);
-const newDiv = ref({
+const newBank = ref({
   bankName: "",
 });
 
@@ -62,16 +62,16 @@ const closeDialog = () => {
 };
 
 const isFormValid = computed(() => {
-  return newDiv.value.bankName;
+  return newBank.value.bankName;
 });
 
 const submitForm = () => {
   if (isFormValid.value) {
     // eslint-disable-next-line no-undef
-    emit("addNewDiv", { ...newDiv.value });
+    emit("addNewBank", { ...newBank.value });
 
     // Reset form
-    newDiv.value = {
+    newBank.value = {
       bankName: "",
     };
     closeDialog();

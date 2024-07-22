@@ -8,15 +8,15 @@
     :editEntity="openEditForm"
     :deleteEntity="openDeleteForm"
   />
-  <AddDivisiForm ref="addDivisiForm" @add-new-div="handleAddNewDivisi" />
+  <AddBankForm ref="addBankForm" @add-new-bank="handleAddNewBank" />
 
   <CustomSuccessModal
-    message="Divisi Berhasil Ditambahkan!"
+    message="Data Bank Berhasil Ditambahkan!"
     imgSrc="/src/assets/success-modal-img.svg"
     ref="addSuccessModal"
   />
 
-  <EditDivisiForm ref="editDivisiForm" @edit-div="handleEditDivisi" />
+  <EditBankForm ref="editBankForm" @edit-bank="handleEditBank" />
   <CustomSuccessModal
     message="Perubahan berhasil disimpan!"
     imgSrc="/src/assets/success-modal-img.svg"
@@ -27,11 +27,11 @@
     ref="deleteConfirmModal"
     message="Yakin Ingin Menghapus?"
     imgSrc="/src/assets/confirmation-modal-img.svg"
-    @delete-divisi="handleDeleteDivisi"
+    @delete-divisi="handleDeleteBank"
   />
 
   <CustomSuccessModal
-    message="Divisi berhasil disimpan!"
+    message="Bank berhasil dihapus!"
     imgSrc="/src/assets/success-modal-img.svg"
     ref="deleteSuccessModal"
   />
@@ -39,97 +39,91 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
-import divisiService from "@/services/DivisiService";
+import bankService from "@/services/BankService";
 import CustomDataTable from "./CustomDataTable.vue";
-import AddDivisiForm from "@/components/AddBankForm.vue";
-import EditDivisiForm from "@/components/EditBankForm.vue";
+import AddBankForm from "./AddBankForm.vue";
+import EditBankForm from "@/components/EditBankForm.vue";
 import CustomSuccessModal from "@/components/CustomSuccessModal.vue";
 import CustomDeleteConfirmationModal from "@/components/CustomDeleteConfirmationModal.vue";
 
-const bank = ref([
-  { idBank: 1, bankName: "Bank Aceh" },
-  { idBank: 2, bankName: "Bank IBK Indonesia" },
-  { idBank: 3, bankName: "Bank Sulteng" },
-  { idBank: 4, bankName: "Bank NTB" },
-  { idBank: 5, bankName: "Bank Bengkulu" },
-]);
+const bank = ref([]);
 
 const headers = [
   { title: "No", align: "start", key: "idBank" },
   { title: "Bank", align: "start", key: "bankName" },
 ];
 
-const addDivisiForm = ref(null);
+const addBankForm = ref(null);
 const addSuccessModal = ref(null);
-const editDivisiForm = ref(null);
+const editBankForm = ref(null);
 const editSuccessModal = ref(null);
 const deleteConfirmModal = ref(null);
 const deleteSuccessModal = ref(null);
 
 const openAddForm = () => {
-  addDivisiForm.value.openDialog();
+  addBankForm.value.openDialog();
 };
 
 const openAddSuccessModal = () => {
   addSuccessModal.value.modalState();
 };
 
-const handleAddNewDivisi = async (newDiv) => {
+const handleAddNewBank = async (newBank) => {
   try {
-    await divisiService.createNewDiv(newDiv);
-    fetchDataDivisi();
+    await bankService.createNewBank(newBank);
+    fetchDataBank();
     openAddSuccessModal();
   } catch (error) {
-    alert("tambah data divisi gagal!" + error);
+    alert("tambah data bank gagal!" + error);
   }
 };
 
 const openEditForm = (item) => {
-  editDivisiForm.value.openDialog(item);
+  editBankForm.value.openDialog(item);
 };
 
 const openEditSuccessModal = () => {
   editSuccessModal.value.modalState();
 };
 
-const handleEditDivisi = async (editDiv) => {
+const handleEditBank = async (editBank) => {
   try {
-    await divisiService.updateDiv(editDiv);
-    fetchDataDivisi();
+    await bankService.updateBank(editBank);
+    fetchDataBank();
     openEditSuccessModal();
   } catch (error) {
-    alert("edit data divisi gagal!" + error);
+    alert("edit data bank gagal!" + error);
   }
 };
 
 const openDeleteForm = (item) => {
-  deleteConfirmModal.value.modalState(item.idDivisi);
+  deleteConfirmModal.value.modalState(item.idBank);
 };
 
 const openDeleteSuccessModal = () => {
   deleteSuccessModal.value.modalState();
 };
 
-const handleDeleteDivisi = async (deleteDiv) => {
+const handleDeleteBank = async (deleteBank) => {
   try {
-    await divisiService.deleteDiv(deleteDiv);
-    fetchDataDivisi();
+    await bankService.deleteBank(deleteBank);
+    fetchDataBank();
     openDeleteSuccessModal();
   } catch (error) {
     alert("delete gagal!" + error);
   }
 };
 
-const fetchDataDivisi = async () => {
+const fetchDataBank = async () => {
   try {
-    const divisiData = await divisiService.getAllDiv();
-    bank.value = divisiData.data;
+    const bankData = await bankService.getAllBank();
+    bank.value = bankData.data;
   } catch (error) {
     console.log(error);
   }
 };
 
-onMounted(fetchDataDivisi);
+onMounted(fetchDataBank);
 </script>
 
 <style scoped></style>

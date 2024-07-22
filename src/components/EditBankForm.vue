@@ -18,9 +18,9 @@
       <v-card-text>
         <v-form ref="form">
           <v-text-field
-            v-model="divData.bankName"
+            v-model="bankData.bankName"
             label="Nama Bank"
-            placeholder="contoh: Digital Enterprise"
+            placeholder="contoh: Bank DKI"
             variant="outlined"
             required
           ></v-text-field>
@@ -47,16 +47,16 @@
 <script setup>
 import { ref, computed } from "vue";
 
-const emit = defineEmits(["editDiv"]);
+const emit = defineEmits(["editBank"]);
 const dialog = ref(false);
-const divData = ref({
+const bankData = ref({
   idBank: "",
   bankName: "",
 });
 
 const openDialog = (item) => {
-  divData.value.idBank = item.idBank;
-  divData.value.bankName = item.bankName;
+  bankData.value.idBank = item.idBank;
+  bankData.value.bankName = item.bankName;
   dialog.value = true;
 };
 
@@ -65,16 +65,16 @@ const closeDialog = () => {
 };
 
 const isFormValid = computed(() => {
-  return divData.value.bankName;
+  return bankData.value.bankName;
 });
 
 const submitForm = () => {
   if (isFormValid.value) {
     // eslint-disable-next-line no-undef
-    emit("editDiv", { ...divData.value });
+    emit("editBank", { ...bankData.value });
 
     // Reset form
-    divData.value = {
+    bankData.value = {
       bankName: "",
     };
     closeDialog();
