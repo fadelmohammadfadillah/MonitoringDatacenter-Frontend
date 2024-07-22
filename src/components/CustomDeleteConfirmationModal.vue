@@ -1,23 +1,22 @@
 <template>
-  <v-dialog v-model="modal" max-width="26vw">
-    <v-card class="pa-9 text-center">
-      <v-card-title class="text-h6 text-center">
+  <v-dialog v-model="modal" max-width="400px">
+    <v-card class="pa-4">
+      <v-card-title class="text-h6 text-center rounded-x">
         {{ message }}
       </v-card-title>
-      <div class="py-4">
-        <v-img :src="imgSrc" max-width="20vw"></v-img>
-      </div>
-      <v-row>
+      <v-card-text class="text-center">
+        <v-img :src="imgSrc" contain max-width="200px" class="mx-auto"></v-img>
+      </v-card-text>
+      <v-card-actions class="justify-center">
         <v-btn
           variant="outlined"
           color="orange"
           @click="modalState"
           rounded="lg"
-          class="text-white"
         >
           Tidak, Batalkan
         </v-btn>
-
+        <spacer> </spacer>
         <v-btn
           variant="flat"
           color="orange"
@@ -27,7 +26,7 @@
         >
           Ya, Saya Yakin
         </v-btn>
-      </v-row>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
@@ -36,10 +35,11 @@
 import { ref } from "vue";
 
 const emit = defineEmits(["deleteDivisi"]);
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   message: {
     type: String,
-    default: "message here!",
+    default: "Apakah Anda yakin ingin menghapus item ini?",
   },
   imgSrc: {
     type: String,
