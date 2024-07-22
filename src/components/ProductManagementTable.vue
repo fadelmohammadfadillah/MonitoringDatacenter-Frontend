@@ -27,7 +27,7 @@
     ref="deleteConfirmModal"
     message="Yakin Ingin Menghapus?"
     imgSrc="/src/assets/confirmation-modal-img.svg"
-    @delete-product="handleDeleteProduct"
+    @delete-divisi="handleDeleteProduct"
   />
 
   <CustomSuccessModal
@@ -40,29 +40,20 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import productService from "@/services/ProductService";
+import departmentService from "@/services/DepartementService";
 import CustomDataTable from "./CustomDataTable.vue";
 import AddProductForm from "@/components/AddProductForm.vue";
 import EditProductForm from "@/components/EditProductForm.vue";
 import CustomSuccessModal from "@/components/CustomSuccessModal.vue";
 import CustomDeleteConfirmationModal from "@/components/CustomDeleteConfirmationModal.vue";
 
-const product = ref([
-  {
-    idProduct: 1,
-    productName: "Switching",
-    departementName: "Card & Digital Transactions",
-  },
-  {
-    idProduct: 2,
-    productName: "Middleware",
-    departementName: "Card & Digital Transactions",
-  },
-]);
+const product = ref([]);
+const department = ref([]);
 
 const headers = [
   { title: "No", align: "start", key: "idProduct" },
   { title: "Produk", align: "start", key: "productName" },
-  { title: "Departemen", align: "start", key: "departementName" },
+  { title: "Department", align: "start", key: "departmentName" },
 ];
 
 const addProductForm = ref(null);
@@ -72,8 +63,15 @@ const editSuccessModal = ref(null);
 const deleteConfirmModal = ref(null);
 const deleteSuccessModal = ref(null);
 
+const formattedDeptData = computed(() =>{
+   return department.value.map(dept => ({
+    title: dept.departmentName,
+    value: dept.idDepartment,
+  }));
+});
+
 const openAddForm = () => {
-  addProductForm.value.openDialog();
+  addProductForm.value.openDialog(formattedDeptData.value);
 };
 
 const openAddSuccessModal = () => {
@@ -91,7 +89,7 @@ const handleAddNewProduct = async (newProduct) => {
 };
 
 const openEditForm = (item) => {
-  editProductForm.value.openDialog(item);
+  editProductForm.value.openDialog(item, formattedDeptData.value);
 };
 
 const openEditSuccessModal = () => {
@@ -129,7 +127,9 @@ const handleDeleteProduct = async (deleteProduct) => {
 const fetchDataProduct = async () => {
   try {
     const productData = await productService.getAllProduct();
+    const departmentData = await departmentService.getAllDept();
     product.value = productData.data;
+    department.value = departmentData.data;
   } catch (error) {
     console.log(error);
   }

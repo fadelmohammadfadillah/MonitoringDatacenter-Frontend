@@ -2,19 +2,19 @@ import api from "./api";
 
 const productService = {
   getAllProduct() {
-    return api.get("/user-product/get-all-product");
+    return api.get("/super-admin/product/get-all-product");
   },
   createNewProduct(newProduct) {
-    return api.post("/user-product/create", newProduct);
+    return api.post("/super-admin/product/create", newProduct);
   },
   updateProduct(productData) {
     return api.put(
-      `/user-product/update/${productData.idProduct}`,
+      `/super-admin/product/update/${productData.idProduct}`,
       productData
     );
   },
   deleteProduct(idProduct) {
-    return api.delete(`/user-product/delete/${idProduct}`);
+    return api.delete(`/super-admin/product/delete/${idProduct}`);
   },
 };
 

@@ -17,15 +17,25 @@
       <v-divider class="my-2"></v-divider>
       <v-card-text>
         <v-form ref="form">
+          <v-select
+            label="Pilih Sub Produk"
+            placeholder="Sub Produk yang tersedia"
+            variant="outlined"
+            :items="dataSubprod"
+            item-text="title"
+            item-value="value"
+            v-model="selectedSubprod"
+            required
+          ></v-select>
           <v-text-field
-            v-model="newDiv.moduleName"
+            v-model="newModule.moduleName"
             label="Nama Module"
             placeholder="contoh: authfinnet"
             variant="outlined"
             required
           ></v-text-field>
           <v-text-field
-            v-model="newDiv.profileModule"
+            v-model="newModule.profile"
             label="Nama Profile"
             placeholder="contoh: 001"
             variant="outlined"
@@ -40,7 +50,7 @@
         <v-btn
           outlined
           @click="submitForm"
-          :disabled="!isFormValid"
+          :disabled="!isFormValid && !selectedSubprod"
           class="save-button px-16"
         >
           Simpan
@@ -53,13 +63,19 @@
 <script setup>
 import { ref, computed } from "vue";
 // eslint-disable-next-line no-unused-vars
-const emit = defineEmits(["addNewDivisi"]);
+const emit = defineEmits(["addNewModule"]);
 const dialog = ref(false);
-const newDiv = ref({
-  divisiName: "",
+const newModule = ref({
+  idSubproduct: 0,
+  moduleName: "",
+  profile: "",
 });
 
-const openDialog = () => {
+const dataSubprod = ref([{}]);
+const selectedSubprod = ref(null);
+
+const openDialog = (dataSubproduct) => {
+  dataSubprod.value = dataSubproduct;
   dialog.value = true;
 };
 
@@ -68,17 +84,21 @@ const closeDialog = () => {
 };
 
 const isFormValid = computed(() => {
-  return newDiv.value.divisiName;
+  return newModule.value.moduleName;
 });
 
 const submitForm = () => {
   if (isFormValid.value) {
+    newModule.value.idSubproduct = selectedSubprod;
     // eslint-disable-next-line no-undef
-    emit("addNewDiv", { ...newDiv.value });
+    emit("addNewModule", { ...newModule.value });
 
     // Reset form
-    newDiv.value = {
-      divisiName: "",
+    selectedSubprod.value = null;
+    newModule.value = {
+      idSubproduct: 0,
+      moduleName:"",
+      profile: "",
     };
     closeDialog();
   }

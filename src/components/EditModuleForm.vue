@@ -17,15 +17,25 @@
       <v-divider class="my-2"></v-divider>
       <v-card-text>
         <v-form ref="form">
+          <v-select
+            label="Pilih Sub Produk"
+            placeholder="Sub Produk yang tersedia"
+            variant="outlined"
+            :items="dataSubprod"
+            item-text="title"
+            item-value="value"
+            v-model="selectedSubprod"
+            required
+          ></v-select>
           <v-text-field
-            v-model="divData.moduleName"
+            v-model="moduleData.moduleName"
             label="Nama Module"
             placeholder="contoh: authfinnet"
             variant="outlined"
             required
           ></v-text-field>
           <v-text-field
-            v-model="divData.profileModule"
+            v-model="moduleData.profile"
             label="Nama Profile"
             placeholder="contoh: 001"
             variant="outlined"
@@ -41,7 +51,7 @@
         <v-btn
           outlined
           @click="submitForm"
-          :disabled="!isFormValid"
+          :disabled="!isFormValid && !selectedSubprod"
           class="save-button px-16"
         >
           Simpan
@@ -54,18 +64,25 @@
 <script setup>
 import { ref, computed } from "vue";
 
-const emit = defineEmits(["editDiv"]);
+const emit = defineEmits(["editModule"]);
 const dialog = ref(false);
-const divData = ref({
-  idDivisi: "",
+const moduleData = ref({
+  idSubproduct: 0,
+  idModule: 0,
   moduleName: "",
-  profileModule: "",
+  profile: "",
 });
 
-const openDialog = (item) => {
-  divData.value.idDivisi = item.idDivisi;
-  divData.value.moduleName = item.moduleName;
-  divData.value.profileModule = item.profileModule;
+const dataSubprod = ref([{}]);
+const selectedSubprod = ref(null);
+
+const openDialog = (item, dataSubproduct) => {
+  dataSubprod.value = dataSubproduct;
+  selectedSubprod.value = item.idSubproduct;
+  moduleData.value.moduleName = item.moduleName;
+  moduleData.value.profile = item.profile;
+  moduleData.value.idSubproduct = item.idSubproduct;
+  moduleData.value.idModule = item.idModule;
 
   dialog.value = true;
 };
@@ -75,18 +92,23 @@ const closeDialog = () => {
 };
 
 const isFormValid = computed(() => {
-  return divData.value.moduleName;
+  return moduleData.value.moduleName;
 });
 
 const submitForm = () => {
   if (isFormValid.value) {
+    console.log(selectedSubprod.value);
+    moduleData.value.idSubproduct = selectedSubprod.value;
     // eslint-disable-next-line no-undef
-    emit("editDiv", { ...divData.value });
+    emit("editModule", { ...moduleData.value });
 
     // Reset form
-    divData.value = {
+    selectedSubprod.value = null;
+    moduleData.value = {
+      idSubproduct: 0,
+      idModule:0,
       moduleName: "",
-      profileModule: "",
+      profile: "",
     };
     closeDialog();
   }

@@ -63,7 +63,7 @@ const newDept = ref({
   departmentName: "",
 });
 
-const dataDivisi = ref( [{}])
+const dataDivisi = ref( [{}]);
 
 const selectValue = ref(null);
 
@@ -82,8 +82,8 @@ const isFormValid = computed(() => {
 
 const submitForm = () => {
   if (isFormValid.value) {
-    // eslint-disable-next-line no-undef
     newDept.value.idDivisi = selectValue.value;
+    // eslint-disable-next-line no-undef
     emit("addNewDepartment", { ...newDept.value });
 
     // Reset form

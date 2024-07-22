@@ -18,10 +18,14 @@
       <v-card-text>
         <v-form ref="form">
           <v-select
-            label="Pilih Departemen"
-            :items="departements"
-            placeholder="Departemen yang tersedia"
+            label="Pilih Department"
+            placeholder="Department yang tersedia"
             variant="outlined"
+            :items="dataDept"
+            item-text="title"
+            item-value="value"
+            v-model="selectedDept"
+            required
           ></v-select>
           <v-text-field
             v-model="newProduct.productName"
@@ -40,7 +44,7 @@
         <v-btn
           outlined
           @click="submitForm"
-          :disabled="!isFormValid"
+          :disabled="!isFormValid && !selectedDept"
           class="save-button px-16"
         >
           Simpan
@@ -53,16 +57,19 @@
 <script setup>
 import { ref, computed } from "vue";
 
-const departements = ["Card & Digital Transaction", "Data Center Operation"];
-
 // eslint-disable-next-line no-unused-vars
 const emit = defineEmits(["addNewProduct"]);
 const dialog = ref(false);
 const newProduct = ref({
+  idDepartment:0,
   productName: "",
 });
 
-const openDialog = () => {
+const dataDept = ref([{}]);
+const selectedDept = ref(null);
+
+const openDialog = (dataDepartment) => {
+  dataDept.value = dataDepartment;
   dialog.value = true;
 };
 
@@ -76,11 +83,14 @@ const isFormValid = computed(() => {
 
 const submitForm = () => {
   if (isFormValid.value) {
+      newProduct.value.idDepartment = selectedDept.value;
     // eslint-disable-next-line no-undef
     emit("addNewProduct", { ...newProduct.value });
 
     // Reset form
+    selectedDept.value = null;
     newProduct.value = {
+      idDepartment: 0,
       productName: "",
     };
     closeDialog();

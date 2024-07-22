@@ -1,16 +1,16 @@
 <template>
   <CustomDataTable
     :headers="headers"
-    :items="departement"
+    :items="subproduct"
     title="Manajemen Sub Produk"
     entity="Sub Produk"
     :addEntity="openAddForm"
     :editEntity="openEditForm"
     :deleteEntity="openDeleteForm"
   />
-  <AddDepartementForm
-    ref="addDepartementForm"
-    @add-new-div="handleAddNewDepartement"
+  <AddSubProductForm
+    ref="addSubproductForm"
+    @add-new-subproduct="handleAddNewSubproduct"
   />
 
   <CustomSuccessModal
@@ -19,9 +19,9 @@
     ref="addSuccessModal"
   />
 
-  <EditDepartementForm
-    ref="editDepartementForm"
-    @edit-div="handleEditDepartement"
+  <EditSubProductForm
+    ref="editSubproductForm"
+    @edit-subproduct="handleEditSubproduct"
   />
   <CustomSuccessModal
     message="Perubahan berhasil disimpan!"
@@ -33,11 +33,11 @@
     ref="deleteConfirmModal"
     message="Yakin Ingin Menghapus?"
     imgSrc="/src/assets/confirmation-modal-img.svg"
-    @delete-divisi="handleDeleteDepartement"
+    @delete-divisi="handleDeleteSubproduct"
   />
 
   <CustomSuccessModal
-    message="Divisi berhasil disimpan!"
+    message="Subproduct berhasil disimpan!"
     imgSrc="/src/assets/success-modal-img.svg"
     ref="deleteSuccessModal"
   />
@@ -46,123 +46,119 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import departementService from "@/services/DepartementService";
+import productService from "@/services/ProductService";
+import subproductService from "@/services/SubproductService";
 import CustomDataTable from "./CustomDataTable.vue";
-import AddDepartementForm from "@/components/AddSubProductForm.vue";
-import EditDepartementForm from "@/components/EditSubProductForm.vue";
+import AddSubProductForm from "@/components/AddSubProductForm.vue";
+import EditSubProductForm from "@/components/EditSubProductForm.vue";
 import CustomSuccessModal from "@/components/CustomSuccessModal.vue";
 import CustomDeleteConfirmationModal from "@/components/CustomDeleteConfirmationModal.vue";
 
-const departement = ref([
-  {
-    idDepartement: 1,
-    productName: "Switching",
-    subproductName: "Ecardman",
-    departementName: "Card & Digital Transactions",
-  },
-  {
-    idDepartement: 2,
-    productName: "Middleware",
-    subproductName: "E-Monitoring",
-    departementName: "Card & Digital Transactions",
-  },
-  {
-    idDepartement: 3,
-    productName: "Switching",
-    subproductName: "Emware-ws",
-    departementName: "Digital Channel",
-  },
-  {
-    idDepartement: 4,
-    productName: "Middleware",
-    subproductName: "ATM",
-    departementName: "Card & Digital Transactions",
-  },
-  {
-    idDepartement: 5,
-    productName: "Switching",
-    subproductName: "E-Config",
-    departementName: "Digital Channel",
-  },
-]);
+
+const subproduct = ref([]);
+const product = ref([]);
+const department = ref([]);
 
 const headers = [
-  { title: "No", align: "start", key: "idDepartement" },
+  { title: "No", align: "start", key: "idSubproduct" },
+  { title: "Department", align: "start", key: "departmentName" },
   { title: "Produk", align: "start", key: "productName" },
   { title: "Sub Produk", align: "start", key: "subproductName" },
-  { title: "Departemen", align: "start", key: "departementName" },
 ];
 
-const addDepartementForm = ref(null);
+const addSubproductForm = ref(null);
 const addSuccessModal = ref(null);
-const editDepartementForm = ref(null);
+const editSubproductForm = ref(null);
 const editSuccessModal = ref(null);
 const deleteConfirmModal = ref(null);
 const deleteSuccessModal = ref(null);
 
+const formattedDeptData = computed(() =>{
+   return department.value.map(dept => ({
+    title: dept.departmentName,
+    value: dept.idDepartment,
+  }));
+});
+
+const formattedProductData = computed(() =>{
+   return product.value.map(prod => ({
+    title: prod.productName,
+    value: prod.idProduct,
+    idDepartment: prod.idDepartment,
+  }));
+});
+
 const openAddForm = () => {
-  addDepartementForm.value.openDialog();
+  addSubproductForm.value.openDialog(formattedDeptData.value, formattedProductData.value);
 };
 
 const openAddSuccessModal = () => {
   addSuccessModal.value.modalState();
 };
 
-const handleAddNewDepartement = async (newDiv) => {
+const handleAddNewSubproduct = async (newSubproduct) => {
   try {
-    await departementService.createNewDiv(newDiv);
-    fetchDataDepartement();
+    await subproductService.createNewSubproduct(newSubproduct);
+    fetchDataSubproduct();
     openAddSuccessModal();
   } catch (error) {
-    alert("tambah data departemen gagal!" + error);
+    alert("tambah data subproduct gagal!" + error);
   }
 };
 
 const openEditForm = (item) => {
-  editDepartementForm.value.openDialog(item);
+  editSubproductForm.value.openDialog(item, formattedDeptData.value, formattedProductData.value);
 };
 
 const openEditSuccessModal = () => {
   editSuccessModal.value.modalState();
 };
 
-const handleEditDepartement = async (editDiv) => {
+const handleEditSubproduct = async (editSubprod) => {
   try {
-    await departementService.updateDiv(editDiv);
-    fetchDataDepartement();
+    await subproductService.updateSubproduct(editSubprod);
+    fetchDataSubproduct();
     openEditSuccessModal();
   } catch (error) {
-    alert("edit data departemen gagal!" + error);
+    alert("edit data subproduct gagal!" + error);
   }
 };
 
 const openDeleteForm = (item) => {
-  deleteConfirmModal.value.modalState(item.idDepartement);
+  deleteConfirmModal.value.modalState(item.idSubproduct);
 };
 
 const openDeleteSuccessModal = () => {
   deleteSuccessModal.value.modalState();
 };
 
-const handleDeleteDepartement = async (deleteDiv) => {
+const handleDeleteSubproduct = async (deleteSubprod) => {
   try {
-    await departementService.deleteDiv(deleteDiv);
-    fetchDataDepartement();
+    await subproductService.deleteSubproduct(deleteSubprod);
+    fetchDataSubproduct();
     openDeleteSuccessModal();
   } catch (error) {
     alert("delete gagal!" + error);
   }
 };
 
-const fetchDataDepartement = async () => {
+const fetchDataSubproduct = async () => {
   try {
-    const divisiData = await departementService.getAllDep();
-    departement.value = divisiData.data;
+    const subproductData = await subproductService.getAllSubproduct();
+    const productData = await productService.getAllProduct();
+    const departmentData = await departementService.getAllDept();
+    // console.log(subproductData);
+    // console.log(productData.data);
+    // console.log(departmentData);
+    subproduct.value = subproductData.data;
+    product.value = productData.data;
+    department.value = departmentData.data;
   } catch (error) {
     console.log(error);
   }
 };
 
-onMounted(fetchDataDepartement);
+onMounted(fetchDataSubproduct);
 </script>
 
 <style scoped></style>

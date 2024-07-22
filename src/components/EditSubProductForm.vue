@@ -18,26 +18,35 @@
       <v-card-text>
         <v-form ref="form">
           <v-select
-            v-model="divData.departementName"
+            v-model="selectedDept"
             label="Nama Departemen"
             placeholder="contoh: Digital Enterprise"
             variant="outlined"
+            :items="dataDepartment"
+            item-text="title"
+            item-value="value"
+            @change="handleDepartmentChange"
+            required
+          ></v-select>
+          
+          <v-select
+            label="Pilih Produk"
+            placeholder="Produk yang tersedia"
+            variant="outlined"
+            :items="filteredProducts"
+            item-text="title"
+            item-value="value"
+            v-model="selectedProduct"
+            :disabled="!selectedDept"
             required
           ></v-select>
 
           <v-text-field
-            v-model="divData.productName"
-            label="Nama Produk"
-            placeholder="contoh: Mobile Banking"
-            variant="outlined"
-            required
-          ></v-text-field>
-
-          <v-text-field
-            v-model="divData.subproductName"
+            v-model="subproductData.subproductName"
             label="Nama Sub Produk"
             placeholder="contoh: E-Monitoring"
             variant="outlined"
+            :disabled="!selectedProduct"
             required
           ></v-text-field>
         </v-form>
@@ -63,41 +72,61 @@
 <script setup>
 import { ref, computed } from "vue";
 
-const emit = defineEmits(["editDiv"]);
+const emit = defineEmits(["editSubproduct"]);
 const dialog = ref(false);
-const divData = ref({
-  idDivisi: "",
-  departementName: "",
-  productName: "",
+const subproductData = ref({
+  idSubproduct: 0,
+  idProduct:0,
   subproductName: "",
 });
 
-const openDialog = (item) => {
-  divData.value.idDivisi = item.idDivisi;
-  divData.value.departementName = item.departementName;
-  divData.value.productName = item.productName;
-  divData.value.subproductName = item.subproductName;
+const dataDepartment = ref([{}]);
+const dataProduct = ref([{}]);
+const selectedDept = ref(null);
+const selectedProduct = ref(null);
+
+const openDialog = (item, dataDept, dataProd) => {
+  subproductData.value.idProduct = item.idProduct;
+  subproductData.value.subproductName = item.subproductName;
+  subproductData.value.idSubproduct = item.idSubproduct;
+  selectedProduct.value = item.idProduct;
+  selectedDept.value = item.idDepartment;
+
+  dataDepartment.value = dataDept;
+  dataProduct.value = dataProd;
 
   dialog.value = true;
 };
+
+const handleDepartmentChange = () => {
+  selectedProduct.value = null;
+}
+
+const filteredProducts = computed(() => {
+  if(!selectedDept.value) return [];
+  return dataProduct.value.filter(product => product.idDepartment === selectedDept.value);
+});
 
 const closeDialog = () => {
   dialog.value = false;
 };
 
 const isFormValid = computed(() => {
-  return divData.value.departementName;
+  return subproductData.value.subproductName;
 });
 
 const submitForm = () => {
   if (isFormValid.value) {
+    subproductData.value.idProduct = selectedProduct;
     // eslint-disable-next-line no-undef
-    emit("editDiv", { ...divData.value });
-
+    emit("editSubproduct", { ...subproductData.value });
+    
     // Reset form
-    divData.value = {
-      departementName: "",
-      productName: "",
+    selectedDept.value = null;
+    selectedProduct.value = null;
+    subproductData.value = {
+      idSubproduct: 0,
+      idProduct: 0,
       subproductName: "",
     };
     closeDialog();

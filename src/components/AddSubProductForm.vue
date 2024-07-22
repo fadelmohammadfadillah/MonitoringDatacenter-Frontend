@@ -18,22 +18,33 @@
       <v-card-text>
         <v-form ref="form">
           <v-select
-            label="Pilih Departemen"
-            placeholder="Departemen yang tersedia"
+            label="Pilih Department"
+            placeholder="Department yang tersedia"
             variant="outlined"
+            :items="dataDept"
+            item-text="title"
+            item-value="value"
+            v-model="selectedDept"
+            @change="handleDepartmentChange"
+            required
+          ></v-select>
+          <v-select
+            label="Pilih Produk"
+            placeholder="Produk yang tersedia"
+            variant="outlined"
+            :items="filteredProducts"
+            item-text="title"
+            item-value="value"
+            v-model="selectedProduct"
+            :disabled="!selectedDept"
+            required
           ></v-select>
           <v-text-field
-            v-model="newDiv.productName"
-            label="Nama Produk"
-            placeholder="contoh: Mobile Banking"
-            variant="outlined"
-            required
-          ></v-text-field>
-          <v-text-field
-            v-model="newDiv.subproductName"
+            v-model="newSubproduct.subproductName"
             label="Nama Sub Produk"
             placeholder="contoh: E-Monitoring"
             variant="outlined"
+            :disabled="!selectedProduct"
             required
           ></v-text-field>
         </v-form>
@@ -59,13 +70,23 @@
 <script setup>
 import { ref, computed } from "vue";
 // eslint-disable-next-line no-unused-vars
-const emit = defineEmits(["addNewDepartement"]);
+const emit = defineEmits(["addNewSubproduct"]);
 const dialog = ref(false);
-const newDiv = ref({
-  departementName: "",
+const newSubproduct = ref({
+  idDepartment: 0,
+  idProduct: 0,
+  subproductName: "",
 });
 
-const openDialog = () => {
+const dataDept = ref([{}]);
+const dataProduct = ref([{}]);
+
+const selectedDept = ref(null);
+const selectedProduct = ref(null);
+
+const openDialog = (dataDepartment, dataProd) => {
+  dataDept.value = dataDepartment;
+  dataProduct.value = dataProd;
   dialog.value = true;
 };
 
@@ -74,17 +95,33 @@ const closeDialog = () => {
 };
 
 const isFormValid = computed(() => {
-  return newDiv.value.departementName;
+  return newSubproduct.value.subproductName;
+});
+
+const handleDepartmentChange = () => {
+  selectedProduct.value = null;
+}
+
+const filteredProducts = computed(() => {
+  // console.log(selectedDept.value);
+  if(!selectedDept.value) return [];
+  return dataProduct.value.filter(product => product.idDepartment === selectedDept.value);
 });
 
 const submitForm = () => {
   if (isFormValid.value) {
+    newSubproduct.value.idDepartment = selectedDept.value;
+    newSubproduct.value.idProduct = selectedProduct.value;
     // eslint-disable-next-line no-undef
-    emit("addNewDiv", { ...newDiv.value });
+    emit("addNewSubproduct", { ...newSubproduct.value });
 
     // Reset form
-    newDiv.value = {
-      departementName: "",
+    selectedDept.value = null;
+    selectedProduct.value = null;
+    newSubproduct.value = {
+      idDepartment: 0,
+      idProduct: 0,
+      subproductName: "",
     };
     closeDialog();
   }
