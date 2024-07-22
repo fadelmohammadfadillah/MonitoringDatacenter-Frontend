@@ -1,5 +1,10 @@
 <template>
-  <v-navigation-drawer app class="pa-4" v-model="drawerStore" style="max-height: 100vh">
+  <v-navigation-drawer
+    app
+    class="pa-4"
+    v-model="drawerStore"
+    style="max-height: 100vh"
+  >
     <v-list-item class="d-flex justify-center">
       <v-img
         src="../assets/Logo Collega.svg"

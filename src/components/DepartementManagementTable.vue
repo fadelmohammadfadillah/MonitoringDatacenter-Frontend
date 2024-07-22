@@ -1,95 +1,147 @@
-  <template>
-    <TableCustom
-      title="Manajemen Departement"
-      entity="Departemen"
-      :headers="headers"
-      :items="divisi"
-      @addEntity="addDivisi"
-    />
-  </template>
+<template>
+  <CustomDataTable
+    :headers="headers"
+    :items="department"
+    title="Manajemen Department"
+    entity="Department"
+    :addEntity="openAddForm"
+    :editEntity="openEditForm"
+    :deleteEntity="openDeleteForm"
+  />
+  <AddDepartementForm
+    ref="addDepartmentForm"
+    @add-new-department="handleAddNewDepartment"
+  />
 
-  <script setup>
-  import { ref } from "vue";
-  import TableCustom from "@/components/TableCustom.vue";
+  <CustomSuccessModal
+    message="Departemen Berhasil Ditambahkan!"
+    imgSrc="/src/assets/success-modal-img.svg"
+    ref="addSuccessModal"
+  />
 
-  const headers = [
-    { text: "No", align: "start", value: "no" },
-    { text: "Departemen", align: "start", value: "departemen" },
-  ];
+  <EditDepartementForm
+    ref="editDepartmentForm"
+    @edit-dept="handleEditDepartment"
+  />
+  <CustomSuccessModal
+    message="Perubahan berhasil disimpan!"
+    imgSrc="/src/assets/success-modal-img.svg"
+    ref="editSuccessModal"
+  />
 
-  const divisi = ref([
-    {
-      no: 1,
-      nama: "Digital Enterprise",
-      divisi: "Digital Enterprise",
-      departemen: "Card & Digital Transaction",
-    },
-    {
-      no: 2,
-      nama: "Digital Enterprise",
-      divisi: "Digital Enterprise",
-      departemen: "Digital Channel",
-    },
-    {
-      no: 3,
-      nama: "Core Banking System Conventional",
-      divisi: "Core Banking System Conventional",
-      departemen: "Business Application Conventional",
-    },
-    {
-      no: 4,
-      nama: "Core Banking System Conventional",
-      divisi: "Core Banking System Conventional",
-      departemen: "System Application Development Conventional",
-    },
+  <CustomDeleteConfirmationModal
+    ref="deleteConfirmModal"
+    message="Yakin Ingin Menghapus?"
+    imgSrc="/src/assets/confirmation-modal-img.svg"
+    @delete-divisi="handleDeleteDepartment"
+  />
 
-    {
-      no: 5,
-      nama: "Core Banking System Syariah",
-      divisi: "Core Banking System Syariah",
-      departemen: "Business Application Syariah",
-    },
-    {
-      no: 6,
-      nama: "Core Banking System Syariah",
-      divisi: "Core Banking System Syariah",
-      departemen: "System Application Development Syariah",
-    },
-    {
-      no: 7,
-      nama: "Business Development",
-      divisi: "Business Development",
-      departemen: "Sales & Business Development",
-    },
-    {
-      no: 8,
-      nama: "Surrounding Application",
-      divisi: "Surrounding Application",
-      departemen: "Data Warehouse & Management Information System",
-    },
-    {
-      no: 9,
-      nama: "Surrounding Application",
-      divisi: "Surrounding Application",
-      departemen: "E-Government & Surrounding Application",
-    },
-    {
-      no: 10,
-      nama: "Regulatory & Financial Reporting",
-      divisi: "Regulatory & Financial Reporting",
-      departemen: "Regulatory Support",
-    },
-    {
-      no: 11,
-      nama: "Infrastrukture",
-      divisi: "Infrastrukture",
-      departemen: "Infrastrukture & Application Support Operation",
-    },
-  ]);
+  <CustomSuccessModal
+    message="Divisi berhasil disimpan!"
+    imgSrc="/src/assets/success-modal-img.svg"
+    ref="deleteSuccessModal"
+  />
+</template>
 
-  const addDivisi = () => {
-    // Logika tambah pengguna di sini
-  };
-  </script>
+<script setup>
+import { onMounted, ref } from "vue";
+import departmentService from "@/services/DepartementService";
+import divisiService from "@/services/DivisiService";
+import CustomDataTable from "./CustomDataTable.vue";
+import AddDepartementForm from "@/components/AddDepartementForm.vue";
+import EditDepartementForm from "@/components/EditDepartementForm.vue";
+import CustomSuccessModal from "@/components/CustomSuccessModal.vue";
+import CustomDeleteConfirmationModal from "@/components/CustomDeleteConfirmationModal.vue";
 
-  <style scoped></style>
+const department = ref([]);
+const divisi = ref([]);
+
+const headers = [
+  { title: "No", align: "start", key: "idDepartment" },
+  { title: "Department", align: "start", key: "departmentName" },
+  { title: "Divisi", align: "start", key: "divisiName" },
+];
+
+const addDepartmentForm = ref(null);
+const addSuccessModal = ref(null);
+const editDepartmentForm = ref(null);
+const editSuccessModal = ref(null);
+const deleteConfirmModal = ref(null);
+const deleteSuccessModal = ref(null);
+
+const formattedDivisiData = computed(() =>{
+   return divisi.value.map(div => ({
+    title: div.divisiName,
+    value: div.idDivisi,
+  }));
+});
+
+const openAddForm = () => {
+  addDepartmentForm.value.openDialog(formattedDivisiData.value);
+};
+
+const openAddSuccessModal = () => {
+  addSuccessModal.value.modalState();
+};
+
+const handleAddNewDepartment = async (newDept) => {
+  try {
+    await departmentService.createNewDept(newDept);
+    fetchDataDepartment();
+    openAddSuccessModal();
+  } catch (error) {
+    alert("tambah data department gagal!" + error);
+  }
+};
+
+const openEditForm = (item) => {
+  editDepartmentForm.value.openDialog(formattedDivisiData.value, item);
+};
+
+const openEditSuccessModal = () => {
+  editSuccessModal.value.modalState();
+};
+
+const handleEditDepartment = async (editDept) => {
+  try {
+    await departmentService.updateDept(editDept);
+    fetchDataDepartment();
+    openEditSuccessModal();
+  } catch (error) {
+    alert("edit data department gagal!" + error);
+  }
+};
+
+const openDeleteForm = (item) => {
+  deleteConfirmModal.value.modalState(item.idDepartment);
+};
+
+const openDeleteSuccessModal = () => {
+  deleteSuccessModal.value.modalState();
+};
+
+const handleDeleteDepartment = async (deleteDept) => {
+  try {
+    await departmentService.deleteDept(deleteDept);
+    fetchDataDepartment();
+    openDeleteSuccessModal();
+  } catch (error) {
+    alert("delete gagal!" + error);
+  }
+};
+
+const fetchDataDepartment = async () => {
+  try {
+    const deptData = await departmentService.getAllDept();
+    const divData = await divisiService.getAllDiv();
+    department.value = deptData.data;
+    divisi.value = divData.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+onMounted(fetchDataDepartment);
+</script>
+
+<style scoped></style>

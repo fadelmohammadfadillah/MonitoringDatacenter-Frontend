@@ -18,7 +18,7 @@ const routes = [
   {
     path: "/admin-dashboard",
     component: SuperAdminLayout,
-    children:[
+    children: [
       {
         path: "/user-management",
         component: UserManagementTable,
@@ -49,13 +49,13 @@ const routes = [
         component: SubProductManagementTable,
         name: "SubProductManagementTable",
       },
-    
+
       {
         path: "/module-management",
         component: ModuleManagementTable,
         name: "ModuleManagementTable",
       },
-    ]
+    ],
   },
 ];
 

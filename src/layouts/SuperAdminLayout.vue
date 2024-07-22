@@ -1,16 +1,17 @@
 <template>
   <v-app>
-    <SidebarAdmin/>
-    <HeaderBar/>
-    <v-main class="" style="max-height: 100vh;">
+    <SidebarAdmin />
+    <HeaderBar :userImage="userImage" :username="username" :role="role" />
+    <v-main class="" style="max-height: 100vh">
       <router-view />
     </v-main>
   </v-app>
 </template>
 
 <script setup>
-import HeaderBar from '@/components/HeaderBar.vue';
-import SidebarAdmin from '@/components/SidebarAdmin.vue';
+import HeaderBar from "@/components/HeaderBar.vue";
+import SidebarAdmin from "@/components/SidebarAdmin.vue";
 
-//
+const username = "Admin"; // User's username
+const role = "Super Admin"; // User's role
 </script>

@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" max-width="450px">
     <v-card>
       <v-card-title class="text-h6 d-flex justify-space-between align-center">
-        <span class="pl-5">Tambah Divisi</span>
+        <span class="pl-5">Edit Bank</span>
         <v-divider vertical class="pl-16 ml-16"></v-divider>
 
         <v-btn
@@ -18,9 +18,9 @@
       <v-card-text>
         <v-form ref="form">
           <v-text-field
-            v-model="newDiv.divisiName"
-            label="Nama Divisi"
-            placeholder="contoh: Digital Enterprise"
+            v-model="bankData.bankName"
+            label="Nama Bank"
+            placeholder="contoh: Bank DKI"
             variant="outlined"
             required
           ></v-text-field>
@@ -46,14 +46,17 @@
 
 <script setup>
 import { ref, computed } from "vue";
-// eslint-disable-next-line no-unused-vars
-const emit = defineEmits(["addNewDivisi"]);
+
+const emit = defineEmits(["editBank"]);
 const dialog = ref(false);
-const newDiv = ref({
-  divisiName: "",
+const bankData = ref({
+  idBank: "",
+  bankName: "",
 });
 
-const openDialog = () => {
+const openDialog = (item) => {
+  bankData.value.idBank = item.idBank;
+  bankData.value.bankName = item.bankName;
   dialog.value = true;
 };
 
@@ -62,17 +65,17 @@ const closeDialog = () => {
 };
 
 const isFormValid = computed(() => {
-  return newDiv.value.divisiName;
+  return bankData.value.bankName;
 });
 
 const submitForm = () => {
   if (isFormValid.value) {
     // eslint-disable-next-line no-undef
-    emit("addNewDiv", { ...newDiv.value });
+    emit("editBank", { ...bankData.value });
 
     // Reset form
-    newDiv.value = {
-      divisiName: "",
+    bankData.value = {
+      bankName: "",
     };
     closeDialog();
   }

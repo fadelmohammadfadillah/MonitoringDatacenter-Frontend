@@ -1,90 +1,164 @@
 <template>
-  <TableCustom
+  <CustomDataTable
+    :headers="headers"
+    :items="subproduct"
     title="Manajemen Sub Produk"
     entity="Sub Produk"
-    :headers="headers"
-    :items="subproduk"
-    @addEntity="addSubProduk"
+    :addEntity="openAddForm"
+    :editEntity="openEditForm"
+    :deleteEntity="openDeleteForm"
+  />
+  <AddSubProductForm
+    ref="addSubproductForm"
+    @add-new-subproduct="handleAddNewSubproduct"
+  />
+
+  <CustomSuccessModal
+    message="Departemen Berhasil Ditambahkan!"
+    imgSrc="/src/assets/success-modal-img.svg"
+    ref="addSuccessModal"
+  />
+
+  <EditSubProductForm
+    ref="editSubproductForm"
+    @edit-subproduct="handleEditSubproduct"
+  />
+  <CustomSuccessModal
+    message="Perubahan berhasil disimpan!"
+    imgSrc="/src/assets/success-modal-img.svg"
+    ref="editSuccessModal"
+  />
+
+  <CustomDeleteConfirmationModal
+    ref="deleteConfirmModal"
+    message="Yakin Ingin Menghapus?"
+    imgSrc="/src/assets/confirmation-modal-img.svg"
+    @delete-divisi="handleDeleteSubproduct"
+  />
+
+  <CustomSuccessModal
+    message="Subproduct berhasil disimpan!"
+    imgSrc="/src/assets/success-modal-img.svg"
+    ref="deleteSuccessModal"
   />
 </template>
 
 <script setup>
-import { ref } from "vue";
-import TableCustom from "@/components/TableCustom.vue";
+import { onMounted, ref } from "vue";
+import departementService from "@/services/DepartementService";
+import productService from "@/services/ProductService";
+import subproductService from "@/services/SubproductService";
+import CustomDataTable from "./CustomDataTable.vue";
+import AddSubProductForm from "@/components/AddSubProductForm.vue";
+import EditSubProductForm from "@/components/EditSubProductForm.vue";
+import CustomSuccessModal from "@/components/CustomSuccessModal.vue";
+import CustomDeleteConfirmationModal from "@/components/CustomDeleteConfirmationModal.vue";
+
+
+const subproduct = ref([]);
+const product = ref([]);
+const department = ref([]);
 
 const headers = [
-  { text: "No", align: "start", value: "no" },
-  { text: "Nama Sub Produk", align: "start", value: "product" },
+  { title: "No", align: "start", key: "idSubproduct" },
+  { title: "Department", align: "start", key: "departmentName" },
+  { title: "Produk", align: "start", key: "productName" },
+  { title: "Sub Produk", align: "start", key: "subproductName" },
 ];
 
-const subproduk = ref([
+const addSubproductForm = ref(null);
+const addSuccessModal = ref(null);
+const editSubproductForm = ref(null);
+const editSuccessModal = ref(null);
+const deleteConfirmModal = ref(null);
+const deleteSuccessModal = ref(null);
 
-  {
-    no: 1,
-    nama: "Ecardman",
-    product: "Ecardman",
-  },
-  {
-    no: 2,
-    nama: "Emware-ws",
-    product: "Emware-ws",
-  },
-  {
-    no: 3,
-    nama: "Engine Token",
-    product: "Engine Token",
-  },
+const formattedDeptData = computed(() =>{
+   return department.value.map(dept => ({
+    title: dept.departmentName,
+    value: dept.idDepartment,
+  }));
+});
 
-  {
-    no: 4,
-    nama: "E-Report",
-    product: "E-Report",
-  },
-  {
-    no: 5,
-    nama: "E-Config",
-    product: "E-Config",
-  },
-  {
-    no: 6,
-    nama: "E-Monitoring",
-    product: "E-Monitoring",
-  },
-  {
-    no: 7,
-    nama: "ATM",
-    product: "ATM",
-  },
-  {
-    no: 8,
-    nama: "Ecardman",
-    product: "Ecardman",
-  },
-  {
-    no: 9,
-    nama: "Host",
-    product: "Host",
-  },
-  {
-    no: 10,
-    nama: "TCP",
-    product: "TCP",
-  },
-  {
-    no: 11,
-    nama: "emware-ws",
-    product: "emware-ws",
-  },
+const formattedProductData = computed(() =>{
+   return product.value.map(prod => ({
+    title: prod.productName,
+    value: prod.idProduct,
+    idDepartment: prod.idDepartment,
+  }));
+});
 
-
-
-
-
-]);
-
-const addSubProduk = () => {
-  // Logika tambah pengguna di sini
+const openAddForm = () => {
+  addSubproductForm.value.openDialog(formattedDeptData.value, formattedProductData.value);
 };
+
+const openAddSuccessModal = () => {
+  addSuccessModal.value.modalState();
+};
+
+const handleAddNewSubproduct = async (newSubproduct) => {
+  try {
+    await subproductService.createNewSubproduct(newSubproduct);
+    fetchDataSubproduct();
+    openAddSuccessModal();
+  } catch (error) {
+    alert("tambah data subproduct gagal!" + error);
+  }
+};
+
+const openEditForm = (item) => {
+  editSubproductForm.value.openDialog(item, formattedDeptData.value, formattedProductData.value);
+};
+
+const openEditSuccessModal = () => {
+  editSuccessModal.value.modalState();
+};
+
+const handleEditSubproduct = async (editSubprod) => {
+  try {
+    await subproductService.updateSubproduct(editSubprod);
+    fetchDataSubproduct();
+    openEditSuccessModal();
+  } catch (error) {
+    alert("edit data subproduct gagal!" + error);
+  }
+};
+
+const openDeleteForm = (item) => {
+  deleteConfirmModal.value.modalState(item.idSubproduct);
+};
+
+const openDeleteSuccessModal = () => {
+  deleteSuccessModal.value.modalState();
+};
+
+const handleDeleteSubproduct = async (deleteSubprod) => {
+  try {
+    await subproductService.deleteSubproduct(deleteSubprod);
+    fetchDataSubproduct();
+    openDeleteSuccessModal();
+  } catch (error) {
+    alert("delete gagal!" + error);
+  }
+};
+
+const fetchDataSubproduct = async () => {
+  try {
+    const subproductData = await subproductService.getAllSubproduct();
+    const productData = await productService.getAllProduct();
+    const departmentData = await departementService.getAllDept();
+    // console.log(subproductData);
+    // console.log(productData.data);
+    // console.log(departmentData);
+    subproduct.value = subproductData.data;
+    product.value = productData.data;
+    department.value = departmentData.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+onMounted(fetchDataSubproduct);
 </script>
 
 <style scoped></style>

@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" max-width="450px">
     <v-card>
       <v-card-title class="text-h6 d-flex justify-space-between align-center">
-        <span class="pl-5">Tambah Divisi</span>
+        <span class="pl-5">Edit Produk</span>
         <v-divider vertical class="pl-16 ml-16"></v-divider>
 
         <v-btn
@@ -17,10 +17,21 @@
       <v-divider class="my-2"></v-divider>
       <v-card-text>
         <v-form ref="form">
-          <v-text-field
-            v-model="newDiv.divisiName"
-            label="Nama Divisi"
+          <v-select
+            v-model="selectedDept"
+            label="Nama Department"
             placeholder="contoh: Digital Enterprise"
+            variant="outlined"
+            :items="dataDept"
+            item-text="title"
+            item-value="value"
+            required
+          ></v-select>
+
+          <v-text-field
+            v-model="productData.productName"
+            label="Nama Produk"
+            placeholder="contoh: Mobile Banking"
             variant="outlined"
             required
           ></v-text-field>
@@ -46,14 +57,23 @@
 
 <script setup>
 import { ref, computed } from "vue";
-// eslint-disable-next-line no-unused-vars
-const emit = defineEmits(["addNewDivisi"]);
+
+const emit = defineEmits(["editProduct"]);
 const dialog = ref(false);
-const newDiv = ref({
-  divisiName: "",
+const productData = ref({
+  idProduct: 0,
+  idDepartment: 0,
+  productName: "",
 });
 
-const openDialog = () => {
+const dataDept = ref([{}]);
+const selectedDept = ref(null);
+
+const openDialog = (item, dataDepartment) => {
+  productData.value.idProduct = item.idProduct;
+  productData.value.productName = item.productName;
+  selectedDept.value = item.idDepartment;
+  dataDept.value = dataDepartment;
   dialog.value = true;
 };
 
@@ -62,17 +82,21 @@ const closeDialog = () => {
 };
 
 const isFormValid = computed(() => {
-  return newDiv.value.divisiName;
+  return productData.value.productName;
 });
 
 const submitForm = () => {
   if (isFormValid.value) {
+    productData.value.idDepartment = selectedDept.value;
     // eslint-disable-next-line no-undef
-    emit("addNewDiv", { ...newDiv.value });
+    emit("editProduct", { ...productData.value });
 
     // Reset form
-    newDiv.value = {
-      divisiName: "",
+    selectedDept.value = null;
+    productData.value = {
+      idProduct: 0,
+      idDepartment: 0,
+      productName: "",
     };
     closeDialog();
   }
