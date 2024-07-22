@@ -1,28 +1,22 @@
 <template>
   <CustomDataTable
     :headers="headers"
-    :items="departement"
+    :items="product"
     title="Manajemen Produk"
     entity="Produk"
     :addEntity="openAddForm"
     :editEntity="openEditForm"
     :deleteEntity="openDeleteForm"
   />
-  <AddDepartementForm
-    ref="addDepartementForm"
-    @add-new-div="handleAddNewDepartement"
-  />
+  <AddProductForm ref="addProductForm" @add-new-product="handleAddNewProduct" />
 
   <CustomSuccessModal
-    message="Departemen Berhasil Ditambahkan!"
+    message="Produk Berhasil Ditambahkan!"
     imgSrc="/src/assets/success-modal-img.svg"
     ref="addSuccessModal"
   />
 
-  <EditDepartementForm
-    ref="editDepartementForm"
-    @edit-div="handleEditDepartement"
-  />
+  <EditProductForm ref="editProductForm" @edit-product="handleEditProduct" />
   <CustomSuccessModal
     message="Perubahan berhasil disimpan!"
     imgSrc="/src/assets/success-modal-img.svg"
@@ -33,11 +27,11 @@
     ref="deleteConfirmModal"
     message="Yakin Ingin Menghapus?"
     imgSrc="/src/assets/confirmation-modal-img.svg"
-    @delete-divisi="handleDeleteDepartement"
+    @delete-product="handleDeleteProduct"
   />
 
   <CustomSuccessModal
-    message="Divisi berhasil disimpan!"
+    message="Product berhasil disimpan!"
     imgSrc="/src/assets/success-modal-img.svg"
     ref="deleteSuccessModal"
   />
@@ -45,103 +39,103 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
-import departementService from "@/services/DepartementService";
+import productService from "@/services/ProductService";
 import CustomDataTable from "./CustomDataTable.vue";
-import AddDepartementForm from "@/components/AddProductForm.vue";
-import EditDepartementForm from "@/components/EditProductForm.vue";
+import AddProductForm from "@/components/AddProductForm.vue";
+import EditProductForm from "@/components/EditProductForm.vue";
 import CustomSuccessModal from "@/components/CustomSuccessModal.vue";
 import CustomDeleteConfirmationModal from "@/components/CustomDeleteConfirmationModal.vue";
 
-const departement = ref([
+const product = ref([
   {
-    idDepartement: 1,
+    idProduct: 1,
     productName: "Switching",
     departementName: "Card & Digital Transactions",
   },
   {
-    idDepartement: 2,
+    idProduct: 2,
     productName: "Middleware",
     departementName: "Card & Digital Transactions",
   },
 ]);
 
 const headers = [
-  { title: "No", align: "start", key: "idDepartement" },
+  { title: "No", align: "start", key: "idProduct" },
   { title: "Produk", align: "start", key: "productName" },
   { title: "Departemen", align: "start", key: "departementName" },
 ];
 
-const addDepartementForm = ref(null);
+const addProductForm = ref(null);
 const addSuccessModal = ref(null);
-const editDepartementForm = ref(null);
+const editProductForm = ref(null);
 const editSuccessModal = ref(null);
 const deleteConfirmModal = ref(null);
 const deleteSuccessModal = ref(null);
 
 const openAddForm = () => {
-  addDepartementForm.value.openDialog();
+  addProductForm.value.openDialog();
 };
 
 const openAddSuccessModal = () => {
   addSuccessModal.value.modalState();
 };
 
-const handleAddNewDepartement = async (newDiv) => {
+const handleAddNewProduct = async (newProduct) => {
   try {
-    await departementService.createNewDiv(newDiv);
-    fetchDataDepartement();
+    await productService.createNewProduct(newProduct);
+    fetchDataProduct();
     openAddSuccessModal();
   } catch (error) {
-    alert("tambah data departemen gagal!" + error);
+    alert("tambah data produk gagal!" + error);
   }
 };
 
 const openEditForm = (item) => {
-  editDepartementForm.value.openDialog(item);
+  editProductForm.value.openDialog(item);
 };
 
 const openEditSuccessModal = () => {
   editSuccessModal.value.modalState();
 };
 
-const handleEditDepartement = async (editDiv) => {
+const handleEditProduct = async (productData) => {
   try {
-    await departementService.updateDiv(editDiv);
-    fetchDataDepartement();
+    await productService.updateProduct(productData);
+    fetchDataProduct();
     openEditSuccessModal();
   } catch (error) {
-    alert("edit data departemen gagal!" + error);
+    alert("edit data produk gagal!" + error);
   }
 };
 
 const openDeleteForm = (item) => {
-  deleteConfirmModal.value.modalState(item.idDepartement);
+  deleteConfirmModal.value.modalState(item.idProduct);
 };
 
 const openDeleteSuccessModal = () => {
   deleteSuccessModal.value.modalState();
 };
 
-const handleDeleteDepartement = async (deleteDiv) => {
+const handleDeleteProduct = async (deleteProduct) => {
   try {
-    await departementService.deleteDiv(deleteDiv);
-    fetchDataDepartement();
+    await productService.deleteProduct(deleteProduct);
+    fetchDataProduct();
     openDeleteSuccessModal();
   } catch (error) {
     alert("delete gagal!" + error);
   }
 };
 
-const fetchDataDepartement = async () => {
+const fetchDataProduct = async () => {
   try {
-    const divisiData = await departementService.getAllDep();
-    departement.value = divisiData.data;
+    const productData = await productService.getAllProduct();
+    product.value = productData.data;
   } catch (error) {
     console.log(error);
   }
 };
 
-onMounted(fetchDataDepartement);
+onMounted(fetchDataProduct);
 </script>
 
 <style scoped></style>

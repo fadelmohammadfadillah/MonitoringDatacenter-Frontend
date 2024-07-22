@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="modal" max-width="25vw">
+  <v-dialog v-model="modal" max-width="26vw">
     <v-card class="pa-9 text-center">
       <v-card-title class="text-h6 text-center">
         {{ message }}

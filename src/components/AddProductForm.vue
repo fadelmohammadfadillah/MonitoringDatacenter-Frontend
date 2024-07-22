@@ -19,11 +19,12 @@
         <v-form ref="form">
           <v-select
             label="Pilih Departemen"
+            :items="departements"
             placeholder="Departemen yang tersedia"
             variant="outlined"
           ></v-select>
           <v-text-field
-            v-model="newDiv.departementName"
+            v-model="newProduct.productName"
             label="Nama Produk"
             placeholder="contoh: Mobile Banking"
             variant="outlined"
@@ -51,11 +52,14 @@
 
 <script setup>
 import { ref, computed } from "vue";
+
+const departements = ["Card & Digital Transaction", "Data Center Operation"];
+
 // eslint-disable-next-line no-unused-vars
-const emit = defineEmits(["addNewDepartement"]);
+const emit = defineEmits(["addNewProduct"]);
 const dialog = ref(false);
-const newDiv = ref({
-  departementName: "",
+const newProduct = ref({
+  productName: "",
 });
 
 const openDialog = () => {
@@ -67,17 +71,17 @@ const closeDialog = () => {
 };
 
 const isFormValid = computed(() => {
-  return newDiv.value.departementName;
+  return newProduct.value.productName;
 });
 
 const submitForm = () => {
   if (isFormValid.value) {
     // eslint-disable-next-line no-undef
-    emit("addNewDiv", { ...newDiv.value });
+    emit("addNewProduct", { ...newProduct.value });
 
     // Reset form
-    newDiv.value = {
-      departementName: "",
+    newProduct.value = {
+      productName: "",
     };
     closeDialog();
   }
@@ -98,23 +102,3 @@ defineExpose({
   color: gray;
 }
 </style>
-
-<!-- <v-form ref="form">
-          <v-select
-            v-model="newDept.divisionId"
-            :items="divisions"
-            item-text="divisiName"
-            item-value="idDivisi"
-            label="Pilih Divisi"
-            placeholder="Pilih Divisi"
-            variant="outlined"
-            required
-          ></v-select>
-          <v-text-field
-            v-model="newDept.departmentName"
-            label="Nama Departemen"
-            placeholder="contoh: Pengembangan"
-            variant="outlined"
-            required
-          ></v-text-field>
-        </v-form> -->
