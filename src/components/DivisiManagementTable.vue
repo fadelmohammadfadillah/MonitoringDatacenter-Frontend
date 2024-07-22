@@ -46,39 +46,7 @@ import EditDivisiForm from "@/components/EditDivisiForm.vue";
 import CustomSuccessModal from "@/components/CustomSuccessModal.vue";
 import CustomDeleteConfirmationModal from "@/components/CustomDeleteConfirmationModal.vue";
 
-const divisi = ref([
-  { idDivisi: 1, divisiName: "Business Development", status: "Active" },
-  {
-    idDivisi: 2,
-    divisiName: "Core Banking System Conventional",
-    status: "Active",
-  },
-  { idDivisi: 3, divisiName: "Core Banking System Syariah", status: "Active" },
-  { idDivisi: 4, divisiName: "Digital Enterprise", status: "Active" },
-  { idDivisi: 5, divisiName: "Surrounding Application", status: "Active" },
-  {
-    idDivisi: 6,
-    divisiName: "Regulatory & Financial Reporting",
-    status: "Active",
-  },
-  { idDivisi: 7, divisiName: "Quality Assurance", status: "Active" },
-  { idDivisi: 8, divisiName: "Region 1", status: "Active" },
-  { idDivisi: 9, divisiName: "Region 2", status: "Active" },
-  { idDivisi: 10, divisiName: "Region 3", status: "Active" },
-  { idDivisi: 11, divisiName: "IT Operation Management", status: "Active" },
-  { idDivisi: 12, divisiName: "Infrastructure", status: "Active" },
-  { idDivisi: 13, divisiName: "Business Support", status: "Active" },
-  {
-    idDivisi: 14,
-    divisiName: "Human Capital, Finance, Legal, & Corporate Secretary",
-    status: "Active",
-  },
-  {
-    idDivisi: 15,
-    divisiName: "Internal Audit & Risk Management",
-    status: "Active",
-  },
-]);
+const divisi = ref([]);
 
 const headers = [
   { title: "No", align: "start", key: "idDivisi" },
@@ -150,6 +118,7 @@ const handleDeleteDivisi = async (deleteDiv) => {
 const fetchDataDivisi = async () => {
   try {
     const divisiData = await divisiService.getAllDiv();
+    console.log(divisiData)
     divisi.value = divisiData.data;
   } catch (error) {
     console.log(error);

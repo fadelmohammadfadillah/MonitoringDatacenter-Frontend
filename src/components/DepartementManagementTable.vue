@@ -1,16 +1,16 @@
 <template>
   <CustomDataTable
     :headers="headers"
-    :items="departement"
-    title="Manajemen Departemen"
-    entity="Departemen"
+    :items="department"
+    title="Manajemen Department"
+    entity="Departement"
     :addEntity="openAddForm"
     :editEntity="openEditForm"
     :deleteEntity="openDeleteForm"
   />
   <AddDepartementForm
-    ref="addDepartementForm"
-    @add-new-div="handleAddNewDepartement"
+    ref="addDepartmentForm"
+    @add-new-department="handleAddNewDepartment"
   />
 
   <CustomSuccessModal
@@ -21,7 +21,7 @@
 
   <EditDepartementForm
     ref="editDepartementForm"
-    @edit-div="handleEditDepartement"
+    @edit-dept="handleEditDepartement"
   />
   <CustomSuccessModal
     message="Perubahan berhasil disimpan!"
@@ -52,149 +52,40 @@ import EditDepartementForm from "@/components/EditDepartementForm.vue";
 import CustomSuccessModal from "@/components/CustomSuccessModal.vue";
 import CustomDeleteConfirmationModal from "@/components/CustomDeleteConfirmationModal.vue";
 
-const departement = ref([
-  {
-    idDepartement: 1,
-    departementName: "Sales & Business Development",
-    divisiName: "Divisi Sales",
-  },
-  {
-    idDepartement: 2,
-    departementName: "Business Application Conventional",
-    divisiName: "Divisi Business App",
-  },
-  {
-    idDepartement: 3,
-    departementName: "System Application Development Conventional",
-    divisiName: "Divisi System App",
-  },
-  {
-    idDepartement: 4,
-    departementName: "Business Application Syariah",
-    divisiName: "Divisi Business App Syariah",
-  },
-  {
-    idDepartement: 5,
-    departementName: "System Application Development Syariah",
-    divisiName: "Divisi System App Syariah",
-  },
-  {
-    idDepartement: 6,
-    departementName: "Card & Digital Transaction",
-    divisiName: "Divisi Card & Digital",
-  },
-  {
-    idDepartement: 7,
-    departementName: "Digital Channel",
-    divisiName: "Divisi Digital",
-  },
-  {
-    idDepartement: 8,
-    departementName: "Data Warehouse & Management Information System",
-    divisiName: "Divisi Data",
-  },
-  {
-    idDepartement: 9,
-    departementName: "Regulatory Report",
-    divisiName: "Divisi Report",
-  },
-  {
-    idDepartement: 10,
-    departementName: "Financial Reporting",
-    divisiName: "Divisi Financial",
-  },
-  {
-    idDepartement: 11,
-    departementName:
-      "Quality Control, Quality Assurance, & Application Control Library",
-    divisiName: "Divisi Quality",
-  },
-  {
-    idDepartement: 12,
-    departementName: "Data Center Operation",
-    divisiName: "Divisi Data Center",
-  },
-  {
-    idDepartement: 13,
-    departementName: "Disaster Recovery Center Operation",
-    divisiName: "Divisi Recovery",
-  },
-  {
-    idDepartement: 14,
-    departementName: "Digital Enterprise Operation",
-    divisiName: "Divisi Enterprise",
-  },
-  {
-    idDepartement: 15,
-    departementName: "Security Operation Center",
-    divisiName: "Divisi Security",
-  },
-  {
-    idDepartement: 16,
-    departementName: "Network Operation",
-    divisiName: "Divisi Network",
-  },
-  {
-    idDepartement: 17,
-    departementName: "Infrastructure & Application Support Operation",
-    divisiName: "Divisi Infrastructure",
-  },
-  {
-    idDepartement: 18,
-    departementName: "Procurement & Office Management",
-    divisiName: "Divisi Procurement",
-  },
-  {
-    idDepartement: 19,
-    departementName: "Human Capital",
-    divisiName: "Divisi Human Capital",
-  },
-  {
-    idDepartement: 20,
-    departementName: "Finance",
-    divisiName: "Divisi Finance",
-  },
-  {
-    idDepartement: 21,
-    departementName: "Legal & Corporate Secretary",
-    divisiName: "Divisi Legal",
-  },
-  {
-    idDepartement: 22,
-    departementName: "Internal Audit",
-    divisiName: "Divisi Audit",
-  },
-  {
-    idDepartement: 23,
-    departementName: "Information Security & Risk Management",
-    divisiName: "Divisi Risk Management",
-  },
-]);
+const department = ref([]);
 
 const headers = [
-  { title: "No", align: "start", key: "idDepartement" },
-  { title: "Departemen", align: "start", key: "departementName" },
+  { title: "No", align: "start", key: "idDepartment" },
+  { title: "Department", align: "start", key: "departmentName" },
   { title: "Divisi", align: "start", key: "divisiName" },
 ];
 
-const addDepartementForm = ref(null);
+const addDepartmentForm = ref(null);
 const addSuccessModal = ref(null);
 const editDepartementForm = ref(null);
 const editSuccessModal = ref(null);
 const deleteConfirmModal = ref(null);
 const deleteSuccessModal = ref(null);
 
+const formattedDivisiData = computed(() =>{
+   return department.value.map(dept => ({
+    title: dept.divisiName,
+    value: dept.idDivisi,
+  }));
+});
+
 const openAddForm = () => {
-  addDepartementForm.value.openDialog();
+  console.log(formattedDivisiData.value);
+  addDepartmentForm.value.openDialog(formattedDivisiData.value);
 };
 
 const openAddSuccessModal = () => {
   addSuccessModal.value.modalState();
 };
 
-const handleAddNewDepartement = async (newDiv) => {
+const handleAddNewDepartment = async (newDept) => {
   try {
-    await departementService.createNewDiv(newDiv);
+    await departementService.createNewDept(newDept);
     fetchDataDepartement();
     openAddSuccessModal();
   } catch (error) {
@@ -240,8 +131,9 @@ const handleDeleteDepartement = async (deleteDiv) => {
 
 const fetchDataDepartement = async () => {
   try {
-    const divisiData = await departementService.getAllDep();
-    departement.value = divisiData.data;
+    const deptData = await departementService.getAllDept();
+    console.log(deptData);
+    department.value = deptData.data;
   } catch (error) {
     console.log(error);
   }

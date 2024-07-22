@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" max-width="450px">
     <v-card>
       <v-card-title class="text-h6 d-flex justify-space-between align-center">
-        <span class="pl-5">Tambah Departemen</span>
+        <span class="pl-5">Tambah Department</span>
         <v-divider vertical class="pl-16 ml-10"></v-divider>
 
         <v-btn
@@ -21,9 +21,13 @@
             label="Pilih Divisi"
             placeholder="Divisi yang tersedia"
             variant="outlined"
+            :items="dataDivisi"
+            item-text="title"
+            item-value="value"
+            v-model="dataForm"
           ></v-select>
           <v-text-field
-            v-model="newDiv.departementName"
+            v-model="newDept.departmentName"
             label="Nama Departemen"
             placeholder="contoh: Card & Digital Transaction"
             variant="outlined"
@@ -52,13 +56,19 @@
 <script setup>
 import { ref, computed } from "vue";
 // eslint-disable-next-line no-unused-vars
-const emit = defineEmits(["addNewDepartement"]);
+const emit = defineEmits(["addNewDepartment"]);
 const dialog = ref(false);
-const newDiv = ref({
-  departementName: "",
+const newDept = ref({
+  idDivisi: 0,
+  departmentName: "",
 });
 
-const openDialog = () => {
+const dataDivisi = ref( [{}])
+
+const dataForm = ref(null);
+
+const openDialog = (dataDiv) => {
+  dataDivisi.value = dataDiv;
   dialog.value = true;
 };
 
@@ -67,17 +77,19 @@ const closeDialog = () => {
 };
 
 const isFormValid = computed(() => {
-  return newDiv.value.departementName;
+  return newDept.value.departmentName;
 });
 
 const submitForm = () => {
   if (isFormValid.value) {
     // eslint-disable-next-line no-undef
-    emit("addNewDiv", { ...newDiv.value });
+    newDept.value.idDivisi = dataForm.value;
+    emit("addNewDepartment", { ...newDept.value });
 
     // Reset form
-    newDiv.value = {
-      departementName: "",
+    newDept.value = {
+      idDivisi : 0,
+      departmentName: "",
     };
     closeDialog();
   }

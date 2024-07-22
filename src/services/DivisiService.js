@@ -2,16 +2,16 @@ import api from "./api";
 
 const divisiService = {
     getAllDiv(){
-        return api.get('/user-div/get-all-div');
+        return api.get('/super-admin/div/get-all-div');
     },
     createNewDiv(newDiv){
-        return api.post('/user-div/create', newDiv);
+        return api.post('/super-admin/div/create', newDiv);
     },
     updateDiv(divData){
-        return api.put(`/user-div/update/${divData.idDivisi}`, divData);
+        return api.put(`/super-admin/div/update/${divData.idDivisi}`, divData);
     },
     deleteDiv(idDiv){
-        return api.delete(`/user-div/delete/${idDiv}`);
+        return api.delete(`/super-admin/div/delete/${idDiv}`);
     }
 }
 

@@ -1,17 +1,17 @@
 import api from "./api";
 
 const divisiService = {
-  getAllDep() {
-    return api.get("/user-div/get-all-div");
+  getAllDept() {
+    return api.get("/super-admin/dept/get-all-dept");
   },
-  createNewDiv(newDiv) {
-    return api.post("/user-div/create", newDiv);
+  createNewDept(newDept) {
+    return api.post("/super-admin/dept/create", newDept);
   },
-  updateDiv(divData) {
-    return api.put(`/user-div/update/${divData.idDivisi}`, divData);
+  updateDept(deptData) {
+    return api.put(`/super-admin/dept/update/${deptData.idDepartment}`, deptData);
   },
-  deleteDiv(idDiv) {
-    return api.delete(`/user-div/delete/${idDiv}`);
+  deleteDept(idDept) {
+    return api.delete(`/super-admin/dept/delete/${idDept}`);
   },
 };
 
