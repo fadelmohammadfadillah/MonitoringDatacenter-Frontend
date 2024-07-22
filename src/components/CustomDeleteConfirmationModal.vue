@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="modal" max-width="400px">
     <v-card class="pa-4">
-      <v-card-title class="text-h6 text-center rounded-x">
+      <v-card-title class="text-h6 text-center rounded-xl">
         {{ message }}
       </v-card-title>
       <v-card-text class="text-center">

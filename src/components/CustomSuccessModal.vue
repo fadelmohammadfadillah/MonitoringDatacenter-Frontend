@@ -1,22 +1,24 @@
 <template>
-  <v-dialog v-model="modal" max-width="25vw">
+  <v-dialog v-model="modal" max-width="400px">
     <v-card class="pa-4">
-      <v-card-title class="text-h6 text-center">
+      <v-card-title class="text-h6 text-center rounded-xl">
         {{ message }}
       </v-card-title>
-      <div class="py-4">
-        <v-img :src="imgSrc" max-width="20vw"></v-img>
-      </div>
-      <v-btn
-        variant="flat"
-        color="orange"
-        block
-        @click="modalState"
-        rounded="lg"
-        class="text-white"
-      >
-        Ok, Tutup
-      </v-btn>
+      <v-card-text class="text-center">
+        <v-img :src="imgSrc" contain max-width="250px" class="mx-auto"></v-img>
+      </v-card-text>
+      <v-card-actions class="justify-center">
+        <v-btn
+          variant="flat"
+          color="orange"
+          block
+          @click="modalState"
+          rounded="lg"
+          class="text-white"
+        >
+          Ok, Tutup
+        </v-btn>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
@@ -24,6 +26,7 @@
 <script setup>
 import { ref } from "vue";
 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   message: {
     type: String,
@@ -43,6 +46,5 @@ const modalState = () => {
 
 defineExpose({
   modalState,
-  props,
 });
 </script>
