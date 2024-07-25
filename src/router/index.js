@@ -13,14 +13,14 @@ const routes = [
   {
     path: "/",
     component: LoginPage,
-    name: "login-page",
+    name: "loginPage",
   },
   {
     path: "/admin-dashboard",
     component: SuperAdminLayout,
     children: [
       {
-        path: "/user-management",
+        path: "/admin-dashboard",
         component: UserManagementTable,
         name: "UserManagementTable",
       },
@@ -55,6 +55,10 @@ const routes = [
         component: ModuleManagementTable,
         name: "ModuleManagementTable",
       },
+      {
+        path:"/:catchAll(.*)",
+        redirect: { name: "loginPage"}
+      }
     ],
   },
 ];

@@ -2,7 +2,7 @@
   <v-navigation-drawer
     app
     class="pa-4"
-    v-model="drawerStore"
+    v-model="drawer"
     style="max-height: 100vh"
   >
     <v-list-item class="d-flex justify-center">
@@ -18,49 +18,53 @@
 
     <v-list>
       <!-- Pengguna Section -->
-      <v-list-item subtitle="Pengguna" class="pa-0 pl-2"></v-list-item>
+      <v-list-item subtitle="Manajemen" class="pa-0 pl-2"></v-list-item>
       <CustomSidebarButton
         icon="mdi-account-multiple"
         text="Manajemen Pengguna"
-        route-link="/user-management"
+        route-link="/admin-dashboard"
       />
-
-      <!-- Struktur Section -->
-      <v-list-item subtitle="Struktur" class="pa-0 pl-2"></v-list-item>
       <CustomSidebarButton
-        icon="mdi-account-multiple"
+        icon="mdi-account-group"
         text="Manajemen Divisi"
         route-link="/divisi-management"
       />
       <CustomSidebarButton
-        icon="mdi-account-multiple"
+        icon="mdi-account-group"
         text="Manajemen Departemen"
         route-link="/departement-management"
       />
 
       <!-- Switching Section -->
       <v-list-item subtitle="Switching" class="pa-0 pl-2"></v-list-item>
-      <!-- Produk Section -->
-      <v-list-item subtitle="Produk" class="pa-0 pl-2">
-        <template #subtitle>
-          <span class="pa-0 pl-2">
-            Kategori Produk
-            <v-icon @click="toggleProducts" class="ml-1">{{
-              productsIcon
-            }}</v-icon>
-          </span>
-        </template>
-      </v-list-item>
+        <!-- custom dropdown button -->
+        <v-btn
+          @mouseover="isHoveringDropdownBtn = true"
+          @mouseleave="isHoveringDropdownBtn = false"
+          :variant="isHoveringDropdownBtn ? 'tonal' : 'plain'"
+          :color="isHoveringDropdownBtn ? 'orange' : 'grey-darken-4'"
+          @click="toggleProducts"
+          :append-icon="showProducts ? 'mdi-menu-up' : 'mdi-menu-down'"
+          block
+          prepend-icon="mdi-archive-outline"
+          class="text-subtitle-2 font-weight-medium pl-4 py-5"
+          rounded="lg"
+          style="justify-content: start"
+        >
+          Kategori Produk
+        </v-btn>
       <template v-if="showProducts">
         <CustomSidebarButton
           icon="mdi-file-tree"
           text="Produk"
           route-link="/product-management"
+          class="pl-4"
         />
         <CustomSidebarButton
           icon="mdi-file-tree"
           text="Sub Produk"
           route-link="/subproduct-management"
+          class="pl-4"
         />
       </template>
       <CustomSidebarButton
@@ -88,38 +92,29 @@
   </v-navigation-drawer>
 </template>
 
-<script>
+<script setup>
+import { ref, computed } from "vue";
 import CustomSidebarButton from "@/components/CustomSidebarButton.vue";
 import { useDrawerStore } from "@/stores/drawerState";
-import { computed } from "vue";
 
-export default {
-  components: {
-    CustomSidebarButton,
+const drawerStore = useDrawerStore();
+const drawer = computed({
+  get() {
+    return drawerStore.drawer;
   },
-  setup() {
-    const drawerStore = useDrawerStore();
-    const drawer = computed({
-      get() {
-        return drawerStore.drawer;
-      },
-      set(value) {
-        drawerStore.drawer = value;
-      },
-    });
-    return {
-      drawerStore: drawer,
-      showProducts: false,
-      productsIcon: "mdi-menu-down",
-    };
+  set(value) {
+    drawerStore.drawer = value;
   },
-  methods: {
-    toggleProducts() {
-      this.showProducts = !this.showProducts;
-      this.productsIcon = this.showProducts ? "mdi-menu-down" : "mdi-menu-up";
-    },
-  },
+});
+
+const showProducts = ref(false);
+const productsIcon = computed(() => (showProducts.value ? "mdi-menu-up" : "mdi-menu-down"));
+
+const toggleProducts = () => {
+  showProducts.value = !showProducts.value;
 };
+
+const isHoveringDropdownBtn = ref(false);
 </script>
 
 <style scoped></style>
