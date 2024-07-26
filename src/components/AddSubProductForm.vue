@@ -18,8 +18,8 @@
       <v-card-text>
         <v-form ref="form">
           <v-select
-            label="Pilih Department"
-            placeholder="Department yang tersedia"
+            label="Pilih Departemen"
+            placeholder="Departemen yang tersedia"
             variant="outlined"
             :items="dataDept"
             item-text="title"
@@ -100,12 +100,14 @@ const isFormValid = computed(() => {
 
 const handleDepartmentChange = () => {
   selectedProduct.value = null;
-}
+};
 
 const filteredProducts = computed(() => {
   // console.log(selectedDept.value);
-  if(!selectedDept.value) return [];
-  return dataProduct.value.filter(product => product.idDepartment === selectedDept.value);
+  if (!selectedDept.value) return [];
+  return dataProduct.value.filter(
+    (product) => product.idDepartment === selectedDept.value
+  );
 });
 
 const submitForm = () => {
@@ -142,23 +144,3 @@ defineExpose({
   color: gray;
 }
 </style>
-
-<!-- <v-form ref="form">
-          <v-select
-            v-model="newDept.divisionId"
-            :items="divisions"
-            item-text="divisiName"
-            item-value="idDivisi"
-            label="Pilih Divisi"
-            placeholder="Pilih Divisi"
-            variant="outlined"
-            required
-          ></v-select>
-          <v-text-field
-            v-model="newDept.departmentName"
-            label="Nama Departemen"
-            placeholder="contoh: Pengembangan"
-            variant="outlined"
-            required
-          ></v-text-field>
-        </v-form> -->

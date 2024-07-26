@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" max-width="450px">
     <v-card>
       <v-card-title class="text-h6 d-flex justify-space-between align-center">
-        <span class="pl-5">Tambah Department</span>
+        <span class="pl-5">Tambah Departemen</span>
         <v-divider vertical class="pl-16 ml-10"></v-divider>
 
         <v-btn
@@ -110,23 +110,3 @@ defineExpose({
   color: gray;
 }
 </style>
-
-<!-- <v-form ref="form">
-          <v-select
-            v-model="newDept.divisionId"
-            :items="divisions"
-            item-text="divisiName"
-            item-value="idDivisi"
-            label="Pilih Divisi"
-            placeholder="Pilih Divisi"
-            variant="outlined"
-            required
-          ></v-select>
-          <v-text-field
-            v-model="newDept.departmentName"
-            label="Nama Departemen"
-            placeholder="contoh: Pengembangan"
-            variant="outlined"
-            required
-          ></v-text-field>
-        </v-form> -->

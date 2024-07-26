@@ -18,8 +18,8 @@
       <v-card-text>
         <v-form ref="form">
           <v-select
-            label="Pilih Department"
-            placeholder="Department yang tersedia"
+            label="Pilih Departemen"
+            placeholder="Departemen yang tersedia"
             variant="outlined"
             :items="dataDept"
             item-text="title"

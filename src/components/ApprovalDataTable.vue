@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/valid-v-slot -->
 <template>
   <v-container class="mx-2" style="max-height: 100vh">
     <v-row class="toolbar-actions" align="center" justify="space-between">

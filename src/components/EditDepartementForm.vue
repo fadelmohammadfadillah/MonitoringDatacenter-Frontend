@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" max-width="450px">
     <v-card>
       <v-card-title class="text-h6 d-flex justify-space-between align-center">
-        <span class="pl-5">Edit Department</span>
+        <span class="pl-5">Edit Departemen</span>
         <v-divider vertical class="pl-16 ml-16"></v-divider>
 
         <v-btn
@@ -29,7 +29,7 @@
 
           <v-text-field
             v-model="deptData.departmentName"
-            label="Nama Department"
+            label="Nama Departemen"
             placeholder="contoh: Digital Enterprise"
             variant="outlined"
             required

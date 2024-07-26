@@ -15,6 +15,7 @@
             label="Nama Lengkap"
             placeholder="contoh: Divisi"
             required
+            variant="outlined"
           ></v-text-field>
 
           <v-text-field
@@ -22,6 +23,7 @@
             label="Email"
             placeholder="contoh: aurorapuspa07@gmail.com"
             required
+            variant="outlined"
           ></v-text-field>
 
           <v-select
@@ -30,6 +32,7 @@
             label="Role"
             placeholder="Silahkan Pilih"
             required
+            variant="outlined"
           ></v-select>
 
           <v-select
@@ -38,6 +41,7 @@
             label="Divisi"
             placeholder="Silahkan Pilih"
             required
+            variant="outlined"
           ></v-select>
 
           <v-select
@@ -46,6 +50,7 @@
             label="Departemen"
             placeholder="Silahkan Pilih"
             required
+            variant="outlined"
           ></v-select>
         </v-form>
       </v-card-text>

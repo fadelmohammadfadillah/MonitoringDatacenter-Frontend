@@ -2,8 +2,8 @@
   <CustomDataTable
     :headers="headers"
     :items="department"
-    title="Manajemen Department"
-    entity="Department"
+    title="Manajemen Departemen"
+    entity="Departemen"
     :addEntity="openAddForm"
     :editEntity="openEditForm"
     :deleteEntity="openDeleteForm"
@@ -69,6 +69,7 @@ const editSuccessModal = ref(null);
 const deleteConfirmModal = ref(null);
 const deleteSuccessModal = ref(null);
 
+// eslint-disable-next-line no-undef
 const formattedDivisiData = computed(() =>{
    return divisi.value.map(div => ({
     title: div.divisiName,
