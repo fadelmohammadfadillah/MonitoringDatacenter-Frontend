@@ -8,6 +8,7 @@ import BankManagementTable from "@/components/BankManagementTable.vue";
 import ProductManagementTable from "@/components/ProductManagementTable.vue";
 import SubProductManagementTable from "@/components/SubProductManagementTable.vue";
 import ModuleManagementTable from "@/components/ModuleManagementTable.vue";
+import ApprovalManaagementTable from "@/components/ApprovalManagementTable.vue";
 
 const routes = [
   {
@@ -55,10 +56,17 @@ const routes = [
         component: ModuleManagementTable,
         name: "ModuleManagementTable",
       },
+
       {
-        path:"/:catchAll(.*)",
-        redirect: { name: "loginPage"}
-      }
+        path: "/approval-management",
+        component: ApprovalManaagementTable,
+        name: "ApprovalManagementTable",
+      },
+
+      {
+        path: "/:catchAll(.*)",
+        redirect: { name: "loginPage" },
+      },
     ],
   },
 ];
