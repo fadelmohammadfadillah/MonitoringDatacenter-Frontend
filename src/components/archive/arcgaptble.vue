@@ -2,9 +2,6 @@
   <v-container class="mx-2" style="max-height: 100vh">
     <v-row class="toolbar-actions" align="center" justify="space-between">
     </v-row>
-    <spacer>
-
-    </spacer>
     <v-data-table
       v-model:expanded="expanded"
       :headers="headers"
@@ -13,9 +10,8 @@
       hide-default-footer
       item-value="no"
       show-expand
-     
+      class="elevation-2"
       height="44vh"
-      variant: 
       sticky-header
     >
       <!-- Slot untuk kolom Status -->
@@ -36,44 +32,54 @@
                 cols="auto"
               >
                 <tbody>
-                  <td>
-                    <v-row>
-                      <v-col class="pa-8">
-                        <strong>Nama Petugas:</strong>
-                        <div>{{ detail.operator }}</div>
-                      </v-col>
-                      <v-col class="pa-8">
-                        <strong>Tanggal:</strong>
-                        <div>{{ item.date }}</div>
-                      </v-col>
-                      <v-col class="pa-8">
-                        <strong>Waktu Submit:</strong>
-                        <div>{{ detail.submitTime }}</div>
-                      </v-col>
-                      <v-col class="pa-8">
-                        <v-chip
-                          :color="getStatusColor(detail.detailedStatus)"
-                          text-color="white"
-                        >
+                  <v-row no-gutters class="py-1">
+                    <v-col cols="12 " md="3" class="d-flex align">
+                      <div class="d-flex flex-column">
+                        <span class="font-weight-bold">Nama Petugas:</span>
+                        <span class="info-text">{{ detail.operator }}</span>
+                      </div>
+                    </v-col>
+
+                    <v-col cols="12" md="2" class="d-flex align-center">
+                      <div class="d-flex flex-column">
+                        <span class="font-weight-bold">Tanggal:</span>
+                        <span class="info-text">{{ item.date }}</span>
+                      </div>
+                    </v-col>
+
+                    <v-col cols="12" md="2" class="d-flex align-center">
+                      <div class="d-flex flex-column">
+                        <span class="font-weight-bold">Waktu Submit:</span>
+                        <span class="info-text">{{ detail.submitTime }}</span>
+                      </div>
+                    </v-col>
+
+                    <v-col cols="12" md="2" class="d-flex align-center">
+                      <v-chip
+                        :color="getStatusColor(detail.detailedStatus)"
+                        text-color="white"
+                        class="info-chip"
+                      >
                         {{ detail.detailedStatus }}
-                        </v-chip>
-                      </v-col>
-                      <spacer>
-                        
-                      </spacer>
-                      <v-col class="pa-8 text-right">
-                        <v-btn
-                          color="orange"
-                          variant="outlined"
-                          text
-                          @click="viewDetails(item)"
-                        >
-                          LIHAT DETAIL
-                        </v-btn>
-                      </v-col>
-                    </v-row>
-                  </td>
+                      </v-chip>
+                    </v-col>
+
+                    <v-col
+                      cols="12"
+                      md="2"
+                      class="d-flex align-center justify-end"
+                    >
+                      <v-btn
+                        color="orange"
+                        variant="outlined"
+                        @click="viewDetails(item)"
+                      >
+                        Lihat Detail
+                      </v-btn>
+                    </v-col>
+                  </v-row>
                 </tbody>
+                
               </v-col>
             </v-row>
           </td>

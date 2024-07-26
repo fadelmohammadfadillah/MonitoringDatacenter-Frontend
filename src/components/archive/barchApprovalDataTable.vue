@@ -1,10 +1,10 @@
 <template>
   <v-container class="mx-2" style="max-height: 100vh">
     <v-row class="toolbar-actions" align="center" justify="space-between">
+      <v-col cols="auto" class="d-flex justify-end">
+        <!-- Optional toolbar actions can be added here -->
+      </v-col>
     </v-row>
-    <spacer>
-
-    </spacer>
     <v-data-table
       v-model:expanded="expanded"
       :headers="headers"
@@ -13,9 +13,8 @@
       hide-default-footer
       item-value="no"
       show-expand
-     
+      class="elevation-1"
       height="44vh"
-      variant: 
       sticky-header
     >
       <!-- Slot untuk kolom Status -->
@@ -29,53 +28,45 @@
       <template v-slot:expanded-row="{ item }">
         <tr>
           <td :colspan="headers.length">
-            <v-row>
-              <v-col
-                v-for="detail in item.details"
-                :key="detail.submitTime"
-                cols="auto"
-              >
-                <tbody>
-                  <td>
-                    <v-row>
-                      <v-col class="pa-8">
-                        <strong>Nama Petugas:</strong>
-                        <div>{{ detail.operator }}</div>
-                      </v-col>
-                      <v-col class="pa-8">
-                        <strong>Tanggal:</strong>
-                        <div>{{ item.date }}</div>
-                      </v-col>
-                      <v-col class="pa-8">
-                        <strong>Waktu Submit:</strong>
-                        <div>{{ detail.submitTime }}</div>
-                      </v-col>
-                      <v-col class="pa-8">
-                        <v-chip
-                          :color="getStatusColor(detail.detailedStatus)"
-                          text-color="white"
-                        >
-                        {{ detail.detailedStatus }}
-                        </v-chip>
-                      </v-col>
-                      <spacer>
-                        
-                      </spacer>
-                      <v-col class="pa-8 text-right">
-                        <v-btn
-                          color="orange"
-                          variant="outlined"
-                          text
-                          @click="viewDetails(item)"
-                        >
-                          LIHAT DETAIL
-                        </v-btn>
-                      </v-col>
-                    </v-row>
-                  </td>
-                </tbody>
-              </v-col>
-            </v-row>
+            <v-card flat>
+              <v-card-text>
+                <v-data-table
+                  :headers="detailHeaders"
+                  :items="item.details"
+                  hide-default-footer
+                  item-value="submitTime"
+                  class="elevation-1"
+                  dense
+                >
+                  <template v-slot:item.operator="{ item }">
+                    <td>{{ item.operator }}</td>
+                  </template>
+
+                  <template v-slot:item.submitTime="{ item }">
+                    <td>{{ item.submitTime }}</td>
+                  </template>
+
+                  <template v-slot:item.detailedStatus="{ item }">
+                    <td>
+                      <v-chip
+                        :color="getStatusColor(item.detailedStatus)"
+                        text-color="white"
+                      >
+                        {{ item.detailedStatus }}
+                      </v-chip>
+                    </td>
+                  </template>
+
+                  <template v-slot:item.actions="{ item }">
+                    <td>
+                      <v-btn color="primary" text @click="viewDetail(item)">
+                        Lihat Detail
+                      </v-btn>
+                    </td>
+                  </template>
+                </v-data-table>
+              </v-card-text>
+            </v-card>
           </td>
         </tr>
       </template>
@@ -167,10 +158,12 @@ const changePage = (page) => {
   currentPage.value = page;
 };
 
-const viewDetails = (detail) => {
+const viewDetail = (detail) => {
   console.log("Lihat detail untuk:", detail);
   // Implementasi logika detail view disini
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+/* Add scoped styles if needed */
+</style>

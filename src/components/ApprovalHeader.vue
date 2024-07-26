@@ -1,8 +1,9 @@
 <template>
-  <v-container class="mx-2" style="max-height: 100vh">
-    <v-row>
+  <v-container class="mx-6" style="max-height: 100vh">
+    <v-row class="pb-10">
       <v-col class="text-h4 font-weight-bold pt-16">Approval</v-col>
     </v-row>
+
     <v-card>
       <v-tabs v-model="tab" background-color="transparent" grow>
         <v-tab
