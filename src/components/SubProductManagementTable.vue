@@ -73,6 +73,7 @@ const editSuccessModal = ref(null);
 const deleteConfirmModal = ref(null);
 const deleteSuccessModal = ref(null);
 
+// eslint-disable-next-line no-undef
 const formattedDeptData = computed(() =>{
    return department.value.map(dept => ({
     title: dept.departmentName,
@@ -80,6 +81,7 @@ const formattedDeptData = computed(() =>{
   }));
 });
 
+// eslint-disable-next-line no-undef
 const formattedProductData = computed(() =>{
    return product.value.map(prod => ({
     title: prod.productName,

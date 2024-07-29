@@ -37,22 +37,22 @@
 
       <!-- Switching Section -->
       <v-list-item subtitle="Switching" class="pa-0 pl-2"></v-list-item>
-        <!-- custom dropdown button -->
-        <v-btn
-          @mouseover="isHoveringDropdownBtn = true"
-          @mouseleave="isHoveringDropdownBtn = false"
-          :variant="isHoveringDropdownBtn ? 'tonal' : 'plain'"
-          :color="isHoveringDropdownBtn ? 'orange' : 'grey-darken-4'"
-          @click="toggleProducts"
-          :append-icon="showProducts ? 'mdi-menu-up' : 'mdi-menu-down'"
-          block
-          prepend-icon="mdi-archive-outline"
-          class="text-subtitle-2 font-weight-medium pl-4 py-5"
-          rounded="lg"
-          style="justify-content: start"
-        >
-          Kategori Produk
-        </v-btn>
+      <!-- custom dropdown button -->
+      <v-btn
+        @mouseover="isHoveringDropdownBtn = true"
+        @mouseleave="isHoveringDropdownBtn = false"
+        :variant="isHoveringDropdownBtn ? 'tonal' : 'plain'"
+        :color="isHoveringDropdownBtn ? 'orange' : 'grey-darken-4'"
+        @click="toggleProducts"
+        :append-icon="showProducts ? 'mdi-menu-up' : 'mdi-menu-down'"
+        block
+        prepend-icon="mdi-archive-outline"
+        class="text-subtitle-2 font-weight-medium pl-4 py-5"
+        rounded="lg"
+        style="justify-content: start"
+      >
+        Kategori Produk
+      </v-btn>
       <template v-if="showProducts">
         <CustomSidebarButton
           icon="mdi-file-tree"
@@ -108,7 +108,9 @@ const drawer = computed({
 });
 
 const showProducts = ref(false);
-const productsIcon = computed(() => (showProducts.value ? "mdi-menu-up" : "mdi-menu-down"));
+const productsIcon = computed(() =>
+  showProducts.value ? "mdi-menu-up" : "mdi-menu-down"
+);
 
 const toggleProducts = () => {
   showProducts.value = !showProducts.value;

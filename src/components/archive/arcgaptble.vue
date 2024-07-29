@@ -1,10 +1,7 @@
 <template>
-  <v-container>
+  <v-container class="mx-2" style="max-height: 100vh">
     <v-row class="toolbar-actions" align="center" justify="space-between">
     </v-row>
-      <v-spacer>
-
-    </v-spacer>
     <v-data-table
       v-model:expanded="expanded"
       :headers="headers"
@@ -13,69 +10,83 @@
       hide-default-footer
       item-value="no"
       show-expand
+      class="elevation-2"
       height="44vh"
-      variant: 
-      sticky
-      class="rounded-xl"
+      sticky-header
     >
-      <template v-slot:column.header="{ column }">
-        <th style="background-color: #FCB275">
-          {{ column.title }}
-        </th>
-      </template>
       <!-- Slot untuk kolom Status -->
       <template v-slot:item.status="{ item }">
         <v-chip :color="getStatusColor(item.status)" text-color="white" small>
           {{ item.status }}
         </v-chip>
       </template>
+
       <!-- Expanded row slot -->
       <template v-slot:expanded-row="{ item }">
         <tr>
-          <td :colspan="headers.length + 1" class="pa-0">
-            <v-data-table
-              :headers="detailHeaders"
-              :items="item.details"
-              hide-default-footer
-              hide-default-header
-              style="background-color: #F6F6F6"
-            >
-              <template v-slot:item.operator="{item: detail}">
-                <div class="text-caption font-weight-light">Nama Petugas:</div>
-                <div class="text-body-2 font-weight-regular">{{detail.operator}}</div>
-              </template>  
-              <template v-slot:item.date="{item: detail}">
-                <div class="text-caption font-weight-light">Tanggal:</div>
-                <div class="text-body-2 font-weight-regular">{{detail.date}}</div>
-              </template>
-              <template v-slot:item.submitTime="{item: detail}">
-                <div class="text-caption font-weight-light">Waktu Submit:</div>
-                <div class="text-body-2 font-weight-regular">{{detail.submitTime}}</div>
-              </template>
-              <template v-slot:item.detailedStatus="{item: detail}">
-                <div class="text-caption font-weight-light">Status:</div>
-                <v-chip
-                  :color="getStatusColor(detail.detailedStatus)"
-                  text-color="white"
-                  size="small"
-                >
-                {{ detail.detailedStatus }}
-                </v-chip>
-              </template>
-              <template v-slot:item.actions="{item: detail}">
-                <v-btn
-                  size="small"
-                  color="orange"
-                  variant="outlined"
-                  @click="viewDetail(item)"
-                >Lihat Detail</v-btn>
-              </template>
-            </v-data-table>
+          <td :colspan="headers.length">
+            <v-row>
+              <v-col
+                v-for="detail in item.details"
+                :key="detail.submitTime"
+                cols="auto"
+              >
+                <tbody>
+                  <v-row no-gutters class="py-1">
+                    <v-col cols="12 " md="3" class="d-flex align">
+                      <div class="d-flex flex-column">
+                        <span class="font-weight-bold">Nama Petugas:</span>
+                        <span class="info-text">{{ detail.operator }}</span>
+                      </div>
+                    </v-col>
+
+                    <v-col cols="12" md="2" class="d-flex align-center">
+                      <div class="d-flex flex-column">
+                        <span class="font-weight-bold">Tanggal:</span>
+                        <span class="info-text">{{ item.date }}</span>
+                      </div>
+                    </v-col>
+
+                    <v-col cols="12" md="2" class="d-flex align-center">
+                      <div class="d-flex flex-column">
+                        <span class="font-weight-bold">Waktu Submit:</span>
+                        <span class="info-text">{{ detail.submitTime }}</span>
+                      </div>
+                    </v-col>
+
+                    <v-col cols="12" md="2" class="d-flex align-center">
+                      <v-chip
+                        :color="getStatusColor(detail.detailedStatus)"
+                        text-color="white"
+                        class="info-chip"
+                      >
+                        {{ detail.detailedStatus }}
+                      </v-chip>
+                    </v-col>
+
+                    <v-col
+                      cols="12"
+                      md="2"
+                      class="d-flex align-center justify-end"
+                    >
+                      <v-btn
+                        color="orange"
+                        variant="outlined"
+                        @click="viewDetails(item)"
+                      >
+                        Lihat Detail
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                </tbody>
+                
+              </v-col>
+            </v-row>
           </td>
         </tr>
       </template>
-      
     </v-data-table>
+
     <v-row class="d-flex justify-between align-center mt-4">
       <v-col cols="auto">
         <div class="left pa-2">
@@ -112,18 +123,7 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
-  detailHeaders: Array,
 });
-
-if (props.detailHeaders[props.detailHeaders.length - 1].title !== "Action") {
-  // eslint-disable-next-line vue/no-mutating-props
-  props.detailHeaders.push({
-    title: "Action",
-    align: "end",
-    key: "actions",
-    sortable: false,
-  });
-}
 
 const expanded = ref([]);
 
@@ -173,7 +173,7 @@ const changePage = (page) => {
   currentPage.value = page;
 };
 
-const viewDetail = (detail) => {
+const viewDetails = (detail) => {
   console.log("Lihat detail untuk:", detail);
   // Implementasi logika detail view disini
 };
