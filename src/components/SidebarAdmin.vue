@@ -81,7 +81,7 @@
 
       <!-- Operasi Section -->
       <v-list-item subtitle="Operasi" class="pa-0 pl-2"></v-list-item>
-      <CustomSidebarButton icon="mdi-stamper" text="Approval" />
+      <CustomSidebarButton icon="mdi-stamper" text="Approval" route-link="/approval-management"/>
       <CustomSidebarButton icon="mdi-format-list-checks" text="Checklist" />
       <CustomSidebarButton icon="mdi-chart-box-outline" text="Report" />
 
