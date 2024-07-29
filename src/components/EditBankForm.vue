@@ -1,25 +1,26 @@
 <template>
-  <v-dialog v-model="dialog" max-width="450px">
+  <v-dialog v-model="dialog" max-width="550px">
     <v-card>
       <v-card-title class="text-h6 d-flex justify-space-between align-center">
         <span class="pl-5">Edit Bank</span>
-        <v-divider vertical class="pl-16 ml-16"></v-divider>
+        <v-spacer></v-spacer>
+        <v-divider vertical class=""></v-divider>
 
         <v-btn
           @click="closeDialog"
           prepend-icon="mdi-close"
           variant="plain"
-          class="pr-11"
+          class=""
         >
           Close
         </v-btn>
       </v-card-title>
-      <v-divider class="my-2"></v-divider>
-      <v-card-text>
+      <v-divider class="my-1"></v-divider>
+      <v-card-text class="py-2">
+        <div class="text-caption font-weight-regular">Nama Bank</div>
         <v-form ref="form">
           <v-text-field
             v-model="bankData.bankName"
-            label="Nama Bank"
             placeholder="contoh: Bank DKI"
             variant="outlined"
             required
@@ -27,19 +28,25 @@
         </v-form>
       </v-card-text>
 
-      <v-card-actions class="d-flex justify-center pb-6">
-        <v-btn outlined @click="closeDialog" class="cancel-button px-16">
-          Batalkan
-        </v-btn>
-        <v-btn
-          outlined
-          @click="submitForm"
-          :disabled="!isFormValid"
-          class="save-button px-16"
-        >
-          Simpan
-        </v-btn>
-      </v-card-actions>
+      <v-row class="px-4 pb-4">
+        <v-col>
+          <v-btn block variant="outlined" color="orange" @click="closeDialog">
+            Batalkan
+          </v-btn>
+        </v-col>
+        <v-col>
+          <v-btn
+            block
+            variant="flat"
+            :color="!isFormValid ? 'grey' : 'orange'"
+            @click="submitForm"
+            :disabled="!isFormValid"
+            class="text-white"
+          >
+            Simpan
+          </v-btn>
+        </v-col>
+      </v-row>
     </v-card>
   </v-dialog>
 </template>
@@ -86,13 +93,4 @@ defineExpose({
 });
 </script>
 
-<style scoped>
-.cancel-button {
-  border: 1px solid orange;
-  color: orange;
-}
-.save-button {
-  background-color: #e0e0e0;
-  color: gray;
-}
-</style>
+<style scoped></style>

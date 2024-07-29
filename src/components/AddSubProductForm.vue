@@ -1,25 +1,29 @@
 <template>
-  <v-dialog v-model="dialog" max-width="450px">
+  <v-dialog v-model="dialog" max-width="550px">
     <v-card>
-      <v-card-title class="text-h6 d-flex justify-space-between align-center">
-        <span class="pl-5">Tambah Sub Produk</span>
-        <v-divider vertical class="pl-16 ml-10"></v-divider>
+      <v-card-title
+        class="d-flex align-center justify-space-between text-h5 ma-2"
+      >
+        <span>Tambah Sub Produk</span>
+        <v-spacer></v-spacer>
+        <v-divider vertical class=""></v-divider>
 
         <v-btn
           @click="closeDialog"
           prepend-icon="mdi-close"
           variant="plain"
-          class="pr-10"
+          class=""
         >
           Close
         </v-btn>
       </v-card-title>
-      <v-divider class="my-2"></v-divider>
-      <v-card-text>
+      <v-divider class="my-1"></v-divider>
+      <v-card-text class="py-2">
+        <div class="text-caption font-weight-regular">Nama Departemen</div>
+
         <v-form ref="form">
           <v-select
-            label="Pilih Department"
-            placeholder="Department yang tersedia"
+            placeholder="Silahkan Pilih"
             variant="outlined"
             :items="dataDept"
             item-text="title"
@@ -27,9 +31,10 @@
             v-model="selectedDept"
             required
           ></v-select>
+          <div class="text-caption font-weight-regular">Nama Produk</div>
+
           <v-select
-            label="Pilih Produk"
-            placeholder="Produk yang tersedia"
+            placeholder="Silahkan Pilih"
             variant="outlined"
             :items="filteredProducts"
             item-text="title"
@@ -38,9 +43,10 @@
             :disabled="!selectedDept"
             required
           ></v-select>
+          <div class="text-caption font-weight-regular">Nama Sub Produk</div>
+
           <v-text-field
             v-model="newSubproduct.subproductName"
-            label="Nama Sub Produk"
             placeholder="contoh: E-Monitoring"
             variant="outlined"
             :disabled="!selectedProduct"
@@ -49,19 +55,25 @@
         </v-form>
       </v-card-text>
 
-      <v-card-actions class="d-flex justify-center pb-6">
-        <v-btn outlined @click="closeDialog" class="cancel-button px-16">
-          Batalkan
-        </v-btn>
-        <v-btn
-          outlined
-          @click="submitForm"
-          :disabled="!isFormValid"
-          class="save-button px-16"
-        >
-          Simpan
-        </v-btn>
-      </v-card-actions>
+      <v-row class="px-4 pb-4">
+        <v-col>
+          <v-btn block variant="outlined" color="orange" @click="closeDialog">
+            Batalkan
+          </v-btn>
+        </v-col>
+        <v-col>
+          <v-btn
+            block
+            variant="flat"
+            :color="!isFormValid ? 'grey' : 'orange'"
+            @click="submitForm"
+            :disabled="!isFormValid"
+            class="text-white"
+          >
+            Simpan
+          </v-btn>
+        </v-col>
+      </v-row>
     </v-card>
   </v-dialog>
 </template>
@@ -99,9 +111,12 @@ const isFormValid = computed(() => {
 
 const filteredProducts = computed(() => {
   // console.log(selectedDept.value);
-  if(!selectedDept.value) return [];
+  if (!selectedDept.value) return [];
+  // eslint-disable-next-line vue/no-side-effects-in-computed-properties
   selectedProduct.value = null;
-  return dataProduct.value.filter(product => product.idDepartment === selectedDept.value);
+  return dataProduct.value.filter(
+    (product) => product.idDepartment === selectedDept.value
+  );
 });
 
 const submitForm = () => {
@@ -128,33 +143,4 @@ defineExpose({
 });
 </script>
 
-<style scoped>
-.cancel-button {
-  border: 1px solid orange;
-  color: orange;
-}
-.save-button {
-  background-color: #e0e0e0;
-  color: gray;
-}
-</style>
-
-<!-- <v-form ref="form">
-          <v-select
-            v-model="newDept.divisionId"
-            :items="divisions"
-            item-text="divisiName"
-            item-value="idDivisi"
-            label="Pilih Divisi"
-            placeholder="Pilih Divisi"
-            variant="outlined"
-            required
-          ></v-select>
-          <v-text-field
-            v-model="newDept.departmentName"
-            label="Nama Departemen"
-            placeholder="contoh: Pengembangan"
-            variant="outlined"
-            required
-          ></v-text-field>
-        </v-form> -->
+<style scoped></style>

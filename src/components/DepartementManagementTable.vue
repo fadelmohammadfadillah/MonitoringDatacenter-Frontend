@@ -2,8 +2,8 @@
   <CustomDataTable
     :headers="headers"
     :items="department"
-    title="Manajemen Department"
-    entity="Department"
+    title="Manajemen Departemen"
+    entity="Departemen"
     :addEntity="openAddForm"
     :editEntity="openEditForm"
     :deleteEntity="openDeleteForm"
@@ -37,7 +37,7 @@
   />
 
   <CustomSuccessModal
-    message="Divisi berhasil disimpan!"
+    message="Departemen berhasil disimpan!"
     imgSrc="/src/assets/success-modal-img.svg"
     ref="deleteSuccessModal"
   />
@@ -58,7 +58,7 @@ const divisi = ref([]);
 
 const headers = [
   { title: "No", align: "start", key: "idDepartment" },
-  { title: "Department", align: "start", key: "departmentName" },
+  { title: "Departemen", align: "start", key: "departmentName" },
   { title: "Divisi", align: "start", key: "divisiName" },
 ];
 
@@ -69,6 +69,7 @@ const editSuccessModal = ref(null);
 const deleteConfirmModal = ref(null);
 const deleteSuccessModal = ref(null);
 
+// eslint-disable-next-line no-undef
 const formattedDivisiData = computed(() =>{
    return divisi.value.map(div => ({
     title: div.divisiName,

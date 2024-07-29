@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/valid-v-slot -->
 <template>
   <v-container class="mx-2" style="max-height: 100vh">
     <v-row>
@@ -66,9 +67,10 @@
             ></v-btn>
           </template>
 
-          <v-list class="pr-6">
+          <v-list class="left rounded-lg px-4 pr-6 ">
             <v-list-item title="Edit" @click="() => dialogEdit(item)">
             </v-list-item>
+            <v-divider></v-divider>
             <v-list-item base-color="red" @click="dialogDelete(item)"
               >Hapus
             </v-list-item>
@@ -81,13 +83,16 @@
       <v-col cols="auto">
         <div class="left pa-2">
           <span>Item per halaman:</span>
-          <v-select
-            v-model="itemsPerPage"
-            :items="perPageOptions"
-            outlined
-            dense
-          ></v-select>
         </div>
+      </v-col>
+      <v-col class="v-col-2 pt-15 pl-2 px-12">
+        <v-select
+          v-model="itemsPerPage"
+          :items="perPageOptions"
+          variant="outlined"
+          dense
+          class="pr-13"
+        ></v-select>
       </v-col>
       <v-col cols="center" class="d-flex justify-end">
         <v-pagination

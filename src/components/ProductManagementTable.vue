@@ -53,7 +53,7 @@ const department = ref([]);
 const headers = [
   { title: "No", align: "start", key: "idProduct" },
   { title: "Produk", align: "start", key: "productName" },
-  { title: "Department", align: "start", key: "departmentName" },
+  { title: "Departemen", align: "start", key: "departmentName" },
 ];
 
 const addProductForm = ref(null);

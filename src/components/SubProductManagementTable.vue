@@ -61,7 +61,7 @@ const department = ref([]);
 
 const headers = [
   { title: "No", align: "start", key: "idSubproduct" },
-  { title: "Department", align: "start", key: "departmentName" },
+  { title: "Departemen", align: "start", key: "departmentName" },
   { title: "Produk", align: "start", key: "productName" },
   { title: "Sub Produk", align: "start", key: "subproductName" },
 ];

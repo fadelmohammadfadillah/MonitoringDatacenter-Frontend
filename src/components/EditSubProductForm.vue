@@ -16,10 +16,10 @@
       </v-card-title>
       <v-divider class="my-2"></v-divider>
       <v-card-text>
+        <div class="text-caption font-weight-regular">Nama Departemen</div>
         <v-form ref="form">
           <v-select
             v-model="selectedDept"
-            label="Nama Departemen"
             placeholder="contoh: Digital Enterprise"
             variant="outlined"
             :items="dataDepartment"
@@ -28,9 +28,9 @@
             @change="handleDepartmentChange"
             required
           ></v-select>
-          
+
+          <div class="text-caption font-weight-regular">Nama Produk</div>
           <v-select
-            label="Pilih Produk"
             placeholder="Produk yang tersedia"
             variant="outlined"
             :items="filteredProducts"
@@ -41,9 +41,9 @@
             required
           ></v-select>
 
+          <div class="text-caption font-weight-regular">Nama Sub Produk</div>
           <v-text-field
             v-model="subproductData.subproductName"
-            label="Nama Sub Produk"
             placeholder="contoh: E-Monitoring"
             variant="outlined"
             :disabled="!selectedProduct"
@@ -52,19 +52,25 @@
         </v-form>
       </v-card-text>
 
-      <v-card-actions class="d-flex justify-center pb-6">
-        <v-btn outlined @click="closeDialog" class="cancel-button px-16">
-          Batalkan
-        </v-btn>
-        <v-btn
-          outlined
-          @click="submitForm"
-          :disabled="!isFormValid"
-          class="save-button px-16"
-        >
-          Simpan
-        </v-btn>
-      </v-card-actions>
+      <v-row class="px-4 pb-4">
+        <v-col>
+          <v-btn block variant="outlined" color="orange" @click="closeDialog">
+            Batalkan
+          </v-btn>
+        </v-col>
+        <v-col>
+          <v-btn
+            block
+            variant="flat"
+            :color="!isFormValid ? 'grey' : 'orange'"
+            @click="submitForm"
+            :disabled="!isFormValid"
+            class="text-white"
+          >
+            Simpan
+          </v-btn>
+        </v-col>
+      </v-row>
     </v-card>
   </v-dialog>
 </template>
@@ -76,7 +82,7 @@ const emit = defineEmits(["editSubproduct"]);
 const dialog = ref(false);
 const subproductData = ref({
   idSubproduct: 0,
-  idProduct:0,
+  idProduct: 0,
   subproductName: "",
 });
 
@@ -100,11 +106,13 @@ const openDialog = (item, dataDept, dataProd) => {
 
 const handleDepartmentChange = () => {
   selectedProduct.value = null;
-}
+};
 
 const filteredProducts = computed(() => {
-  if(!selectedDept.value) return [];
-  return dataProduct.value.filter(product => product.idDepartment === selectedDept.value);
+  if (!selectedDept.value) return [];
+  return dataProduct.value.filter(
+    (product) => product.idDepartment === selectedDept.value
+  );
 });
 
 const closeDialog = () => {
@@ -120,7 +128,7 @@ const submitForm = () => {
     subproductData.value.idProduct = selectedProduct;
     // eslint-disable-next-line no-undef
     emit("editSubproduct", { ...subproductData.value });
-    
+
     // Reset form
     selectedDept.value = null;
     selectedProduct.value = null;
@@ -138,13 +146,4 @@ defineExpose({
 });
 </script>
 
-<style scoped>
-.cancel-button {
-  border: 1px solid orange;
-  color: orange;
-}
-.save-button {
-  background-color: #e0e0e0;
-  color: gray;
-}
-</style>
+<style scoped></style>
