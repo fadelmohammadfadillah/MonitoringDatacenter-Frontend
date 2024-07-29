@@ -75,7 +75,7 @@
           <v-btn block variant="outlined" color="orange" @click="closeDialog"> Batalkan </v-btn>
         </v-col>
         <v-col>
-          <v-btn block variant="flat" :color="!isFormValid ? 'grey' : 'orange'" @click="submitForm" :disabled="!isFormValid">
+          <v-btn block variant="flat" :color="!isFormValid ? 'grey' : 'orange'" @click="submitForm" :disabled="!isFormValid" class="text-white">
             Simpan
           </v-btn>
         </v-col>
@@ -102,7 +102,14 @@
   });
 
   const isFormValid = computed(() => {
-    return newUser.value.name;
+    return (
+      newUser.value.name &&
+      newUser.value.username &&
+      newUser.value.password &&
+      selectedRole.value &&
+      selectedDiv.value &&
+      (isDisabled.value || selectedDept.value)
+    );
   });
 
   const dataDivisi = ref([{}]);
