@@ -27,7 +27,6 @@
             density="compact"
             variant="outlined"
             required
-            variant="outlined"
           ></v-text-field>
           <div class="text-caption font-weight-regular">Username</div>
           <v-text-field
@@ -36,7 +35,6 @@
             density="compact"
             variant="outlined"
             required
-            variant="outlined"
           ></v-text-field>
           <div class="text-caption font-weight-regular">Password</div>
           <v-text-field
@@ -57,7 +55,6 @@
             density="compact"
             variant="outlined"
             required
-            variant="outlined"
           ></v-select>
           <div class="text-caption font-weight-regular">Divisi</div>
           <v-select
@@ -67,7 +64,6 @@
             density="compact"
             variant="outlined"
             required
-            variant="outlined"
           ></v-select>
           <div class="text-caption font-weight-regular">Departemen</div>
           <v-select
@@ -78,7 +74,6 @@
             variant="outlined"
             :disabled="isDisabled"
             required
-            variant="outlined"
           ></v-select>
         </v-form>
       </v-card-text>
