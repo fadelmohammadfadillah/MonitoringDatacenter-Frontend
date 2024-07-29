@@ -31,7 +31,7 @@
   />
 
   <CustomSuccessModal
-    message="Divisi berhasil disimpan!"
+    message="Divisi berhasil dihapus!"
     imgSrc="/src/assets/success-modal-img.svg"
     ref="deleteSuccessModal"
   />

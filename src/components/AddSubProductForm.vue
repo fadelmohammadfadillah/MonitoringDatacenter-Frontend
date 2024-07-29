@@ -25,7 +25,6 @@
             item-text="title"
             item-value="value"
             v-model="selectedDept"
-            @change="handleDepartmentChange"
             required
           ></v-select>
           <v-select
@@ -98,13 +97,10 @@ const isFormValid = computed(() => {
   return newSubproduct.value.subproductName;
 });
 
-const handleDepartmentChange = () => {
-  selectedProduct.value = null;
-}
-
 const filteredProducts = computed(() => {
   // console.log(selectedDept.value);
   if(!selectedDept.value) return [];
+  selectedProduct.value = null;
   return dataProduct.value.filter(product => product.idDepartment === selectedDept.value);
 });
 

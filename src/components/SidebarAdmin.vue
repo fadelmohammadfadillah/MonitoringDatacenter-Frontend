@@ -81,9 +81,9 @@
 
       <!-- Operasi Section -->
       <v-list-item subtitle="Operasi" class="pa-0 pl-2"></v-list-item>
-      <CustomSidebarButton icon="mdi-clipboard-check" text="Checklist" />
-      <CustomSidebarButton icon="mdi-chart-line" text="Overview" />
-      <CustomSidebarButton icon="mdi-history" text="Riwayat" />
+      <CustomSidebarButton icon="mdi-stamper" text="Approval" />
+      <CustomSidebarButton icon="mdi-format-list-checks" text="Checklist" />
+      <CustomSidebarButton icon="mdi-chart-box-outline" text="Report" />
 
       <!-- Signout -->
       <v-divider class="my-4"></v-divider>
