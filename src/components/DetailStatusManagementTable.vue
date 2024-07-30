@@ -8,12 +8,7 @@
       color="orange"
     />
 
-    <EditDivisiForm ref="editDivisiForm" @edit-div="handleEditDivisi" />
-    <CustomSuccessModal
-      message="Perubahan berhasil disimpan!"
-      imgSrc="/src/assets/success-modal-img.svg"
-      ref="editSuccessModal"
-    />
+    <ShowDetailModule ref="showdetailModule" />
 
     <v-row class="pb-10">
       <v-col class="text-h4 font-weight-bold pt-8"
@@ -34,10 +29,9 @@
             class="px-0"
             :headers="headermodule"
             :items="module"
-            :editEntity="openEditForm"
+            :editEntity="openDetailmodule"
             v-if="tab === tabs[0]"
           />
-          <!-- <v-card-text v-if="tab === tabs[1]">Riwayat Konten di sini...</v-card-text> -->
         </v-tabs-window-item>
       </v-tabs-window>
     </v-card-text>
@@ -49,218 +43,138 @@ import { ref } from "vue";
 import CustomDetailStatusTable from "./CustomDetailStatusTable.vue";
 
 const tabs = ["Module", "Server App", "Server DB", "Backup", "Storage"];
-// Data reactive
+
 const currentTab = ref(tabs[0]);
 
+
+
+// Detail Module Status
+
 const headermodule = [
-  { title: "No", align: "start", key: "no" },
+  { title: "No", align: "start", key: "idstatusModule" },
   { title: "Module", align: "start", key: "moduleName" },
   { title: "Status", align: "start", key: "status" },
   { title: "Performa", align: "start", key: "performa" },
   { title: "Log", align: "start", key: "log" },
-  { title: "Catatan Petugas", align: "start", key: "note" },
+  { title: "Catatan Petugas", align: "start", key: "noteModule" },
 ];
 
 const module = ref([
   {
-    no: 1,
+    idstatusModule: 1,
     moduleName: "mtask001",
     status: "NOK",
     performa: "≧ 5 detik",
     log: "TCP Module Delay",
-    note: "Sempat terjadi kesalahan",
+    noteModule: "Sempat terjadi kesalahan",
   },
   {
-    no: 2,
+    idstatusModule: 2,
     moduleName: "mcenter001",
     status: "OK",
     performa: "≦ 2 detik",
     log: "Normal",
-    note: "-",
+    noteModule: "-",
   },
   {
-    no: 3,
-    moduleName: "mcenterajs001",
+    idstatusModule: 3,
+    moduleName: "mcjs001",
     status: "OK",
     performa: "≦ 2 detik",
     log: "Normal",
-    note: "-",
+    noteModule: "-",
   },
 
   {
-    no: 4,
-    moduleName: "mcenterajs001",
+    idstatusModule: 4,
+    moduleName: "TTCP Module",
     status: "OK",
     performa: "≦ 2 detik",
     log: "Normal",
-    note: "-",
+    noteModule: "-",
   },
 
   {
-    no: 5,
-    moduleName: "mcenterajs001",
+    idstatusModule: 5,
+    moduleName: "auth001",
     status: "OK",
     performa: "≦ 2 detik",
     log: "Normal",
-    note: "-",
+    noteModule: "-",
   },
 
   {
-    no: 6,
-    moduleName: "mcenterajs001",
+    idstatusModule: 6,
+    moduleName: "auth002",
     status: "OK",
     performa: "≦ 2 detik",
     log: "Normal",
-    note: "-",
+    noteModule: "Yuhuuu",
   },
 
   {
-    no: 7,
+    idstatusModule: 7,
     moduleName: "mcenterajs001",
     status: "OK",
     performa: "≦ 2 detik",
     log: "Normal",
-    note: "-",
+    noteModule: "Test",
   },
 
   {
-    no: 8,
-    moduleName: "mcenterajs001",
+    idstatusModule: 8,
+    moduleName: "mcenterajs002",
     status: "OK",
     performa: "≦ 2 detik",
     log: "Normal",
-    note: "-",
+    noteModule: "-",
   },
   {
-    no: 9,
-    moduleName: "mcenterajs001",
+    idstatusModule: 9,
+    moduleName: "mcenterajs003",
     status: "OK",
     performa: "≦ 2 detik",
     log: "Normal",
-    note: "-",
+    noteModule: "-",
   },
   {
-    no: 10,
-    moduleName: "mcenterajs001",
+    idstatusModule: 10,
+    moduleName: "mcenterajs004",
     status: "OK",
     performa: "≦ 2 detik",
     log: "Normal",
-    note: "-",
-  },
-  {
-    no: 11,
-    moduleName: "mcenterajs001",
-    status: "OK",
-    performa: "≦ 2 detik",
-    log: "Normal",
-    note: "-",
-  },
-  {
-    no: 12,
-    moduleName: "mcenterajs001",
-    status: "OK",
-    performa: "≦ 2 detik",
-    log: "Normal",
-    note: "-",
-  },
-  {
-    no: 13,
-    moduleName: "mcenterajs001",
-    status: "OK",
-    performa: "≦ 2 detik",
-    log: "Normal",
-    note: "-",
-  },
-  {
-    no: 14,
-    moduleName: "mcenterajs001",
-    status: "OK",
-    performa: "≦ 2 detik",
-    log: "Normal",
-    note: "-",
-  },
-  {
-    no: 15,
-    moduleName: "mcenterajs001",
-    status: "OK",
-    performa: "≦ 2 detik",
-    log: "Normal",
-    note: "-",
-  },
-  {
-    no: 16,
-    moduleName: "mcenterajs001",
-    status: "OK",
-    performa: "≦ 2 detik",
-    log: "Normal",
-    note: "-",
-  },
-  {
-    no: 17,
-    moduleName: "mcenterajs001",
-    status: "OK",
-    performa: "≦ 2 detik",
-    log: "UnNormal",
-    note: "-",
-  },
-  {
-    no: 18,
-    moduleName: "mcenterajs001",
-    status: "OK",
-    performa: "≦ 2 detik",
-    log: "Normal",
-    note: "-",
-  },
-  {
-    no: 19,
-    moduleName: "mcenterajs001",
-    status: "OK",
-    performa: "≦ 2 detik",
-    log: "Normal",
-    note: "-",
-  },
-  {
-    no: 20,
-    moduleName: "mcenterajs001",
-    status: "OK",
-    performa: "≦ 2 detik",
-    log: "Normal",
-    note: "-",
+    noteModule: "-",
   },
 ]);
 
-const editDivisiForm = ref(null);
+import ShowDetailModule from "@/components/DetailStatusModule.vue";
+import detailModuleService from "@/services/DetailModuleService.js";
 
-const openEditForm = (item) => {
-  editDivisiForm.value.openDialog(item);
+const showdetailModule = ref(null);
+
+const openDetailmodule = (item) => {
+  showdetailModule.value.openDialog(item);
 };
 
-const openEditSuccessModal = () => {
-  editSuccessModal.value.modalState();
-};
-
-const handleEditDivisi = async (editDiv) => {
+const fetchDataStatusModule = async () => {
   try {
-    await divisiService.updateDiv(editDiv);
-    fetchDataDivisi();
-    openEditSuccessModal();
-  } catch (error) {
-    alert("edit data divisi gagal!" + error);
-  }
-};
-
-const fetchDataDivisi = async () => {
-  try {
-    const divisiData = await divisiService.getAllDiv();
-    console.log(divisiData);
-    divisi.value = divisiData.data;
+    const datastatusModule = await detailModuleService.getAllstatusModule();
+    console.log(datastatusModule);
+    divisi.value = datastatusModule.data;
   } catch (error) {
     console.log(error);
   }
 };
 
-onMounted(fetchDataDivisi);
+onMounted(fetchDataStatusModule);
 
-import EditDivisiForm from "@/components/DetailStatusModule.vue";
-import divisiService from "@/services/DetailModuleService.js";
+// ===================================================================
+
+
+
+
+
+
+
+
 </script>

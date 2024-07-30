@@ -92,7 +92,7 @@
           <v-container>
             <div class="text-caption font-weight-regular">Catatan Petugas</div>
             <v-sheet :height="100" :width="490" border rounded class="pa-3">
-              Sempat terjadi kesalahan pada TCP Modul</v-sheet
+              {{ divData.noteModule }}</v-sheet
             >
           </v-container>
         </v-card-text>
@@ -102,49 +102,30 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref } from "vue";
 
-const emit = defineEmits(["editDiv"]);
 const dialog = ref(false);
 const divData = ref({
-  idDivisi: "",
+  idstatusModule: "",
   moduleName: "",
   performa: "",
   status: "",
   log: "",
+  noteModule: "",
 });
 
 const openDialog = (item) => {
-  divData.value.idDivisi = item.idDivisi;
+  divData.value.idstatusModule = item.idstatusModule;
   divData.value.moduleName = item.moduleName;
   divData.value.performa = item.performa;
   divData.value.status = item.status;
   divData.value.log = item.log;
+  divData.value.noteModule = item.noteModule;
   dialog.value = true;
 };
 
 const closeDialog = () => {
   dialog.value = false;
-};
-
-const isFormValid = computed(() => {
-  return divData.value.moduleName;
-});
-
-const submitForm = () => {
-  if (isFormValid.value) {
-    // eslint-disable-next-line no-undef
-    emit("editDiv", { ...divData.value });
-
-    // Reset form
-    divData.value = {
-      moduleName: "",
-      performa: "",
-      status: "",
-      log: "",
-    };
-    closeDialog();
-  }
 };
 
 defineExpose({
