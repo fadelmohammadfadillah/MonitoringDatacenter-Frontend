@@ -15,7 +15,8 @@
           clearable
           dense
           prepend-inner-icon="mdi-magnify"
-          outlined
+          variant="outlined"
+  
         ></v-text-field>
       </v-col>
 
@@ -67,7 +68,7 @@
             ></v-btn>
           </template>
 
-          <v-list class="left rounded-lg px-4 pr-6 ">
+          <v-list class="left rounded-lg px-4 pr-6">
             <v-list-item title="Edit" @click="() => dialogEdit(item)">
             </v-list-item>
             <v-divider></v-divider>
