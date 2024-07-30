@@ -76,6 +76,8 @@
       </template>
       
     </v-data-table>
+
+    
     <v-row class="d-flex justify-between align-center mt-4">
       <v-col cols="auto">
         <div class="left pa-2">
