@@ -116,6 +116,7 @@ const getStatusColor = (status) => {
     case "NOK":
       return "red";
     case "Pending":
+    case "WARN":
       return "orange";
     default:
       return "grey";

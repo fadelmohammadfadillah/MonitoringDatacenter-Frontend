@@ -8,6 +8,13 @@
       color="orange"
     />
 
+    <EditDivisiForm ref="editDivisiForm" @edit-div="handleEditDivisi" />
+    <CustomSuccessModal
+      message="Perubahan berhasil disimpan!"
+      imgSrc="/src/assets/success-modal-img.svg"
+      ref="editSuccessModal"
+    />
+
     <v-row class="pb-10">
       <v-col class="text-h4 font-weight-bold pt-8"
         >Detail Status Persetujuan</v-col
@@ -28,7 +35,6 @@
             :headers="headermodule"
             :items="module"
             :editEntity="openEditForm"
-            :deleteEntity="openDeleteForm"
             v-if="tab === tabs[0]"
           />
           <!-- <v-card-text v-if="tab === tabs[1]">Riwayat Konten di sini...</v-card-text> -->
@@ -56,31 +62,205 @@ const headermodule = [
 ];
 
 const module = ref([
-  { no: 1, moduleName: "mtask001", status: "NOK", performa: "≧ 5 detik", log: "TCP Module Delay", note: "Sempat terjadi kesalahan" },
-  { no: 2, moduleName: "mcenter001", status: "OK", performa: "≦ 2 detik", log: "Normal", note: "-" },
-  { no: 3, moduleName: "mcenterajs001", status: "OK", performa: "≦ 2 detik", log: "Normal", note: "-" },
-  
-  { no: 4, moduleName: "mcenterajs001", status: "OK", performa: "≦ 2 detik", log: "Normal", note: "-" },
-  
-  { no: 5, moduleName: "mcenterajs001", status: "OK", performa: "≦ 2 detik", log: "Normal", note: "-" },
-  
-  { no: 6, moduleName: "mcenterajs001", status: "OK", performa: "≦ 2 detik", log: "Normal", note: "-" },
-  
-  { no: 7, moduleName: "mcenterajs001", status: "OK", performa: "≦ 2 detik", log: "Normal", note: "-" },
-  
-  { no: 8, moduleName: "mcenterajs001", status: "OK", performa: "≦ 2 detik", log: "Normal", note: "-" },
-  { no: 9, moduleName: "mcenterajs001", status: "OK", performa: "≦ 2 detik", log: "Normal", note: "-" },
-  { no: 10, moduleName: "mcenterajs001", status: "OK", performa: "≦ 2 detik", log: "Normal", note: "-" },
-  { no: 11, moduleName: "mcenterajs001", status: "OK", performa: "≦ 2 detik", log: "Normal", note: "-" },
-  { no: 12, moduleName: "mcenterajs001", status: "OK", performa: "≦ 2 detik", log: "Normal", note: "-" },
-  { no: 13, moduleName: "mcenterajs001", status: "OK", performa: "≦ 2 detik", log: "Normal", note: "-" },
-  { no: 14, moduleName: "mcenterajs001", status: "OK", performa: "≦ 2 detik", log: "Normal", note: "-" },
-  { no: 15, moduleName: "mcenterajs001", status: "OK", performa: "≦ 2 detik", log: "Normal", note: "-" },
-  { no: 16, moduleName: "mcenterajs001", status: "OK", performa: "≦ 2 detik", log: "Normal", note: "-" },
-  { no: 17, moduleName: "mcenterajs001", status: "OK", performa: "≦ 2 detik", log: "Normal", note: "-" },
-  { no: 18, moduleName: "mcenterajs001", status: "OK", performa: "≦ 2 detik", log: "Normal", note: "-" },
-  { no: 19, moduleName: "mcenterajs001", status: "OK", performa: "≦ 2 detik", log: "Normal", note: "-" },
-  { no: 20, moduleName: "mcenterajs001", status: "OK", performa: "≦ 2 detik", log: "Normal", note: "-" },
+  {
+    no: 1,
+    moduleName: "mtask001",
+    status: "NOK",
+    performa: "≧ 5 detik",
+    log: "TCP Module Delay",
+    note: "Sempat terjadi kesalahan",
+  },
+  {
+    no: 2,
+    moduleName: "mcenter001",
+    status: "OK",
+    performa: "≦ 2 detik",
+    log: "Normal",
+    note: "-",
+  },
+  {
+    no: 3,
+    moduleName: "mcenterajs001",
+    status: "OK",
+    performa: "≦ 2 detik",
+    log: "Normal",
+    note: "-",
+  },
 
+  {
+    no: 4,
+    moduleName: "mcenterajs001",
+    status: "OK",
+    performa: "≦ 2 detik",
+    log: "Normal",
+    note: "-",
+  },
+
+  {
+    no: 5,
+    moduleName: "mcenterajs001",
+    status: "OK",
+    performa: "≦ 2 detik",
+    log: "Normal",
+    note: "-",
+  },
+
+  {
+    no: 6,
+    moduleName: "mcenterajs001",
+    status: "OK",
+    performa: "≦ 2 detik",
+    log: "Normal",
+    note: "-",
+  },
+
+  {
+    no: 7,
+    moduleName: "mcenterajs001",
+    status: "OK",
+    performa: "≦ 2 detik",
+    log: "Normal",
+    note: "-",
+  },
+
+  {
+    no: 8,
+    moduleName: "mcenterajs001",
+    status: "OK",
+    performa: "≦ 2 detik",
+    log: "Normal",
+    note: "-",
+  },
+  {
+    no: 9,
+    moduleName: "mcenterajs001",
+    status: "OK",
+    performa: "≦ 2 detik",
+    log: "Normal",
+    note: "-",
+  },
+  {
+    no: 10,
+    moduleName: "mcenterajs001",
+    status: "OK",
+    performa: "≦ 2 detik",
+    log: "Normal",
+    note: "-",
+  },
+  {
+    no: 11,
+    moduleName: "mcenterajs001",
+    status: "OK",
+    performa: "≦ 2 detik",
+    log: "Normal",
+    note: "-",
+  },
+  {
+    no: 12,
+    moduleName: "mcenterajs001",
+    status: "OK",
+    performa: "≦ 2 detik",
+    log: "Normal",
+    note: "-",
+  },
+  {
+    no: 13,
+    moduleName: "mcenterajs001",
+    status: "OK",
+    performa: "≦ 2 detik",
+    log: "Normal",
+    note: "-",
+  },
+  {
+    no: 14,
+    moduleName: "mcenterajs001",
+    status: "OK",
+    performa: "≦ 2 detik",
+    log: "Normal",
+    note: "-",
+  },
+  {
+    no: 15,
+    moduleName: "mcenterajs001",
+    status: "OK",
+    performa: "≦ 2 detik",
+    log: "Normal",
+    note: "-",
+  },
+  {
+    no: 16,
+    moduleName: "mcenterajs001",
+    status: "OK",
+    performa: "≦ 2 detik",
+    log: "Normal",
+    note: "-",
+  },
+  {
+    no: 17,
+    moduleName: "mcenterajs001",
+    status: "OK",
+    performa: "≦ 2 detik",
+    log: "UnNormal",
+    note: "-",
+  },
+  {
+    no: 18,
+    moduleName: "mcenterajs001",
+    status: "OK",
+    performa: "≦ 2 detik",
+    log: "Normal",
+    note: "-",
+  },
+  {
+    no: 19,
+    moduleName: "mcenterajs001",
+    status: "OK",
+    performa: "≦ 2 detik",
+    log: "Normal",
+    note: "-",
+  },
+  {
+    no: 20,
+    moduleName: "mcenterajs001",
+    status: "OK",
+    performa: "≦ 2 detik",
+    log: "Normal",
+    note: "-",
+  },
 ]);
+
+const editDivisiForm = ref(null);
+
+const openEditForm = (item) => {
+  editDivisiForm.value.openDialog(item);
+};
+
+const openEditSuccessModal = () => {
+  editSuccessModal.value.modalState();
+};
+
+const handleEditDivisi = async (editDiv) => {
+  try {
+    await divisiService.updateDiv(editDiv);
+    fetchDataDivisi();
+    openEditSuccessModal();
+  } catch (error) {
+    alert("edit data divisi gagal!" + error);
+  }
+};
+
+const fetchDataDivisi = async () => {
+  try {
+    const divisiData = await divisiService.getAllDiv();
+    console.log(divisiData);
+    divisi.value = divisiData.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+onMounted(fetchDataDivisi);
+
+import EditDivisiForm from "@/components/DetailStatusModule.vue";
+import divisiService from "@/services/DetailModuleService.js";
 </script>
