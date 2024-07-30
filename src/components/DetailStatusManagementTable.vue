@@ -183,7 +183,6 @@ const headerserverapp = [
   { title: "Path", align: "start", key: "pathServer" },
   { title: "Usage (%)", align: "start", key: "usageServer" },
   { title: "Status", align: "start", key: "status" },
-  { title: "Log", align: "start", key: "logServerApp" },
   { title: "Catatan Petugas", align: "start", key: "noteServerApp" },
 ];
 
@@ -195,7 +194,6 @@ const servers = ref([
     pathServer: "/",
     usageServer: "65",
     status: "OK",
-    logServerApp: "Normal",
     noteServerApp: "-",
   },
   {
@@ -205,7 +203,6 @@ const servers = ref([
     pathServer: "/home",
     usageServer: "13",
     status: "OK",
-    logServerApp: "Normal",
     noteServerApp: "-",
   },
   {
@@ -215,7 +212,6 @@ const servers = ref([
     pathServer: "/",
     usageServer: "49",
     status: "OK",
-    logServerApp: "Normal",
     noteServerApp: "-",
   },
   {
@@ -225,7 +221,6 @@ const servers = ref([
     pathServer: "/home",
     usageServer: "20",
     status: "OK",
-    logServerApp: "Normal",
     noteServerApp: "-",
   },
   {
@@ -235,7 +230,6 @@ const servers = ref([
     pathServer: "/",
     usageServer: "33",
     status: "OK",
-    logServerApp: "Normal",
     noteServerApp: "-",
   },
   {
@@ -245,7 +239,6 @@ const servers = ref([
     pathServer: "/home",
     usageServer: "19",
     status: "OK",
-    logServerApp: "Normal",
     noteServerApp: "-",
   },
   {
@@ -255,7 +248,6 @@ const servers = ref([
     pathServer: "/opt",
     usageServer: "72",
     status: "WARN",
-    logServerApp: "Almost 75%",
     noteServerApp: "Storage sudah hampir 75%. Akan membahayakan operasional.",
   },
 ]);
@@ -280,4 +272,10 @@ const fetchDataStatusServerApp = async () => {
 };
 
 onMounted(fetchDataStatusServerApp);
+
+// Detail Server Database Status
+
+
+
+
 </script>
