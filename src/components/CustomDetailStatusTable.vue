@@ -1,65 +1,22 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
-  <v-container class="mx-2" style="max-height: 100vh">
-    <v-row>
-      <v-col class="text-h4 font-weight-bold pt-8">
-        {{ title }}
-      </v-col>
-    </v-row>
-
+  <v-container>
     <v-row class="toolbar-actions" align="center" justify="space-between">
-      <v-col cols="12" md="6">
-        <v-text-field
-          v-model="search"
-          :placeholder="'Cari ' + entity"
-          clearable
-          dense
-          prepend-inner-icon="mdi-magnify"
-          variant="outlined"
-  
-        ></v-text-field>
-      </v-col>
-
-      <v-col cols="auto" class="d-flex justify-end">
-        <v-btn
-          class="text-white mx-4"
-          prepend-icon="mdi-filter-variant"
-          variant="outlined"
-          color="orange"
-        >
-          Filter
-        </v-btn>
-
-        <v-btn
-          prepend-icon="mdi-plus"
-          class="text-white"
-          color="orange"
-          @click="dialogInsert"
-        >
-          Tambah {{ entity }}
-        </v-btn>
-      </v-col>
     </v-row>
+    <v-spacer>
+
+</v-spacer>
     <!-- v-model:sort-by="sortBy" -->
     <v-data-table
       :headers="headers"
       :items="paginatedItems"
-      :search="search"
+
       hide-default-footer
       height="44vh"
+      variant: 
       sticky
-      class="rounded-lg"
+      class="rounded-xl"
     >
-      <!-- Header -->
-       <!-- <template v-slot:header="{ props: {headers}}">
-        <thead>
-          <tr>
-            <th v-for="h in headers" class="custom-headers">
-              <span>{{ h.text }}</span>
-            </th>
-          </tr>
-        </thead>
-       </template> -->
       <!-- Slot untuk kolom Status -->
       <template v-slot:item.status="{ item }">
         <v-chip :color="getStatusColor(item.status)" text-color="white" small>
@@ -80,18 +37,15 @@
           </template>
 
           <v-list class="left rounded-lg px-4 pr-6">
-            <v-list-item title="Edit" @click="() => dialogEdit(item)">
+            <v-list-item title="Lihat Detail" @click="() => dialogEdit(item)">
             </v-list-item>
-            <v-divider></v-divider>
-            <v-list-item base-color="red" @click="dialogDelete(item)"
-              >Hapus
-            </v-list-item>
+          
           </v-list>
         </v-menu>
       </template>
     </v-data-table>
 
-    <v-row class="d-flex justify-between align-center mt-4">
+    <v-row class="d-flex justify-between align-center mb-12">
       <v-col cols="auto">
         <div class="left pa-2">
           <span>Item per halaman:</span>
@@ -130,9 +84,7 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
-  addEntity: Function,
-  editEntity: Function,
-  deleteEntity: Function,
+  editEntity: Function, 
 });
 
 // eslint-disable-next-line no-unused-vars
@@ -150,23 +102,18 @@ if (props.headers[props.headers.length - 1].title !== "Action") {
 
 const search = ref("");
 
-const dialogInsert = () => {
-  props.addEntity();
-};
 
 const dialogEdit = (item) => {
   props.editEntity(item);
 };
 
-const dialogDelete = (item) => {
-  props.deleteEntity(item);
-};
-
 const getStatusColor = (status) => {
   switch (status) {
     case "Active":
+    case "OK":
       return "green";
     case "No Active":
+    case "NOK":
       return "red";
     case "Pending":
       return "orange";
@@ -206,10 +153,3 @@ const changePage = (page) => {
   currentPage.value = page;
 };
 </script>
-
-<style scoped>
-.custom-headers {
-  background-color: red;
-  color: white;
-}
-</style>

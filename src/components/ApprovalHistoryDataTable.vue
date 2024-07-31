@@ -2,9 +2,7 @@
   <v-container>
     <v-row class="toolbar-actions" align="center" justify="space-between">
     </v-row>
-      <v-spacer>
-
-    </v-spacer>
+    <v-spacer></v-spacer>
     <v-data-table
       v-model:expanded="expanded"
       :headers="headers"
@@ -14,12 +12,11 @@
       item-value="no"
       show-expand
       height="44vh"
-      variant: 
       sticky
       class="rounded-xl"
     >
       <template v-slot:column.header="{ column }">
-        <th style="background-color: #FCB275">
+        <th style="background-color: #fcb275">
           {{ column.title }}
         </th>
       </template>
@@ -38,46 +35,50 @@
               :items="item.details"
               hide-default-footer
               hide-default-header
-              style="background-color: #F6F6F6"
+              style="background-color: #f6f6f6"
             >
-              <template v-slot:item.operator="{item: detail}">
+              <template v-slot:item.operator="{ item: detail }">
                 <div class="text-caption font-weight-light">Nama Petugas:</div>
-                <div class="text-body-2 font-weight-regular">{{detail.operator}}</div>
-              </template>  
-              <template v-slot:item.date="{item: detail}">
+                <div class="text-body-2 font-weight-regular">
+                  {{ detail.operator }}
+                </div>
+              </template>
+              <template v-slot:item.date="{ item: detail }">
                 <div class="text-caption font-weight-light">Tanggal:</div>
-                <div class="text-body-2 font-weight-regular">{{detail.date}}</div>
+                <div class="text-body-2 font-weight-regular">
+                  {{ detail.date }}
+                </div>
               </template>
-              <template v-slot:item.submitTime="{item: detail}">
+              <template v-slot:item.submitTime="{ item: detail }">
                 <div class="text-caption font-weight-light">Waktu Submit:</div>
-                <div class="text-body-2 font-weight-regular">{{detail.submitTime}}</div>
+                <div class="text-body-2 font-weight-regular">
+                  {{ detail.submitTime }}
+                </div>
               </template>
-              <template v-slot:item.detailedStatus="{item: detail}">
+              <template v-slot:item.detailedStatus="{ item: detail }">
                 <div class="text-caption font-weight-light">Status:</div>
                 <v-chip
                   :color="getStatusColor(detail.detailedStatus)"
                   text-color="white"
                   size="small"
                 >
-                {{ detail.detailedStatus }}
+                  {{ detail.detailedStatus }}
                 </v-chip>
               </template>
-              <template v-slot:item.actions="{item: detail}">
+              <template v-slot:item.actions="{ item: detail }">
                 <v-btn
                   size="small"
                   color="orange"
                   variant="outlined"
-                  @click="viewDetail(item)"
-                >Lihat Detail</v-btn>
+                  @click="viewDetail(detail)"
+                  >Lihat Detail</v-btn
+                >
               </template>
             </v-data-table>
           </td>
         </tr>
       </template>
-      
     </v-data-table>
-
-    
     <v-row class="d-flex justify-between align-center mt-4">
       <v-col cols="auto">
         <div class="left pa-2">
@@ -137,6 +138,7 @@ const search = ref("");
 const getStatusColor = (status) => {
   switch (status) {
     case "Disetujui":
+    case "Approved":
       return "green";
     case "Ditolak":
       return "red";
@@ -153,15 +155,9 @@ const perPageOptions = [1, 5, 10, 15, 20, 25, 50, 100];
 
 const filteredItems = computed(() => {
   return props.items.filter((item) => {
-    return props.headers.some((header) => {
-      const fieldValue = item[header.key];
-      if (fieldValue) {
-        return fieldValue
-          .toString()
-          .toLowerCase()
-          .includes(search.value.toLowerCase());
-      }
-    });
+    return item.details.every(
+      (detail) => detail.detailedStatus === "Disetujui"
+    );
   });
 });
 

@@ -9,6 +9,7 @@ import ProductManagementTable from "@/components/ProductManagementTable.vue";
 import SubProductManagementTable from "@/components/SubProductManagementTable.vue";
 import ModuleManagementTable from "@/components/ModuleManagementTable.vue";
 import ApprovalManagementTable from "@/components/ApprovalManagementTable.vue";
+import DetailStatusManagementTable from "@/components/DetailStatusManagementTable.vue";
 
 const routes = [
   {
@@ -61,6 +62,12 @@ const routes = [
         path: "/approval-management",
         component: ApprovalManagementTable,
         name: "ApprovalManagementTable",
+      },
+
+      {
+        path: "/detail-status-management",
+        component: DetailStatusManagementTable,
+        name: "DetailStatusManagementTable",
       },
 
       {
