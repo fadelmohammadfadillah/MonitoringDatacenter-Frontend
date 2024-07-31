@@ -47,7 +47,18 @@
       hide-default-footer
       height="44vh"
       sticky
+      class="rounded-lg"
     >
+      <!-- Header -->
+       <!-- <template v-slot:header="{ props: {headers}}">
+        <thead>
+          <tr>
+            <th v-for="h in headers" class="custom-headers">
+              <span>{{ h.text }}</span>
+            </th>
+          </tr>
+        </thead>
+       </template> -->
       <!-- Slot untuk kolom Status -->
       <template v-slot:item.status="{ item }">
         <v-chip :color="getStatusColor(item.status)" text-color="white" small>
@@ -194,3 +205,10 @@ const changePage = (page) => {
   currentPage.value = page;
 };
 </script>
+
+<style scoped>
+.custom-headers {
+  background-color: red;
+  color: white;
+}
+</style>
