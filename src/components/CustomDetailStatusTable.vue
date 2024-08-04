@@ -37,7 +37,7 @@
           </template>
 
           <v-list class="left rounded-lg px-4 pr-6">
-            <v-list-item title="Lihat Detail" @click="() => dialogEdit(item)">
+            <v-list-item title="Lihat Detail" @click="() => dialogShowDetail(item)">
             </v-list-item>
           
           </v-list>
@@ -51,7 +51,7 @@
           <span>Item per halaman:</span>
         </div>
       </v-col>
-      <v-col class="v-col-2 pt-15 pl-2 px-12">
+      <v-col class="v-col-2 pt-10 pl-2 px-12">
         <v-select
           v-model="itemsPerPage"
           :items="perPageOptions"
@@ -70,6 +70,7 @@
         ></v-pagination>
       </v-col>
     </v-row>
+
   </v-container>
 </template>
 
@@ -103,7 +104,7 @@ if (props.headers[props.headers.length - 1].title !== "Action") {
 const search = ref("");
 
 
-const dialogEdit = (item) => {
+const dialogShowDetail = (item) => {
   props.editEntity(item);
 };
 
@@ -116,6 +117,7 @@ const getStatusColor = (status) => {
     case "NOK":
       return "red";
     case "Pending":
+    case "WARN":
       return "orange";
     default:
       return "grey";

@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app color="#fff" class="pa-3">
+  <v-app-bar app elevation="0" color="#fff" class="pa-3 custom-bottom-border" style="position: sticky">
     <v-btn icon="mdi-page-layout-sidebar-left" @click.stop="drawerStore.useDrawer"></v-btn>
     <v-spacer></v-spacer>
     <v-btn prepend-icon="mdi-bell" @click.stop="toggleNotifications"> </v-btn>
@@ -17,7 +17,7 @@
 
 <script>
 import userProfile from "@/assets/userprofile.jpg";
-import {useDrawerStore} from "@/stores/drawerState";
+import {useDrawerStore} from "@/stores/DrawerState";
 
 export default {
   props: {
@@ -45,4 +45,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.custom-bottom-border {
+  border-bottom: 0.1rem solid grey;
+}
+</style>

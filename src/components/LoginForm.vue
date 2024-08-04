@@ -107,7 +107,7 @@ const submit = async (event) => {
   const result = await authService.login(toRaw(credential.value));
   console.log(result);
   if (result === true) {
-    router.push('/admin-dashboard');
+    router.push({name: 'UserManagementTable'});
   } else {
     alert(JSON.stringify({ message: 'Username atau Password salah!' }));
   }

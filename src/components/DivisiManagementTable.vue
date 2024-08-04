@@ -10,11 +10,13 @@
   />
   <AddDivisiForm ref="addDivisiForm" @add-new-div="handleAddNewDivisi" />
 
+
   <CustomSuccessModal
     message="Divisi Berhasil Ditambahkan!"
     imgSrc="/src/assets/success-modal-img.svg"
     ref="addSuccessModal"
   />
+
 
   <EditDivisiForm ref="editDivisiForm" @edit-div="handleEditDivisi" />
   <CustomSuccessModal
@@ -60,6 +62,9 @@ const editDivisiForm = ref(null);
 const editSuccessModal = ref(null);
 const deleteConfirmModal = ref(null);
 const deleteSuccessModal = ref(null);
+
+
+
 
 const openAddForm = () => {
   addDivisiForm.value.openDialog();
