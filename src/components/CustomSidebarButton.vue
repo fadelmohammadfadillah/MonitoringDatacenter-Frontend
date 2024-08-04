@@ -7,7 +7,7 @@
       :color="isHovering ? 'orange' : 'black'"
       block
       :prepend-icon="icon"
-      @click="$router.push(routeLink)"
+      @click="$router.push({name: routeLink})"
       class="text-subtitle-2 font-weight-medium pl-4 py-5"
       rounded="lg"
       style="justify-content: start"
@@ -15,26 +15,21 @@
     >
   </v-list-item>
 </template>
-<script>
-export default {  
-  props: {
+<script setup>
+  const props =  defineProps({
     icon: {
       type: String,
-      default: "mdi-home",
+      default: 'mdi-home',
     },
     text: {
       type: String,
-      default: "home",
+      default: 'home',
     },
     routeLink: {
       type: String,
-      default: ""
+      default: "",
     }
-  },
-  data() {
-    return {
-      isHovering: false,
-    };
-  },
-};
+  });
+
+  const isHovering = ref(false);
 </script>

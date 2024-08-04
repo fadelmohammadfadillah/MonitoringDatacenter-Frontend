@@ -11,18 +11,14 @@
       :items="paginatedItems"
       :search="search"
       hide-default-footer
-      item-value="no"
+      item-value="index"
       show-expand
       height="44vh"
       variant: 
       sticky
+      hover
       class="rounded-xl"
     >
-      <template v-slot:column.header="{ column }">
-        <th style="background-color: #FCB275">
-          {{ column.title }}
-        </th>
-      </template>
       <!-- Slot untuk kolom Status -->
       <template v-slot:item.status="{ item }">
         <v-chip :color="getStatusColor(item.status)" text-color="white" small>
@@ -40,26 +36,26 @@
               hide-default-header
               style="background-color: #F6F6F6"
             >
-              <template v-slot:item.operator="{item: detail}">
+              <template v-slot:item.operatorName="{item: detail}">
                 <div class="text-caption font-weight-light">Nama Petugas:</div>
-                <div class="text-body-2 font-weight-regular">{{detail.operator}}</div>
+                <div class="text-body-2 font-weight-regular">{{detail.operatorName}}</div>
               </template>  
-              <template v-slot:item.date="{item: detail}">
+              <template v-slot:item.dateMon="{item: detail}">
                 <div class="text-caption font-weight-light">Tanggal:</div>
-                <div class="text-body-2 font-weight-regular">{{detail.date}}</div>
+                <div class="text-body-2 font-weight-regular">{{detail.dateMon}}</div>
               </template>
-              <template v-slot:item.submitTime="{item: detail}">
+              <template v-slot:item.timeMon="{item: detail}">
                 <div class="text-caption font-weight-light">Waktu Submit:</div>
-                <div class="text-body-2 font-weight-regular">{{detail.submitTime}}</div>
+                <div class="text-body-2 font-weight-regular">{{detail.timeMon}}</div>
               </template>
-              <template v-slot:item.detailedStatus="{item: detail}">
+              <template v-slot:item.approvalStatus="{item: detail}">
                 <div class="text-caption font-weight-light">Status:</div>
                 <v-chip
-                  :color="getStatusColor(detail.detailedStatus)"
+                  :color="getStatusColor(detail.approvalStatus)"
                   text-color="white"
                   size="small"
                 >
-                {{ detail.detailedStatus }}
+                {{ detail.approvalStatus }}
                 </v-chip>
               </template>
               <template v-slot:item.actions="{item: detail}">
@@ -67,7 +63,7 @@
                   size="small"
                   color="orange"
                   variant="outlined"
-                  @click="viewDetail(item)"
+                  @click="viewDetailItem(detail)"
                 >Lihat Detail</v-btn>
               </template>
             </v-data-table>
@@ -118,6 +114,7 @@ const props = defineProps({
     default: () => [],
   },
   detailHeaders: Array,
+  viewDetail: Function,
 });
 
 if (props.detailHeaders[props.detailHeaders.length - 1].title !== "Action") {
@@ -136,11 +133,11 @@ const search = ref("");
 
 const getStatusColor = (status) => {
   switch (status) {
-    case "Disetujui":
-      return "green";
-    case "Ditolak":
+    case "DISETUJUI":
+      return "purple";
+    case "DITOLAK":
       return "red";
-    case "Menunggu Disetujui":
+    case "MENUNGGU PERSETUJUAN":
       return "orange";
     default:
       return "grey";
@@ -178,9 +175,9 @@ const changePage = (page) => {
   currentPage.value = page;
 };
 
-const viewDetail = (detail) => {
-  console.log("Lihat detail untuk:", detail);
-  // Implementasi logika detail view disini
+const viewDetailItem = (detail) => {
+  console.log("view data detail:" + JSON.stringify(detail));
+  props.viewDetail(detail);
 };
 </script>
 

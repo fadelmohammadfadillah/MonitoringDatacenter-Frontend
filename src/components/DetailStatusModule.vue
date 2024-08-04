@@ -32,7 +32,7 @@
               <div class="text">{{ moduleData.status }}</div>
             </v-col>
           </v-row>
-          <spacer></spacer>
+          <!-- <v-spacer></v-spacer> -->
 
           <v-divider></v-divider>
 

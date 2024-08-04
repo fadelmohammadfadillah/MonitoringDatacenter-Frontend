@@ -1,12 +1,15 @@
 <template>
   <v-container class="px-4" style="max-height: 100vh">
-    <CustomSidebarButton
-      icon="mdi-arrow-left"
-      text="Status Persetujuan"
-      route-link="/approval-management"
-      class="pt-7"
-      color="orange"
-    />
+    <v-btn
+      prepend-icon="mdi-arrow-left"
+      @click="$router.push({name: 'ApprovalMonitoringTable'})"
+      @mouseover="isHovering = true"
+      @mouseleave="isHovering = false"
+      class="text-subtitle-2 font-weight-medium mt-7"
+      :color="isHovering ? 'orange' : 'black'"
+      variant="plain"
+      rounded="lg"
+    >Status Persetujuan</v-btn>
 
     <ShowDetailModule ref="showdetailModule" />
 
@@ -19,11 +22,11 @@
     </v-row>
 
     <v-card>
-      <v-tabs v-model="currentTab" bg-color="white" slider-color="orange">
+      <v-tabs v-model="currentTab" flat bg-color="#f6f6f6" slider-color="orange">
         <v-tab v-for="tab in tabs" :value="tab">{{ tab }}</v-tab>
       </v-tabs>
     </v-card>
-
+ 
     <v-card-text class="px-0 mx-0">
       <v-tabs-window v-model="currentTab">
         <v-tabs-window-item v-for="tab in tabs" :value="tab">
@@ -42,6 +45,22 @@
             :editEntity="openDetailserverApp"
             v-if="tab === tabs[1]"
           />
+
+          <CustomDetailStatusTable
+            class="px-0"
+            :headers="headerBackup"
+            :items="backups"
+            :editEntity="openDetailserverApp"
+            v-if="tab === tabs[3]"
+          />
+
+          <CustomDetailStatusTable
+            class="px-0"
+            :headers="headerServerMon"
+            :items="serverMon"
+            :editEntity="openDetailserverApp"
+            v-if="tab === tabs[4]"
+          />
         </v-tabs-window-item>
       </v-tabs-window>
     </v-card-text>
@@ -51,111 +70,34 @@
 <script setup>
 import { ref } from "vue";
 import CustomDetailStatusTable from "./CustomDetailStatusTable.vue";
+import { useRoute } from "vue-router";
+import eventMonitoringService from "@/services/EventMonitoringService";
+
+const route = useRoute();
 
 const tabs = ["Module", "Server App", "Server DB", "Backup", "Storage"];
 
 const currentTab = ref(tabs[0]);
 
+const isHovering = ref(false);
+
 // Detail Module Status
 const headermodule = [
-  { title: "No", align: "start", key: "idstatusModule" },
-  { title: "Module", align: "start", key: "nameModule" },
+  { title: "No", align: "start", key: "index" },
+  { title: "Module", align: "start", key: "moduleName" },
   { title: "Status", align: "start", key: "status" },
-  { title: "Performa", align: "start", key: "performaModule" },
-  { title: "Log", align: "start", key: "logModule" },
-  { title: "Catatan Petugas", align: "start", key: "noteModule" },
+  { title: "Performa", align: "start", key: "performa" },
+  { title: "Log", align: "start", key: "log" },
+  { title: "Catatan Petugas", align: "start", key: "operatorNotes" },
 ];
 
-const modules = ref([
-  {
-    idstatusModule: 1,
-    nameModule: "mtask001",
-    status: "NOK",
-    performaModule: "≧ 5 detik",
-    logModule: "TCP Module Delay",
-    noteModule: "Sempat terjadi kesalahan",
-  },
-  {
-    idstatusModule: 2,
-    nameModule: "mcenter001",
-    status: "OK",
-    performaModule: "≦ 2 detik",
-    logModule: "Normal",
-    noteModule: "-",
-  },
-  {
-    idstatusModule: 3,
-    nameModule: "mcjs001",
-    status: "OK",
-    performaModule: "≦ 2 detik",
-    logModule: "Normal",
-    noteModule: "-",
-  },
-
-  {
-    idstatusModule: 4,
-    nameModule: "TTCP Module",
-    status: "OK",
-    performaModule: "≦ 2 detik",
-    logModule: "Normal",
-    noteModule: "-",
-  },
-
-  {
-    idstatusModule: 5,
-    nameModule: "auth001",
-    status: "OK",
-    performaModule: "≦ 2 detik",
-    logModule: "Normal",
-    noteModule: "-",
-  },
-
-  {
-    idstatusModule: 6,
-    nameModule: "auth002",
-    status: "OK",
-    performaModule: "≦ 2 detik",
-    logModule: "Normal",
-    noteModule: "Yuhuuu",
-  },
-
-  {
-    idstatusModule: 7,
-    nameModule: "mcenterajs001",
-    status: "OK",
-    performaModule: "≦ 2 detik",
-    logModule: "Normal",
-    noteModule: "Test",
-  },
-
-  {
-    idstatusModule: 8,
-    nameModule: "mcenterajs002",
-    status: "OK",
-    performaModule: "≦ 2 detik",
-    logModule: "Normal",
-    noteModule: "-",
-  },
-  {
-    idstatusModule: 9,
-    nameModule: "mcenterajs003",
-    status: "OK",
-    performaModule: "≦ 2 detik",
-    logModule: "Normal",
-    noteModule: "-",
-  },
-  {
-    idstatusModule: 10,
-    nameModule: "mcenterajs004",
-    status: "OK",
-    performaModule: "≦ 2 detik",
-    logModule: "Normal",
-    noteModule: "-",
-  },
-]);
+const modules = ref([]);
+const serverApps = ref([]);
+const serverDbs = ref([]);
+const backups = ref([]);
+const serverMon = ref([]);
 
 import ShowDetailModule from "@/components/DetailStatusModule.vue";
-import detailModuleService from "@/services/DetailModuleService.js";
 
 const showdetailModule = ref(null);
 
@@ -163,17 +105,20 @@ const openDetailmodule = (item) => {
   showdetailModule.value.openDialog(item);
 };
 
-const fetchDataStatusModule = async () => {
+const fetchDataModuleMonitoring = async () => {
   try {
-    const datastatusModule = await detailModuleService.getAllstatusModule();
-    console.log(datastatusModule);
-    module.value = datastatusModule.data;
+    const moduleData = await eventMonitoringService.getAllModuleMonByIdMon(route.params.idMonitoring);
+    modules.value = moduleData.data.map((item, index) => ({
+      ...item,
+      index: index + 1,
+    }));
+    console.log(modules.value);
   } catch (error) {
     console.log(error);
   }
 };
 
-onMounted(fetchDataStatusModule);
+onMounted(fetchDataModuleMonitoring);
 
 // Detail Server App Status
 const headerserverapp = [
@@ -261,21 +206,73 @@ const openDetailserverApp = (item) => {
   showdetailServerApp.value.openDialog(item);
 };
 
-const fetchDataStatusServerApp = async () => {
+// const fetchDataServerAppMonitoring = async () => {
+//   try {
+//     const serverAppMonData = await detailServerApp
+//     console.log(datastatusServerApp);
+//     servers.value = datastatusServerApp.data;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+// onMounted(fetchDataStatusServerApp);
+
+
+// Detail Server Backup Monitoring
+
+const headerBackup = [
+  { title: "No", align: "start", key: "index" },
+  { title: "IP Server", align: "start", key: "ipAddress" },
+  { title: "Directory Backup", align: "start", key: "directoryBackup" },
+  { title: "Mulai", align: "start", key: "startBackup" },
+  { title: "Selesai", align: "start", key: "finishBackup" },
+  { title: "Status", align: "start", key: "status" },
+  { title: "Catatan Petugas", align: "start", key: "operatorNotes" },
+];
+
+
+const fetchBackupMonitoring = async () => {
   try {
-    const datastatusServerApp = await detailServerApp.getAllstatusServerApp();
-    console.log(datastatusServerApp);
-    servers.value = datastatusServerApp.data;
+    const backupMonData = await eventMonitoringService.getAllBackupMonByIdMon(route.params.idMonitoring);
+    backups.value = backupMonData.data.map((item, index) => ({
+      ...item,
+      index: index + 1,
+    }));
+    console.log(backups.value);
   } catch (error) {
     console.log(error);
   }
 };
 
-onMounted(fetchDataStatusServerApp);
+onMounted(fetchBackupMonitoring);
 
-// Detail Server Database Status
+const headerServerMon = [
+  { title: "No", align: "start", key: "index" },
+  { title: "IP Addres", align: "start", key: "ipAddress" },
+  { title: "CPU Usage (%)", align: "start", key: "cpuUsage" },
+  { title: "Ram Usage (%)", align: "start", key: "ramUsage" },
+  { title: "Disk Usage (%)", align: "start", key: "diskUsage" },
+  { title: "Log", align: "start", key: "log" },
+  { title: "Catatan Petugas", align: "start", key: "operatorNotes" },
+];
+
+const fetchServerMonitoring = async () => {
+  try {
+    const serverMonData = await eventMonitoringService.getAllServerMonByIdMon(route.params.idMonitoring);
+    serverMon.value = serverMonData.data.map((item, index) => ({
+      ...item,
+      index: index + 1,
+    }));
+    console.log(serverMon.value);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 
-
+onMounted(fetchServerMonitoring);
 
 </script>
+<style scoped>
+</style>

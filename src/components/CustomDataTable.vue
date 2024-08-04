@@ -48,6 +48,7 @@
       hide-default-footer
       height="44vh"
       sticky
+      hover
     >
       <!-- Slot untuk kolom Status -->
       <template v-slot:item.status="{ item }">
@@ -61,7 +62,7 @@
         <v-menu transition="scale-transition">
           <template v-slot:activator="{ props }">
             <v-btn
-              color="orange"
+              color="grey"
               v-bind="props"
               icon="mdi-dots-horizontal"
               variant="plain"

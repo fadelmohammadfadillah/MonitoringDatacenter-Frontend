@@ -2,7 +2,7 @@
   <v-app>
     <SidebarAdmin />
     <HeaderBar :userImage="userImage" :username="username" :role="role" />
-    <v-main class="" style="max-height: 100vh; background-color: #f6f6f6;">
+    <v-main style="background-color: #f6f6f6; padding-top: 0;">
       <router-view />
     </v-main>
   </v-app>
