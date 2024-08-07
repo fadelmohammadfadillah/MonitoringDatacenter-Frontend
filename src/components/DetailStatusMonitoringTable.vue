@@ -38,12 +38,17 @@
             v-if="tab === tabs[0]"
           />
 
-          <CustomDetailStatusTable
+          <!-- <CustomDetailStatusTable
             class="px-0"
-            :headers="headerserverapp"
+            :headers="headerServerApp"
             :items="servers"
             :editEntity="openDetailserverApp"
             v-if="tab === tabs[1]"
+          /> -->
+          <CustomServerDetailTable
+            :headers="headerServerApp"
+            :detail-headers="detailHeaderServerApp"
+            :items="servers"
           />
 
           <CustomDetailStatusTable
@@ -72,6 +77,7 @@ import { ref } from "vue";
 import CustomDetailStatusTable from "./CustomDetailStatusTable.vue";
 import { useRoute } from "vue-router";
 import eventMonitoringService from "@/services/EventMonitoringService";
+import CustomServerDetailTable from "./CustomServerDetailTable.vue";
 
 const route = useRoute();
 
@@ -121,10 +127,14 @@ const fetchDataModuleMonitoring = async () => {
 onMounted(fetchDataModuleMonitoring);
 
 // Detail Server App Status
-const headerserverapp = [
+const headerServerApp = [
   { title: "No", align: "start", key: "idstatusServerApp" },
-  { title: "Nama Server Aplikasi", align: "start", key: "nameServerApp" },
   { title: "IP", align: "start", key: "ipServer" },
+  { title: "Nama Server Aplikasi", align: "start", key: "nameServerApp" },
+  
+];
+
+const detailHeaderServerApp = [
   { title: "Path", align: "start", key: "pathServer" },
   { title: "Usage (%)", align: "start", key: "usageServer" },
   { title: "Status", align: "start", key: "status" },
@@ -136,10 +146,33 @@ const servers = ref([
     idstatusServerApp: 1,
     nameServerApp: "ATM",
     ipServer: "10.234.44.80",
-    pathServer: "/",
-    usageServer: "65",
-    status: "OK",
-    noteServerApp: "-",
+    details: [
+      {
+        pathServer: "/",
+        usageServer: "65",
+        status: "OK",
+        noteServerApp: "-",
+      },
+      {
+        pathServer: "/",
+        usageServer: "65",
+        status: "OK",
+        noteServerApp: "-",
+      },
+      {
+        pathServer: "/",
+        usageServer: "65",
+        status: "OK",
+        noteServerApp: "-",
+      },
+      {
+        pathServer: "/",
+        usageServer: "65",
+        status: "OK",
+        noteServerApp: "-",
+      },
+    ]
+    
   },
   {
     idstatusServerApp: 2,

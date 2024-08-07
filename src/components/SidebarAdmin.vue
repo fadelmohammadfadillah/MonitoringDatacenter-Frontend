@@ -15,40 +15,40 @@
       ></v-img>
     </v-list-item>
     <v-divider class="mx-1"></v-divider>
-
+    
     <v-list>
       <!-- Pengguna Section -->
-      <v-list-item subtitle="Manajemen" class="pa-0 pl-2"></v-list-item>
+      <v-list-item subtitle="User Management" class="pa-0 pl-2"></v-list-item>
       <CustomSidebarButton
-        icon="mdi-account-multiple"
-        text="Pengguna"
-        route-link="UserManagementTable"
+      icon="mdi-account-multiple"
+      text="Pengguna"
+      route-link="UserManagementTable"
       />
+      
+      <!-- Switching Section -->
+      <v-list-item subtitle="Data Master" class="pa-0 pl-2"></v-list-item>
       <CustomSidebarButton
-        icon="mdi-account-group"
+        icon="mdi-account-group-outline"
         text="Divisi"
         route-link="DivisiManagementTable"
       />
       <CustomSidebarButton
-        icon="mdi-account-group"
+        icon="mdi-account-group-outline"
         text="Department"
         route-link="DepartmentManagementTable"
       />
-
-      <!-- Switching Section -->
-      <v-list-item subtitle="Konfigurasi" class="pa-0 pl-2"></v-list-item>
       <!-- custom dropdown button -->
       <v-btn
-        @mouseover="isHoveringDropdownBtn = true"
-        @mouseleave="isHoveringDropdownBtn = false"
-        :variant="isHoveringDropdownBtn ? 'tonal' : 'plain'"
-        :color="isHoveringDropdownBtn ? 'orange' : 'grey-darken-4'"
-        @click="toggleProducts"
-        :append-icon="showProducts ? 'mdi-menu-up' : 'mdi-menu-down'"
-        block
-        prepend-icon="mdi-archive-outline"
-        class="text-subtitle-2 font-weight-medium pl-4 py-5"
-        rounded="lg"
+      @mouseover="isHoveringDropdownBtn = true"
+      @mouseleave="isHoveringDropdownBtn = false"
+      :variant="isHoveringDropdownBtn ? 'tonal' : 'plain'"
+      :color="isHoveringDropdownBtn ? 'orange' : 'grey-darken-4'"
+      @click="toggleProducts"
+      :append-icon="showProducts ? 'mdi-menu-up' : 'mdi-menu-down'"
+      block
+      prepend-icon="mdi-archive-outline"
+      class="text-subtitle-2 font-weight-medium pl-4 py-5"
+      rounded="lg"
         style="justify-content: start"
       >
         Kategori Produk
@@ -77,6 +77,16 @@
         icon="mdi-view-module-outline"
         text="Module"
         route-link="ModuleManagementTable"
+      />
+      <CustomSidebarButton
+        icon="mdi-dns-outline"
+        text="IP Address"
+        route-link="ServerManagementTable"
+      />
+      <CustomSidebarButton
+        icon="mdi-cog-outline"
+        text="Konfigurasi Server"
+        route-link="ServerConfigManagementTable"
       />
 
       <!-- Operasi Section -->

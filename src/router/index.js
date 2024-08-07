@@ -10,6 +10,8 @@ import SubProductManagementTable from "@/components/SubProductManagementTable.vu
 import ModuleManagementTable from "@/components/ModuleManagementTable.vue";
 import ApprovalMonitoringTable from "@/components/ApprovalMonitoringTable.vue";
 import DetailStatusMonitoringTable from "@/components/DetailStatusMonitoringTable.vue";
+import ServerManagementTable from "@/components/ServerManagementTable.vue";
+import ServerConfigManagementTable from "@/components/ServerConfigManagementTable.vue";
 
 const routes = [
   {
@@ -51,25 +53,31 @@ const routes = [
         component: SubProductManagementTable,
         name: "SubProductManagementTable",
       },
-
       {
         path: "/sa/module-management",
         component: ModuleManagementTable,
         name: "ModuleManagementTable",
       },
-
+      {
+        path: "/sa/server-management",
+        component: ServerManagementTable,
+        name: "ServerManagementTable",
+      },
+      {
+        path: "sa/server-config-management",
+        component: ServerConfigManagementTable,
+        name: "ServerConfigManagementTable"
+      },
       {
         path: "/spv/approval-management",
         component: ApprovalMonitoringTable,
         name: "ApprovalMonitoringTable",
       },
-
       {
         path: "/spv/detail-status-monitoring/:idMonitoring",
         component: DetailStatusMonitoringTable,
         name: "DetailStatusMonitoringTable",
       },
-
       {
         path: "/:catchAll(.*)",
         redirect: { name: "loginPage" },
