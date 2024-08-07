@@ -17,7 +17,7 @@
 
 <script>
 import userProfile from "@/assets/userprofile.jpg";
-import {useDrawerStore} from "@/stores/DrawerState";
+import {useDrawerStore} from "@/stores/drawerState.js";
 
 export default {
   props: {

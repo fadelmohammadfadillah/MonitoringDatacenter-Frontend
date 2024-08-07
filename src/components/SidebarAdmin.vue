@@ -105,7 +105,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import CustomSidebarButton from "@/components/CustomSidebarButton.vue";
-import { useDrawerStore } from "@/stores/DrawerState";
+import { useDrawerStore } from "@/stores/drawerState.js";
 
 const drawerStore = useDrawerStore();
 const drawer = computed({
